@@ -1,0 +1,76 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&family=Inter:wght@300;400;600&family=Plus+Jakarta+Sans:wght@400&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: #000;
+  color-scheme: dark;
+  scroll-behavior: auto;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  overflow-x: hidden;
+  background: #000;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+a,
+button {
+  font: inherit;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+.preloader-char {
+  display: inline-block;
+  will-change: filter, color, text-shadow;
+}
+
+.webgl-layer,
+.webgl-fluid {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+}
+
+.webgl-fluid {
+  z-index: 29;
+  opacity: 0;
+}
+
+.gl-ready main [data-gl-media] {
+  background: transparent;
+}
+
+@media (max-width: 1023px) {
+  .webgl-layer,
+  .webgl-fluid {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
