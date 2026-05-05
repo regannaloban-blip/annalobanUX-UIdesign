@@ -38,28 +38,41 @@ img {
   will-change: filter, color, text-shadow;
 }
 
-.webgl-layer,
-.webgl-fluid {
+.webgl-layer {
   position: fixed;
   inset: 0;
   z-index: 30;
   width: 100vw;
   height: 100vh;
-  pointer-events: none;
-}
-
-.webgl-fluid {
-  z-index: 29;
   opacity: 0;
+  pointer-events: none;
+  transition: opacity 500ms ease-in-out;
 }
 
-.gl-ready main [data-gl-media] {
-  background: transparent;
+.gl-ready .webgl-layer {
+  opacity: 1;
+}
+
+.gl-ready main [data-gl-text-active] {
+  color: transparent !important;
+  text-decoration-color: transparent !important;
+}
+
+.gl-ready main [data-gl-media-active] {
+  background: transparent !important;
+}
+
+.gl-ready main [data-gl-media-active] img,
+.gl-ready main [data-gl-media-active] picture {
+  opacity: 0 !important;
+}
+
+.gl-ready main [data-gl-background-active] {
+  border-color: transparent !important;
 }
 
 @media (max-width: 1023px) {
-  .webgl-layer,
-  .webgl-fluid {
+  .webgl-layer {
     display: none;
   }
 }

@@ -1,8 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import gsap from "gsap";
-import Lenis from "lenis";
 import SplitType from "split-type";
-import { Renderer } from "ogl";
+import { CanvasScene } from "./webgl/CanvasScene.js";
 
 import desktopProject1 from "../assets/ai-portfolio/figma/desktop-project-1.png";
 import desktopProject2 from "../assets/ai-portfolio/figma/desktop-project-2.png";
@@ -73,8 +72,9 @@ function Preloader({ reduced }) {
     }
 
     const split = new SplitType(titleRef.current, {
-      types: "chars",
+      types: "chars,words",
       charClass: "preloader-char",
+      wordClass: "preloader-word",
     });
     const tl = gsap.timeline({
       defaults: { ease: "power2.inOut" },
@@ -88,13 +88,13 @@ function Preloader({ reduced }) {
       color: "#e60006",
       textShadow: "0 0 10px rgba(255,0,0,.75), 0 0 24px rgba(255,0,0,.45)",
       filter: "blur(5px)",
-      stagger: { each: 0.08, from: "start" },
+      stagger: { each: 0.1, from: "start" },
       duration: 0.55,
     })
       .to(
         rootRef.current,
         {
-          filter: "blur(260px)",
+          filter: "blur(500px)",
           duration: 1,
         },
         "exit",
@@ -208,17 +208,17 @@ function Hero() {
 
 function StatementAndServices() {
   return (
-    <section className="relative w-full overflow-hidden bg-black p-5 lg:p-[60px] lg:pt-0">
+    <section className="relative w-full overflow-visible bg-black p-5 lg:p-[60px] lg:pt-0">
       <picture>
         <source media="(min-width: 1024px)" srcSet={desktopStroke} />
         <img
           src={mobileStroke}
           alt=""
-          className="pointer-events-none absolute left-[-54px] top-[194px] h-[456px] w-[428px] max-w-none opacity-95 blur-[1px] lg:left-[150px] lg:top-[315px] lg:h-[1189px] lg:w-[1254px]"
+          className="pointer-events-none absolute left-[-54px] top-[194px] z-0 h-[456px] w-[428px] max-w-none opacity-95 blur-[1px] lg:left-[150px] lg:top-[315px] lg:h-[1189px] lg:w-[1254px]"
         />
       </picture>
 
-      <div className="relative flex w-full flex-col gap-[114px] lg:gap-[154px]">
+      <div className="relative z-10 flex w-full flex-col gap-[114px] lg:gap-[154px]">
         <div className="flex w-full flex-col items-start justify-center">
           <div className="flex w-full items-start justify-between">
             <MonoText className="hidden w-[205px] text-justify lg:block">
@@ -330,7 +330,7 @@ function WorkCard({ work }) {
           <img
             src={work.mobile}
             alt=""
-            className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+            className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04] lg:group-hover:scale-100"
           />
         </picture>
       </div>
@@ -377,206 +377,24 @@ function Footer() {
 
 function WebGLCanvasLayer({ reduced }) {
   const canvasRef = useRef(null);
-  const glCanvasRef = useRef(null);
-  const rendererRef = useRef(null);
-  const lenisRef = useRef(null);
-  const pointer = useRef({ x: -1000, y: -1000, px: -1000, py: -1000, splats: [] });
 
   useEffect(() => {
-    if (reduced || window.innerWidth < 1024) return undefined;
+    if (reduced || !canvasRef.current) return undefined;
 
-    document.body.classList.add("gl-ready");
-    const canvas = canvasRef.current;
-    const fluidCanvas = glCanvasRef.current;
-    const ctx = canvas.getContext("2d", { alpha: true });
-    const renderer = new Renderer({ canvas: fluidCanvas, alpha: true, antialias: true, dpr: Math.min(window.devicePixelRatio || 1, 2) });
-    renderer.gl.clearColor(0, 0, 0, 0);
-    rendererRef.current = renderer;
-
-    const lenis = new Lenis({
-      lerp: 0.08,
-      smoothWheel: true,
-      wheelMultiplier: 0.8,
+    const scene = new CanvasScene({
+      canvas: canvasRef.current,
+      onReady: () => document.body.classList.add("gl-ready"),
+      onFallback: () => document.body.classList.remove("gl-ready"),
     });
-    lenisRef.current = lenis;
-
-    let rafId = 0;
-    let dpr = 1;
-
-    const resize = () => {
-      dpr = Math.min(window.devicePixelRatio || 1, 2);
-      canvas.width = Math.round(window.innerWidth * dpr);
-      canvas.height = Math.round(window.innerHeight * dpr);
-      canvas.style.width = `${window.innerWidth}px`;
-      canvas.style.height = `${window.innerHeight}px`;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      draw(0);
-    };
-
-    const drawText = (el) => {
-      const rect = el.getBoundingClientRect();
-      if (rect.bottom < -140 || rect.top > window.innerHeight + 140 || rect.width <= 0) return;
-      const style = getComputedStyle(el);
-      const size = parseFloat(style.fontSize);
-      const line = parseFloat(style.lineHeight) || size;
-      const weight = style.fontWeight || 300;
-      const family = style.fontFamily;
-      const color = el.dataset.color === "black" ? "#000" : "#fff";
-      const content = (el.innerText || el.textContent || "").trim();
-      if (!content) return;
-
-      ctx.save();
-      ctx.fillStyle = color;
-      ctx.textBaseline = "top";
-      ctx.textAlign = style.textAlign === "right" ? "right" : style.textAlign === "center" ? "center" : "left";
-      ctx.font = `${weight} ${size}px ${family}`;
-      ctx.letterSpacing = style.letterSpacing;
-      const x = ctx.textAlign === "right" ? rect.right : ctx.textAlign === "center" ? rect.left + rect.width / 2 : rect.left;
-      const lines = content.split(/\n+/).map((item) => item.trim()).filter(Boolean);
-      lines.forEach((lineText, index) => {
-        ctx.fillText(lineText, x, rect.top + index * line);
-      });
-      ctx.restore();
-    };
-
-    const cover = (img, rect) => {
-      const iw = img.naturalWidth || img.width;
-      const ih = img.naturalHeight || img.height;
-      const scale = Math.max(rect.width / iw, rect.height / ih);
-      const width = iw * scale;
-      const height = ih * scale;
-      const mx = (pointer.current.x - rect.left) / Math.max(rect.width, 1) - 0.5;
-      const my = (pointer.current.y - rect.top) / Math.max(rect.height, 1) - 0.5;
-      return {
-        x: rect.left + (rect.width - width) / 2 + mx * 10,
-        y: rect.top + (rect.height - height) / 2 + my * 10,
-        width,
-        height,
-      };
-    };
-
-    const drawMedia = (el) => {
-      const rect = el.getBoundingClientRect();
-      const img = el.querySelector("img");
-      if (!img || !img.complete || rect.bottom < -140 || rect.top > window.innerHeight + 140) return;
-      const fit = cover(img, rect);
-      ctx.save();
-      ctx.beginPath();
-      ctx.rect(rect.left, rect.top, rect.width, rect.height);
-      ctx.clip();
-      ctx.filter = "contrast(1.02) saturate(1.03)";
-      ctx.drawImage(img, fit.x, fit.y, fit.width, fit.height);
-      ctx.restore();
-    };
-
-    const drawBackground = (el) => {
-      const rect = el.getBoundingClientRect();
-      if (rect.bottom < -140 || rect.top > window.innerHeight + 140) return;
-      ctx.save();
-      ctx.strokeStyle = "#fff";
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.moveTo(rect.left, rect.top + 0.5);
-      ctx.lineTo(rect.right, rect.top + 0.5);
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.moveTo(rect.left, rect.bottom - 0.5);
-      ctx.lineTo(rect.right, rect.bottom - 0.5);
-      ctx.stroke();
-      ctx.restore();
-    };
-
-    const drawFluid = (time) => {
-      const p = pointer.current;
-      const baseX = window.innerWidth * 0.5 + Math.sin(time * 0.0007) * 50;
-      const baseY = window.innerHeight * 0.55 + Math.cos(time * 0.0005) * 30;
-      const gradient = ctx.createRadialGradient(baseX, baseY, 8, baseX, baseY, Math.min(window.innerWidth, 950) * 0.34);
-      gradient.addColorStop(0, "rgba(230,0,6,.82)");
-      gradient.addColorStop(0.18, "rgba(190,5,10,.36)");
-      gradient.addColorStop(0.58, "rgba(88,2,5,.12)");
-      gradient.addColorStop(1, "rgba(0,0,0,0)");
-      ctx.save();
-      ctx.globalCompositeOperation = "screen";
-      ctx.filter = "blur(28px) saturate(1.5)";
-      ctx.translate(baseX, baseY);
-      ctx.rotate(-0.32 + Math.sin(time * 0.0004) * 0.12);
-      ctx.scale(1.7, 0.55);
-      ctx.translate(-baseX, -baseY);
-      ctx.fillStyle = gradient;
-      ctx.beginPath();
-      ctx.arc(baseX, baseY, Math.min(window.innerWidth, 950) * 0.34, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.restore();
-
-      p.splats = p.splats.filter((splat) => splat.life > 0.02);
-      p.splats.forEach((splat) => {
-        splat.life *= 0.94;
-        splat.radius += 2.4;
-        const splatGradient = ctx.createRadialGradient(splat.x, splat.y, 0, splat.x, splat.y, splat.radius);
-        splatGradient.addColorStop(0, `rgba(230,0,6,${0.46 * splat.life})`);
-        splatGradient.addColorStop(0.45, `rgba(190,5,10,${0.2 * splat.life})`);
-        splatGradient.addColorStop(1, "rgba(0,0,0,0)");
-        ctx.save();
-        ctx.globalCompositeOperation = "screen";
-        ctx.filter = "blur(18px)";
-        ctx.fillStyle = splatGradient;
-        ctx.beginPath();
-        ctx.arc(splat.x, splat.y, splat.radius, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.restore();
-      });
-    };
-
-    function draw(time) {
-      renderer.gl.clear(renderer.gl.COLOR_BUFFER_BIT);
-      lenis.raf(time);
-      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-      drawFluid(time);
-      document.querySelectorAll("[data-gl-media]").forEach(drawMedia);
-      document.querySelectorAll("[data-gl-background]").forEach(drawBackground);
-      document.querySelectorAll("[data-gl-text]").forEach(drawText);
-      rafId = requestAnimationFrame(draw);
-    }
-
-    const move = (event) => {
-      const point = event.touches?.[0] || event;
-      const p = pointer.current;
-      const dx = point.clientX - p.px;
-      const dy = point.clientY - p.py;
-      p.x = point.clientX;
-      p.y = point.clientY;
-      if (Math.abs(dx) + Math.abs(dy) > 8) {
-        p.splats.push({ x: p.x, y: p.y, radius: 32, life: 1 });
-      }
-      p.px = p.x;
-      p.py = p.y;
-    };
-
-    window.addEventListener("resize", resize);
-    window.addEventListener("mousemove", move);
-    window.addEventListener("touchmove", move, { passive: true });
-    resize();
-    rafId = requestAnimationFrame(draw);
 
     return () => {
-      cancelAnimationFrame(rafId);
-      lenis.destroy();
-      renderer.gl.getExtension("WEBGL_lose_context")?.loseContext();
+      scene.destroy();
       document.body.classList.remove("gl-ready");
-      window.removeEventListener("resize", resize);
-      window.removeEventListener("mousemove", move);
-      window.removeEventListener("touchmove", move);
     };
   }, [reduced]);
 
   if (reduced) return null;
-  return (
-    <>
-      <canvas ref={glCanvasRef} className="webgl-fluid" aria-hidden="true" />
-      <canvas ref={canvasRef} className="webgl-layer" aria-hidden="true" />
-    </>
-  );
+  return <canvas ref={canvasRef} className="webgl-layer" aria-hidden="true" />;
 }
 
 export default function App() {
@@ -588,6 +406,11 @@ export default function App() {
         <StatementAndServices />
         <Works />
         <Footer />
+        <section className="relative hidden h-screen w-full overflow-clip pointer-events-none lg:block" aria-hidden="true">
+          <div className="absolute left-0 top-0 min-h-screen w-full">
+            <Hero />
+          </div>
+        </section>
       </>
     ),
     [],
