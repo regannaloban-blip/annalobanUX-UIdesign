@@ -158,7 +158,7 @@ function Display({ as: Tag = "h2", children, className = "", dataText = true }) 
   return (
     <Tag
       data-gl-text={dataText ? "" : undefined}
-      className={`font-display text-[56px] font-light uppercase leading-[58px] tracking-normal text-white md:text-[92px] md:leading-[88px] lg:text-[168px] lg:leading-[154px] lg:tracking-[-6px] whitespace-nowrap ${className}`}
+      className={`font-display text-[56px] font-light uppercase leading-[58px] tracking-normal text-white md:text-[92px] md:leading-[88px] lg:text-[168px] lg:leading-[154px] lg:tracking-[-7px] whitespace-nowrap ${className}`}
     >
       {children}
     </Tag>
@@ -248,7 +248,7 @@ function StatementAndServices() {
         </div>
 
         <div className="flex w-full flex-col items-start gap-10 lg:flex-row lg:items-center lg:justify-end lg:gap-[205px]">
-          <div className="flex w-[286px] flex-col items-start gap-[34px] lg:w-[263px] lg:gap-[42px]">
+          <div className="flex w-[286px] flex-col items-start gap-[42px] lg:w-[263px]">
             <MonoText className="w-[286px]">
               services I provided to
               <br />
@@ -336,10 +336,17 @@ function WorkCard({ work }) {
       </div>
       <div
         data-gl-background
-        className="flex w-full justify-between border-b border-white py-3 font-mono text-base font-normal uppercase leading-[25px] text-white"
+        className="flex w-full items-start justify-between gap-4 border-b border-white pb-3 font-mono text-base font-normal uppercase leading-[25px] text-white"
       >
-        <span data-gl-text>{work.name} </span>
-        <a data-gl-text href={work.href} target="_blank" rel="noreferrer" className="underline">
+        <span className="min-w-0 whitespace-nowrap">
+          {work.name}
+        </span>
+        <a
+          href={work.href}
+          target="_blank"
+          rel="noreferrer"
+          className="shrink-0 underline"
+        >
           Live
         </a>
       </div>
@@ -351,7 +358,7 @@ function Footer() {
   return (
     <section className="w-full bg-black">
       <div className="mx-auto flex w-full flex-col items-center gap-[27px] lg:w-[898px]">
-        <Display className="mx-auto w-full whitespace-pre-wrap text-center lg:w-[898px]">
+        <Display dataText={false} className="mx-auto block w-full !whitespace-pre-wrap text-center lg:w-[898px]">
           lets leave
           <br />a mark
         </Display>
