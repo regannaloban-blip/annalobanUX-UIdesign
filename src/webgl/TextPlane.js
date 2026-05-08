@@ -19,6 +19,7 @@ export class TextPlane {
     const { width, height } = this.bounds;
     const style = getComputedStyle(this.element);
     const size = parseFloat(style.fontSize);
+    this.fixedLines = this.element.hasAttribute("data-gl-fixed-lines");
     this.texturePadding = this.getTexturePadding(size);
     const paddedWidth = width + this.texturePadding * 2;
     const paddedHeight = height + this.texturePadding * 2;
@@ -28,7 +29,7 @@ export class TextPlane {
     const fontWeight = style.fontWeight || 400;
     const letterSpacing = style.letterSpacing !== "normal" ? parseFloat(style.letterSpacing) || 0 : 0;
     const align = style.textAlign;
-    const shouldWrap = style.whiteSpace !== "nowrap";
+    const shouldWrap = !this.fixedLines && style.whiteSpace === "normal";
     let text = (this.element.innerText || this.element.textContent || "").trim();
     if (style.textTransform === "uppercase") {
       text = text.toUpperCase();
@@ -90,7 +91,9 @@ export class TextPlane {
   }
 
   getTexturePadding(fontSize) {
-    return Math.ceil(Math.max(10, Math.min(56, fontSize * 0.2)));
+    const maxPadding = this.fixedLines ? 96 : 56;
+    const ratio = this.fixedLines ? 0.32 : 0.2;
+    return Math.ceil(Math.max(10, Math.min(maxPadding, fontSize * ratio)));
   }
 
   getTextureBounds() {
@@ -113,10 +116,7 @@ export class TextPlane {
   getWrappedLines(ctx, text, maxWidth, letterSpacing) {
     const hardLines = text.split(/\n+/).map((line) => line.trim()).filter(Boolean);
     const measure = (value) => {
-      const chars = [...value];
-      return chars.reduce((sum, char, index) => {
-        return sum + ctx.measureText(char).width + (index < chars.length - 1 ? letterSpacing : 0);
-      }, 0);
+      return this.measureLetterSpaced(ctx, value, letterSpacing);
     };
 
     return hardLines.flatMap((hardLine) => {
@@ -139,14 +139,25 @@ export class TextPlane {
 
   drawLetterSpaced(ctx, text, x, y, spacing, align) {
     const chars = [...text];
-    const width = chars.reduce((sum, char, index) => {
-      return sum + ctx.measureText(char).width + (index < chars.length - 1 ? spacing : 0);
-    }, 0);
+    const width = this.measureLetterSpaced(ctx, text, spacing);
     let cursor = align === "right" ? x - width : align === "center" ? x - width / 2 : x;
     chars.forEach((char, index) => {
       ctx.fillText(char, cursor, y);
-      cursor += ctx.measureText(char).width + (index < chars.length - 1 ? spacing : 0);
+      cursor += ctx.measureText(char).width + this.getPairSpacing(chars, index, spacing);
     });
+  }
+
+  measureLetterSpaced(ctx, text, spacing) {
+    const chars = [...text];
+    return chars.reduce((sum, char, index) => {
+      return sum + ctx.measureText(char).width + this.getPairSpacing(chars, index, spacing);
+    }, 0);
+  }
+
+  getPairSpacing(chars, index, spacing) {
+    if (index >= chars.length - 1) return 0;
+    if (/\s/.test(chars[index]) || /\s/.test(chars[index + 1])) return 0;
+    return spacing;
   }
 
   drawJustified(ctx, text, x, y, width, spacing = 0) {
@@ -155,18 +166,12 @@ export class TextPlane {
       this.drawLetterSpaced(ctx, text, x, y, spacing, "left");
       return;
     }
-    const textWidth = words.reduce((sum, word) => {
-      return sum + [...word].reduce((wordSum, char, index, chars) => {
-        return wordSum + ctx.measureText(char).width + (index < chars.length - 1 ? spacing : 0);
-      }, 0);
-    }, 0);
+    const textWidth = words.reduce((sum, word) => sum + this.measureLetterSpaced(ctx, word, spacing), 0);
     const gap = (width - textWidth) / (words.length - 1);
     let cursor = x;
     words.forEach((word, index) => {
       this.drawLetterSpaced(ctx, word, cursor, y, spacing, "left");
-      const wordWidth = [...word].reduce((sum, char, charIndex, chars) => {
-        return sum + ctx.measureText(char).width + (charIndex < chars.length - 1 ? spacing : 0);
-      }, 0);
+      const wordWidth = this.measureLetterSpaced(ctx, word, spacing);
       cursor += wordWidth + (index < words.length - 1 ? gap : 0);
     });
   }

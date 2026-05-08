@@ -77,7 +77,7 @@ export class CanvasScene {
     });
 
     this.lenis = new Lenis({
-      infinite: false,
+      infinite: true,
       lerp: 0.1,
       smoothWheel: true,
       wheelMultiplier: 1,

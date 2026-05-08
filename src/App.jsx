@@ -154,10 +154,11 @@ function BookButton({ className = "" }) {
   );
 }
 
-function Display({ as: Tag = "h2", children, className = "", dataText = true }) {
+function Display({ as: Tag = "h2", children, className = "", dataText = true, fixedLines = false }) {
   return (
     <Tag
       data-gl-text={dataText ? "" : undefined}
+      data-gl-fixed-lines={fixedLines ? "" : undefined}
       className={`font-display text-[56px] font-light uppercase leading-[58px] tracking-normal text-white md:text-[92px] md:leading-[88px] lg:text-[168px] lg:leading-[154px] lg:tracking-[-7px] whitespace-nowrap ${className}`}
     >
       {children}
@@ -192,7 +193,7 @@ function Hero() {
 
       <div className="flex w-full flex-col items-start gap-[100px] lg:flex-row lg:items-start lg:justify-between lg:gap-8">
         <div className="flex w-[286px] flex-col items-start gap-[42px] lg:w-[359px]">
-          <MonoText className="w-[286px]">
+          <MonoText className="w-[286px]" justify>
             I create website designs for people and help them grow their business.
           </MonoText>
           <BookButton />
@@ -223,7 +224,7 @@ function StatementAndServices() {
       <div className="relative z-10 flex w-full flex-col gap-[114px] lg:gap-[154px]">
         <div className="flex w-full flex-col items-start justify-center">
           <div className="flex w-full items-start justify-center lg:justify-between">
-            <MonoText className="hidden w-[265px] lg:block">
+            <MonoText className="hidden w-[265px] lg:block" justify>
               I create website with full of passion and dedication.
             </MonoText>
             <Display>Create</Display>
@@ -241,7 +242,7 @@ function StatementAndServices() {
           </div>
           <div className="flex w-full items-end justify-center gap-[180px] lg:justify-start lg:pl-[282px]">
             <Display>inspires</Display>
-            <MonoText className="hidden w-[227px] lg:block">
+            <MonoText className="hidden w-[227px] lg:block" justify>
               A web/UI designer creating clear digital experiences.
             </MonoText>
           </div>
@@ -261,14 +262,14 @@ function StatementAndServices() {
               (item, index) => (
                 <div
                   data-gl-background
-                  className="-mb-px flex min-h-[68px] w-full items-center border-y border-white py-0"
+                  className="-mb-px flex w-full items-center border-y border-white py-[20px]"
                   key={`${item}-${index}`}
                 >
-                  <div className="relative z-40 flex items-center gap-[80px] whitespace-nowrap font-jakarta text-base font-medium uppercase leading-none text-white md:gap-[88px] lg:text-2xl">
-                    <span data-gl-text className="w-4 text-2xl leading-none lg:text-2xl">
+                  <div className="relative z-40 flex items-center gap-[80px] whitespace-nowrap font-jakarta text-base font-normal uppercase leading-[25px] text-white md:gap-[88px] lg:text-2xl">
+                    <span data-gl-text className="relative top-[3px] w-4 text-2xl leading-[25px] lg:text-2xl">
                       {index + 1}{" "}
                     </span>
-                    <span data-gl-text className="leading-none">{item}</span>
+                    <span data-gl-text className="leading-[25px]">{item}</span>
                   </div>
                 </div>
               ),
@@ -311,7 +312,7 @@ function Works() {
           <WorkCard work={works[2]} />
         </div>
         <div className="flex w-full flex-col items-start justify-between gap-20 lg:mb-[-32px] lg:flex-row lg:items-end lg:gap-8">
-          <MonoText className="hidden w-[254px] lg:block">
+          <MonoText className="hidden w-[266px] lg:block" justify>
             Clear structure, visual character and more thoughtful web experiences.
           </MonoText>
           <WorkCard work={works[3]} />
@@ -358,7 +359,10 @@ function Footer() {
   return (
     <section className="w-full bg-black">
       <div className="mx-auto flex w-full flex-col items-center gap-[27px] lg:w-[898px]">
-        <Display dataText={false} className="mx-auto block w-full !whitespace-pre-wrap text-center lg:w-[898px]">
+        <Display
+          className="mx-auto block w-full !whitespace-pre-wrap text-center lg:w-[898px] lg:text-[162px] lg:leading-[150px]"
+          fixedLines
+        >
           lets leave
           <br />a mark
         </Display>
@@ -421,6 +425,11 @@ export default function App() {
           <Works />
         </div>
         <Footer />
+        <section className="pointer-events-none relative hidden h-screen w-full overflow-clip lg:block" aria-hidden="true">
+          <div className="absolute left-0 top-0 w-full">
+            <Hero />
+          </div>
+        </section>
       </>
     ),
     [],
