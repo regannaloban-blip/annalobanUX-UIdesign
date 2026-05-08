@@ -14,27 +14,34 @@ import mobileProject4 from "../assets/ai-portfolio/figma/mobile-project-4.png";
 import desktopStroke from "../assets/ai-portfolio/figma/desktop-red-stroke.svg";
 import mobileStroke from "../assets/ai-portfolio/figma/mobile-red-stroke.svg";
 
+const briefHref = "mailto:ann.loban@gmail.com?subject=Website%20or%20visual%20system%20brief";
+const footerLinks = [
+  { label: "telegram", href: "https://t.me/anna_loban" },
+  { label: "Linkedin", href: "https://www.linkedin.com/in/annloban/" },
+  { label: "dribbble", href: "https://dribbble.com/azzaza" },
+];
+
 const works = [
   {
-    name: "Name project",
+    name: "24 colab",
     href: "https://24colab.com/",
     desktop: desktopProject1,
     mobile: mobileProject1,
   },
   {
-    name: "Name project",
+    name: "your dissertation",
     href: "https://yourdissertation.com",
     desktop: desktopProject2,
     mobile: mobileProject2,
   },
   {
-    name: "Name project",
+    name: "smart business intelligence",
     href: "https://smartbusinessintelligence.co.uk",
     desktop: desktopProject3,
     mobile: mobileProject3,
   },
   {
-    name: "Name project",
+    name: "Vegas Expert",
     href: "https://www.behance.net/gallery/55414069/Vegas-Expert-Package",
     desktop: desktopProject4,
     mobile: mobileProject4,
@@ -132,16 +139,16 @@ function Preloader({ reduced }) {
 function BookButton({ className = "" }) {
   return (
     <a
-      href="mailto:ann.loban@gmail.com"
+      href={briefHref}
       data-gl-media
       className={`relative block h-8 w-32 cursor-pointer overflow-hidden bg-white px-2 pb-[6px] pt-0.5 text-black ${className}`}
     >
       <span
         data-gl-text
         data-color="black"
-        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap font-mono text-base font-semibold uppercase leading-[25px]"
+        className="absolute left-1/2 top-1/2 whitespace-nowrap font-mono text-base font-semibold uppercase leading-none -translate-x-1/2 -translate-y-1/2"
       >
-        Book a call
+        Send a brief
       </span>
     </a>
   );
@@ -151,17 +158,17 @@ function Display({ as: Tag = "h2", children, className = "", dataText = true }) 
   return (
     <Tag
       data-gl-text={dataText ? "" : undefined}
-      className={`font-display text-[56px] font-light uppercase leading-[58px] tracking-[-0.04em] text-white lg:text-[168px] lg:leading-[154px] ${className}`}
+      className={`font-display text-[56px] font-light uppercase leading-[58px] tracking-normal text-white md:text-[92px] md:leading-[88px] lg:text-[168px] lg:leading-[154px] lg:tracking-[-6px] whitespace-nowrap ${className}`}
     >
       {children}
     </Tag>
   );
 }
 
-function MonoText({ children, className = "", color = "white", justify = false }) {
+function MonoText({ children, className = "", color = "white", justify = false, dataText = true }) {
   return (
     <p
-      data-gl-text
+      data-gl-text={dataText ? "" : undefined}
       data-color={color}
       className={`font-mono text-base font-normal uppercase leading-[25px] text-white lg:font-normal ${justify ? "text-justify" : ""} ${className}`}
     >
@@ -172,7 +179,7 @@ function MonoText({ children, className = "", color = "white", justify = false }
 
 function Hero() {
   return (
-    <header className="relative flex min-h-screen w-full flex-col gap-[114px] overflow-hidden bg-black p-5 lg:gap-[154px] lg:p-[60px]">
+    <header className="relative flex w-full flex-col gap-[114px] overflow-hidden bg-black lg:gap-[154px]">
       <div className="flex w-full items-end justify-between leading-none">
         <div className="whitespace-nowrap">
           <Display as="h1">
@@ -184,21 +191,16 @@ function Hero() {
       </div>
 
       <div className="flex w-full flex-col items-start gap-[100px] lg:flex-row lg:items-start lg:justify-between lg:gap-8">
-        <div className="flex w-[286px] flex-col items-start gap-[42px]">
+        <div className="flex w-[286px] flex-col items-start gap-[42px] lg:w-[359px]">
           <MonoText className="w-[286px]">
-            I make designs and develop
-            <br />
-            websites for people and help
-            <br />
-            them to grow their buisiness.
+            I create website designs for people and help them grow their business.
           </MonoText>
           <BookButton />
         </div>
         <div className="ml-0 w-fit whitespace-nowrap lg:ml-auto">
           <Display className="font-normal lg:font-light">
             Creative <br />
-            <span className="lg:hidden">dev</span>
-            <span className="hidden lg:inline">designer</span>
+            designer
           </Display>
         </div>
       </div>
@@ -208,67 +210,65 @@ function Hero() {
 
 function StatementAndServices() {
   return (
-    <section className="relative w-full overflow-visible bg-black p-5 lg:p-[60px] lg:pt-0">
+    <section className="relative w-full overflow-visible bg-black">
       <picture>
         <source media="(min-width: 1024px)" srcSet={desktopStroke} />
         <img
           src={mobileStroke}
           alt=""
-          className="pointer-events-none absolute left-[-54px] top-[194px] z-0 h-[456px] w-[428px] max-w-none opacity-95 blur-[1px] lg:left-[150px] lg:top-[315px] lg:h-[1189px] lg:w-[1254px]"
+          className="red-stroke-bg pointer-events-none absolute left-[-54px] top-[126px] z-0 h-[456px] w-[428px] max-w-none opacity-90 md:left-[4%] md:top-[100px] md:h-[760px] md:w-[712px] lg:left-[150px] lg:top-[180px] lg:h-[1189px] lg:w-[1254px]"
         />
       </picture>
 
       <div className="relative z-10 flex w-full flex-col gap-[114px] lg:gap-[154px]">
         <div className="flex w-full flex-col items-start justify-center">
-          <div className="flex w-full items-start justify-between">
-            <MonoText className="hidden w-[205px] text-justify lg:block">
+          <div className="flex w-full items-start justify-center lg:justify-between">
+            <MonoText className="hidden w-[265px] lg:block">
               I create website with full of passion and dedication.
             </MonoText>
-            <Display className="tracking-[-0.06em]">Create</Display>
-            <MonoText className="hidden whitespace-nowrap lg:block">
+            <Display>Create</Display>
+            <MonoText className="hidden w-[171px] whitespace-nowrap lg:block">
               Stay ahead of
               <br />
               the crowd.
             </MonoText>
           </div>
-          <div className="flex w-full items-start justify-center lg:justify-start lg:pl-[128px]">
-            <Display className="tracking-[-0.08em]">website</Display>
+          <div className="flex w-full items-start justify-center lg:justify-start lg:pl-24">
+            <Display>website</Display>
           </div>
-          <div className="flex w-full items-start justify-center lg:justify-start lg:px-[464px]">
-            <Display className="tracking-[-0.07em]">that truly</Display>
+          <div className="flex w-full items-start justify-center lg:justify-start lg:pl-[clamp(320px,22vw,468px)] lg:pr-0">
+            <Display>that truly</Display>
           </div>
-          <div className="flex w-full items-start justify-center gap-[190px] lg:justify-start lg:pl-[298px]">
-            <Display className="tracking-[-0.07em]">inspires</Display>
-            <MonoText className="hidden w-[227px] text-justify lg:block">
-              A spesialized digital
-              <br />
-              designer and developer
-              <br />
-              bazed in india.
+          <div className="flex w-full items-end justify-center gap-[180px] lg:justify-start lg:pl-[282px]">
+            <Display>inspires</Display>
+            <MonoText className="hidden w-[227px] lg:block">
+              A web/UI designer creating clear digital experiences.
             </MonoText>
           </div>
         </div>
 
         <div className="flex w-full flex-col items-start gap-10 lg:flex-row lg:items-center lg:justify-end lg:gap-[205px]">
-          <div className="flex w-[286px] flex-col items-start gap-[34px] lg:gap-[42px]">
+          <div className="flex w-[286px] flex-col items-start gap-[34px] lg:w-[263px] lg:gap-[42px]">
             <MonoText className="w-[286px]">
-              servises I provided to
+              services I provided to
               <br />
-              my cliens
+              my clients.
             </MonoText>
             <BookButton />
           </div>
-          <div className="w-full pb-px lg:w-[486px]">
-            {["Hight quality website", "Hight quality website", "Hight quality website"].map(
+          <div className="w-full pb-px lg:w-[455px]">
+            {["UX/UI solutions", "Visual web design", "Frontend-ready systems"].map(
               (item, index) => (
                 <div
                   data-gl-background
-                  className="-mb-px flex w-full border-y border-white py-5"
+                  className="-mb-px flex min-h-[68px] w-full items-center border-y border-white py-0"
                   key={`${item}-${index}`}
                 >
-                  <div className="flex gap-[112px] whitespace-nowrap font-jakarta text-base font-normal uppercase leading-[25px] text-white lg:text-2xl">
-                    <span data-gl-text>{index + 1} </span>
-                    <span data-gl-text>{item}</span>
+                  <div className="relative z-40 flex items-center gap-[80px] whitespace-nowrap font-jakarta text-base font-medium uppercase leading-none text-white md:gap-[88px] lg:text-2xl">
+                    <span data-gl-text className="w-4 text-2xl leading-none lg:text-2xl">
+                      {index + 1}{" "}
+                    </span>
+                    <span data-gl-text className="leading-none">{item}</span>
                   </div>
                 </div>
               ),
@@ -282,26 +282,26 @@ function StatementAndServices() {
 
 function Works() {
   return (
-    <section className="w-full overflow-hidden bg-black p-5 pt-0 lg:p-[60px] lg:pt-0">
+    <section className="w-full overflow-hidden bg-black">
       <div className="flex w-full flex-col gap-2">
         <div className="flex w-full items-center justify-between">
           <Display>some</Display>
-          <Display className="hidden lg:block">of my</Display>
+          <Display>of my</Display>
         </div>
-        <div className="flex w-full items-center justify-end lg:justify-start lg:pl-[224px]">
-          <Display className="w-full text-right lg:w-[1338px] lg:text-left">works</Display>
+        <div className="flex w-full items-center justify-center pl-20 lg:justify-start lg:pl-[188px]">
+          <Display className="w-[320px] text-left lg:w-[1338px]">works</Display>
         </div>
       </div>
 
-      <MonoText className="mt-[114px] w-[254px] text-justify lg:hidden">
-        As a develorer and designer these are some proves of my passion.
+      <MonoText className="mt-[114px] w-[254px] lg:hidden">
+        Selected work across business websites, visual.
       </MonoText>
 
-      <div className="mt-8 flex w-full flex-col items-start gap-8 lg:mt-[154px] lg:gap-0 lg:pb-8">
+      <div className="mt-[114px] flex w-full flex-col items-start gap-8 lg:mt-[154px] lg:gap-0 lg:pb-8">
         <div className="flex w-full flex-col-reverse items-start justify-between gap-20 lg:mb-[-32px] lg:flex-row lg:gap-8">
           <WorkCard work={works[0]} />
-          <MonoText className="hidden w-[254px] text-justify lg:block">
-            As a develorer and designer these are some proves of my passion.
+          <MonoText className="hidden w-[254px] lg:block">
+            Selected work across business websites, visual.
           </MonoText>
         </div>
         <div className="flex w-full justify-start lg:mb-[-32px] lg:justify-end">
@@ -311,8 +311,8 @@ function Works() {
           <WorkCard work={works[2]} />
         </div>
         <div className="flex w-full flex-col items-start justify-between gap-20 lg:mb-[-32px] lg:flex-row lg:items-end lg:gap-8">
-          <MonoText className="hidden w-[254px] text-justify lg:block">
-            every pixels tell a story. more stories are on the way.
+          <MonoText className="hidden w-[254px] lg:block">
+            Clear structure, visual character and more thoughtful web experiences.
           </MonoText>
           <WorkCard work={works[3]} />
         </div>
@@ -323,8 +323,8 @@ function Works() {
 
 function WorkCard({ work }) {
   return (
-    <article className="work group flex w-[321px] flex-col gap-3 lg:w-[411px]">
-      <div data-gl-media className="relative h-[422px] w-[321px] overflow-hidden bg-white lg:h-[542px] lg:w-[412px]">
+    <article className="work group flex w-[321px] max-w-full flex-col gap-3 md:w-[360px] lg:w-[411px]">
+      <div data-gl-media className="relative h-[422px] w-[321px] max-w-full overflow-hidden bg-white md:h-[474px] md:w-[360px] lg:h-[542px] lg:w-[412px]">
         <picture>
           <source media="(min-width: 1024px)" srcSet={work.desktop} />
           <img
@@ -336,7 +336,7 @@ function WorkCard({ work }) {
       </div>
       <div
         data-gl-background
-        className="flex w-full justify-between border-b border-white pb-3 font-mono text-base font-normal uppercase leading-[25px] text-white"
+        className="flex w-full justify-between border-b border-white py-3 font-mono text-base font-normal uppercase leading-[25px] text-white"
       >
         <span data-gl-text>{work.name} </span>
         <a data-gl-text href={work.href} target="_blank" rel="noreferrer" className="underline">
@@ -349,27 +349,33 @@ function WorkCard({ work }) {
 
 function Footer() {
   return (
-    <section className="w-full bg-black p-5 pb-10 pt-[154px] lg:p-[60px] lg:pb-[60px] lg:pt-[276px]">
+    <section className="w-full bg-black">
       <div className="mx-auto flex w-full flex-col items-center gap-[27px] lg:w-[898px]">
-        <Display className="w-full whitespace-pre-wrap text-center tracking-[-0.07em]">
-          lets  leave
+        <Display className="mx-auto w-full whitespace-pre-wrap text-center lg:w-[898px]">
+          lets leave
           <br />a mark
         </Display>
-        <div className="flex w-[286px] flex-col items-center gap-[42px]">
-          <MonoText className="w-[286px] text-center">availabale for rroject</MonoText>
+        <div className="flex w-full flex-col items-center gap-[42px] lg:w-[356px]">
+          <MonoText className="w-full text-center lg:w-[356px]">
+            clear direction and design created with purpose. Only thoughtful solutions.
+          </MonoText>
           <BookButton />
+          <MonoText className="w-[286px] text-center">available for selected projects.</MonoText>
         </div>
       </div>
       <footer className="mt-[276px] flex w-full items-center justify-between whitespace-nowrap font-mono text-base font-normal uppercase leading-[25px] text-white">
-        <a data-gl-text href="https://www.instagram.com/" target="_blank" rel="noreferrer">
-          Insta
-        </a>
-        <a data-gl-text href="https://www.linkedin.com/" target="_blank" rel="noreferrer">
-          Linkedin
-        </a>
-        <a data-gl-text href="mailto:ann.loban@gmail.com">
-          mail
-        </a>
+        {footerLinks.map((link) => (
+          <a
+            data-gl-text
+            href={link.href}
+            target={link.external === false ? undefined : "_blank"}
+            rel={link.external === false ? undefined : "noreferrer"}
+            className="underline"
+            key={link.label}
+          >
+            {link.label}
+          </a>
+        ))}
       </footer>
     </section>
   );
@@ -402,15 +408,12 @@ export default function App() {
   const page = useMemo(
     () => (
       <>
-        <Hero />
-        <StatementAndServices />
-        <Works />
+        <div className="relative z-10 flex w-full flex-col gap-[114px] lg:gap-[154px]">
+          <Hero />
+          <StatementAndServices />
+          <Works />
+        </div>
         <Footer />
-        <section className="relative hidden h-screen w-full overflow-clip pointer-events-none lg:block" aria-hidden="true">
-          <div className="absolute left-0 top-0 min-h-screen w-full">
-            <Hero />
-          </div>
-        </section>
       </>
     ),
     [],
@@ -420,7 +423,7 @@ export default function App() {
     <>
       <Preloader reduced={reduced} />
       <WebGLCanvasLayer reduced={reduced} />
-      <main className="min-h-screen bg-black" aria-label="Anna Loban portfolio">
+      <main className="relative flex min-h-screen flex-col gap-[154px] overflow-hidden bg-black p-5 md:p-9 lg:p-[60px]" aria-label="Anna Loban portfolio">
         {page}
       </main>
     </>

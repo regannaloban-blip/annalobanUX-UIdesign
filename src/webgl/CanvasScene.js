@@ -21,7 +21,7 @@ const KEY_MAP = {
 function isDesktop() {
   const ua = navigator.userAgent || navigator.vendor || window.opera || "";
   const mobile = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini|mobile|tablet/i.test(ua);
-  return !mobile && window.innerWidth >= 1024;
+  return !mobile;
 }
 
 export class CanvasScene {
@@ -77,7 +77,7 @@ export class CanvasScene {
     });
 
     this.lenis = new Lenis({
-      infinite: true,
+      infinite: false,
       lerp: 0.1,
       smoothWheel: true,
       wheelMultiplier: 1,

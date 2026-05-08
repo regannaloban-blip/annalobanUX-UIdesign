@@ -8,7 +8,7 @@ export class TextPlane {
     this.scene = scene;
     this.element = element;
     this.canvas = canvas;
-    this.bounds = getBounds(element);
+    this.bounds = this.getTextBounds();
     this.color = element.dataset.color === "black" ? "#000" : "#fff";
     this.createTexture();
     this.createMesh();
@@ -17,37 +17,50 @@ export class TextPlane {
 
   createTexture() {
     const { width, height } = this.bounds;
-    const { canvas, ctx } = createCanvas(width, height);
     const style = getComputedStyle(this.element);
     const size = parseFloat(style.fontSize);
+    this.texturePadding = this.getTexturePadding(size);
+    const paddedWidth = width + this.texturePadding * 2;
+    const paddedHeight = height + this.texturePadding * 2;
+    const { canvas, ctx } = createCanvas(paddedWidth, paddedHeight);
     const lineHeight = parseFloat(style.lineHeight) || size * 1.2;
     const fontFamily = style.fontFamily;
     const fontWeight = style.fontWeight || 400;
     const letterSpacing = style.letterSpacing !== "normal" ? parseFloat(style.letterSpacing) || 0 : 0;
     const align = style.textAlign;
-    const text = (this.element.innerText || this.element.textContent || "").trim();
-    const lines = this.getWrappedLines(ctx, text, width, letterSpacing);
+    const shouldWrap = style.whiteSpace !== "nowrap";
+    let text = (this.element.innerText || this.element.textContent || "").trim();
+    if (style.textTransform === "uppercase") {
+      text = text.toUpperCase();
+    }
 
-    ctx.clearRect(0, 0, width, height);
+    ctx.clearRect(0, 0, paddedWidth, paddedHeight);
     ctx.fillStyle = this.color;
     ctx.font = `${fontWeight} ${size}px ${fontFamily}`;
     ctx.textBaseline = "top";
     ctx.textAlign = align === "right" ? "right" : align === "center" ? "center" : "left";
 
-    const x = ctx.textAlign === "right" ? width : ctx.textAlign === "center" ? width / 2 : 0;
+    const lines = shouldWrap ? this.getWrappedLines(ctx, text, width, letterSpacing) : this.getHardLines(text);
+    const x =
+      ctx.textAlign === "right"
+        ? width + this.texturePadding
+        : ctx.textAlign === "center"
+          ? width / 2 + this.texturePadding
+          : this.texturePadding;
     lines.forEach((line, lineIndex) => {
+      const y = lineIndex * lineHeight + this.texturePadding;
       if (letterSpacing === 0) {
         if (align === "justify" && lineIndex < lines.length - 1) {
-          this.drawJustified(ctx, line, 0, lineIndex * lineHeight, width);
+          this.drawJustified(ctx, line, this.texturePadding, y, width);
         } else {
-          ctx.fillText(line, x, lineIndex * lineHeight);
+          ctx.fillText(line, x, y);
         }
         return;
       }
       if (align === "justify" && lineIndex < lines.length - 1) {
-        this.drawJustified(ctx, line, 0, lineIndex * lineHeight, width, letterSpacing);
+        this.drawJustified(ctx, line, this.texturePadding, y, width, letterSpacing);
       } else {
-        this.drawLetterSpaced(ctx, line, x, lineIndex * lineHeight, letterSpacing, ctx.textAlign);
+        this.drawLetterSpaced(ctx, line, x, y, letterSpacing, ctx.textAlign);
       }
     });
 
@@ -58,6 +71,43 @@ export class TextPlane {
       minFilter: this.gl.LINEAR,
       magFilter: this.gl.LINEAR,
     });
+  }
+
+  getTextBounds() {
+    const bounds = getBounds(this.element);
+    const style = getComputedStyle(this.element);
+    if (style.whiteSpace !== "nowrap") return bounds;
+
+    const width = Math.max(bounds.width, this.element.scrollWidth);
+    const height = Math.max(bounds.height, this.element.scrollHeight);
+    return {
+      ...bounds,
+      width,
+      height,
+      right: bounds.left + width,
+      bottom: bounds.top + height,
+    };
+  }
+
+  getTexturePadding(fontSize) {
+    return Math.ceil(Math.max(10, Math.min(56, fontSize * 0.2)));
+  }
+
+  getTextureBounds() {
+    const padding = this.texturePadding || 0;
+    return {
+      ...this.bounds,
+      left: this.bounds.left - padding,
+      top: this.bounds.top - padding,
+      right: this.bounds.right + padding,
+      bottom: this.bounds.bottom + padding,
+      width: this.bounds.width + padding * 2,
+      height: this.bounds.height + padding * 2,
+    };
+  }
+
+  getHardLines(text) {
+    return text.split(/\n+/).map((line) => line.trim()).filter(Boolean);
   }
 
   getWrappedLines(ctx, text, maxWidth, letterSpacing) {
@@ -141,20 +191,21 @@ export class TextPlane {
   }
 
   resize() {
-    this.bounds = getBounds(this.element);
+    this.bounds = this.getTextBounds();
     this.createTexture();
     this.mesh.program.uniforms.tMap.value = this.texture;
     this.update();
   }
 
   update() {
-    this.bounds = getBounds(this.element);
+    this.bounds = this.getTextBounds();
     if (!this.mesh) return;
-    const visible = isInView(this.bounds);
+    const textureBounds = this.getTextureBounds();
+    const visible = isInView(textureBounds);
     this.mesh.visible = visible;
     if (!visible) return;
 
-    updateMeshFromBounds(this.mesh, this.bounds, this.canvas);
+    updateMeshFromBounds(this.mesh, textureBounds, this.canvas);
   }
 
   destroy() {

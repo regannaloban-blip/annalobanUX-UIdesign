@@ -16,6 +16,7 @@ const DENSITY_RESOLUTION = 512;
 const PRESSURE_ITERATIONS = 3;
 const DENSITY_DISSIPATION = 0.93;
 const VELOCITY_DISSIPATION = 0.9;
+const PRESSURE_DISSIPATION = 0.8;
 const CURL = 20;
 const SPLAT_RADIUS = 0.3 / 100;
 
@@ -82,10 +83,20 @@ export class FluidSimulation {
       ? this.gl.getExtension("OES_texture_float_linear")
       : this.gl.getExtension("OES_texture_half_float_linear");
 
-    const type = this.gl.renderer.isWebgl2
-      ? this.gl.HALF_FLOAT
-      : this.ext?.HALF_FLOAT_OES || this.gl.UNSIGNED_BYTE;
-    const support = this.gl.renderer.isWebgl2 && this.ext;
+    const halfFloatType = this.gl.renderer.isWebgl2 ? this.gl.HALF_FLOAT : this.ext?.HALF_FLOAT_OES;
+    const halfFloatTestFormat = this.gl.renderer.isWebgl2
+      ? { internalFormat: this.gl.RGBA16F, format: this.gl.RGBA }
+      : { internalFormat: this.gl.RGBA, format: this.gl.RGBA };
+    const canUseHalfFloat = halfFloatType
+      ? supportRenderTextureFormat(
+          this.gl,
+          halfFloatTestFormat.internalFormat,
+          halfFloatTestFormat.format,
+          halfFloatType,
+        )
+      : false;
+    const type = canUseHalfFloat ? halfFloatType : this.gl.UNSIGNED_BYTE;
+    const support = this.gl.renderer.isWebgl2 && this.ext && canUseHalfFloat;
     const rgba = support ? getSupportedFormat(this.gl, this.gl.RGBA16F, this.gl.RGBA, type) : null;
     const rg = support ? getSupportedFormat(this.gl, this.gl.RG16F, this.gl.RG, type) : null;
     const r = support ? getSupportedFormat(this.gl, this.gl.R16F, this.gl.RED, type) : null;
@@ -156,7 +167,7 @@ export class FluidSimulation {
   createPrograms() {
     this.clearProgram = this.createMesh(clearFragment, {
       uTexture: { value: null },
-      value: { value: 0.8 },
+      value: { value: PRESSURE_DISSIPATION },
     });
     this.splatProgram = this.createMesh(splatFragment, {
       uTarget: { value: null },
@@ -245,12 +256,12 @@ export class FluidSimulation {
     this.splatProgram.program.uniforms.point.value = [x, y];
 
     this.splatProgram.program.uniforms.uTarget.value = this.velocity.read.texture;
-    this.splatProgram.program.uniforms.color.value = [dx * 0.0009, dy * 0.0009, 1];
+    this.splatProgram.program.uniforms.color.value = [dx, dy, 1];
     this.renderMesh(this.splatProgram, this.velocity.write);
     this.velocity.swap();
 
     this.splatProgram.program.uniforms.uTarget.value = this.density.read.texture;
-    this.splatProgram.program.uniforms.color.value = [0.9, 0.0, 0.025];
+    this.splatProgram.program.uniforms.color.value = [dx, dy, 1];
     this.renderMesh(this.splatProgram, this.density.write);
     this.density.swap();
   }
@@ -273,7 +284,7 @@ export class FluidSimulation {
     this.renderMesh(this.divergenceProgram, this.divergence);
 
     this.clearProgram.program.uniforms.uTexture.value = this.pressure.read.texture;
-    this.clearProgram.program.uniforms.value.value = 0.8;
+    this.clearProgram.program.uniforms.value.value = PRESSURE_DISSIPATION;
     this.renderMesh(this.clearProgram, this.pressure.write);
     this.pressure.swap();
 
@@ -301,8 +312,8 @@ export class FluidSimulation {
     this.velocity.swap();
 
     this.advectionProgram.program.uniforms.texelSize.value = [
-      1 / DENSITY_RESOLUTION,
-      1 / DENSITY_RESOLUTION,
+      1 / VELOCITY_RESOLUTION,
+      1 / VELOCITY_RESOLUTION,
     ];
     this.advectionProgram.program.uniforms.uVelocity.value = this.velocity.read.texture;
     this.advectionProgram.program.uniforms.uSource.value = this.density.read.texture;

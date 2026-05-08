@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&family=Inter:wght@300;400;600&family=Plus+Jakarta+Sans:wght@400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&family=Inter:wght@300;400;600&family=Plus+Jakarta+Sans:wght@400;500&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -12,6 +12,7 @@ html {
   background: #000;
   color-scheme: dark;
   scroll-behavior: auto;
+  scrollbar-width: none;
 }
 
 body {
@@ -21,6 +22,12 @@ body {
   background: #000;
   color: #fff;
   text-transform: uppercase;
+  scrollbar-width: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
 }
 
 a,
@@ -31,6 +38,19 @@ button {
 img {
   display: block;
   max-width: 100%;
+}
+
+.red-stroke-bg {
+  filter: blur(18px) saturate(1.12);
+  transform: translateZ(0);
+  -webkit-mask-image:
+    linear-gradient(to bottom, #000 0%, #000 58%, rgba(0, 0, 0, 0.72) 72%, transparent 98%),
+    radial-gradient(ellipse at center, #000 0%, #000 54%, rgba(0, 0, 0, 0.52) 74%, transparent 100%);
+  mask-image:
+    linear-gradient(to bottom, #000 0%, #000 58%, rgba(0, 0, 0, 0.72) 72%, transparent 98%),
+    radial-gradient(ellipse at center, #000 0%, #000 54%, rgba(0, 0, 0, 0.52) 74%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
 }
 
 .preloader-char {
@@ -73,7 +93,7 @@ img {
 
 @media (max-width: 1023px) {
   .webgl-layer {
-    display: none;
+    opacity: 0.7;
   }
 }
 
