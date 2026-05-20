@@ -4,6 +4,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
+        buffon: ["Buffon", "Inter", "Arial", "sans-serif"],
         display: ["Inter", "Arial", "sans-serif"],
         mono: ['"IBM Plex Mono"', '"Courier New"', "monospace"],
         jakarta: ['"Plus Jakarta Sans"', "Arial", "sans-serif"],

@@ -4,7 +4,6 @@ import { BackgroundPlane } from "./BackgroundPlane.js";
 import { FluidSimulation } from "./FluidSimulation.js";
 import { MediaPlane } from "./MediaPlane.js";
 import { compositeFragment } from "./shaders.js";
-import { TextPlane } from "./TextPlane.js";
 
 const KONAMI = ["up", "up", "down", "down", "left", "right", "left", "right", "b", "a"];
 const KEY_MAP = {
@@ -108,16 +107,13 @@ export class CanvasScene {
 
   createPlanes() {
     this.destroyPlanes();
-    const textPlanes = [...document.querySelectorAll("main [data-gl-text]")].map(
-      (element) => new TextPlane({ gl: this.gl, scene: this.scene, element, canvas: this }),
-    );
     const mediaPlanes = [...document.querySelectorAll("main [data-gl-media]")].map(
       (element) => new MediaPlane({ gl: this.gl, scene: this.scene, element, canvas: this }),
     );
     const backgroundPlanes = [...document.querySelectorAll("main [data-gl-background]")].map(
       (element) => new BackgroundPlane({ gl: this.gl, scene: this.scene, element, canvas: this }),
     );
-    this.planes = [...backgroundPlanes, ...mediaPlanes, ...textPlanes];
+    this.planes = [...backgroundPlanes, ...mediaPlanes];
   }
 
   destroyPlanes() {

@@ -1,5 +1,13 @@
 @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&family=Inter:wght@300;400;600&family=Plus+Jakarta+Sans:wght@400;500&display=swap");
 
+@font-face {
+  font-family: "Buffon";
+  src: url("../assets/Fonts/buffon.otf") format("opentype");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -61,7 +69,7 @@ img {
 .webgl-layer {
   position: fixed;
   inset: 0;
-  z-index: 30;
+  z-index: 0;
   width: 100vw;
   height: 100vh;
   opacity: 0;

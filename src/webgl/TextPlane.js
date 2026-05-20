@@ -27,6 +27,7 @@ export class TextPlane {
     const lineHeight = parseFloat(style.lineHeight) || size * 1.2;
     const fontFamily = style.fontFamily;
     const fontWeight = style.fontWeight || 400;
+    const fontStyle = style.fontStyle === "italic" ? "italic" : "normal";
     const letterSpacing = style.letterSpacing !== "normal" ? parseFloat(style.letterSpacing) || 0 : 0;
     const align = style.textAlign;
     const shouldWrap = !this.fixedLines && style.whiteSpace === "normal";
@@ -37,7 +38,7 @@ export class TextPlane {
 
     ctx.clearRect(0, 0, paddedWidth, paddedHeight);
     ctx.fillStyle = this.color;
-    ctx.font = `${fontWeight} ${size}px ${fontFamily}`;
+    ctx.font = `${fontStyle} ${fontWeight} ${size}px ${fontFamily}`;
     ctx.textBaseline = "top";
     ctx.textAlign = align === "right" ? "right" : align === "center" ? "center" : "left";
 
