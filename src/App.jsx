@@ -10,6 +10,7 @@ import project3 from "../assets/ai-portfolio/figma/anna-redesign/project-3.png";
 import project4 from "../assets/ai-portfolio/figma/anna-redesign/project-4.png";
 import quoteIcon from "../assets/ai-portfolio/figma/anna-redesign/quote-icon.svg";
 import heroBackground from "../assets/ai-portfolio/figma/anna-redesign/hero-background.png";
+import footerFormImage from "../assets/ai-portfolio/figma/anna-redesign/footer-form-image.png";
 
 const briefHref = "mailto:ann.loban@gmail.com?subject=Website%20or%20visual%20system%20brief";
 const footerLinks = [
@@ -172,6 +173,49 @@ function Button({ className = "" }) {
   );
 }
 
+function FooterField({
+  label,
+  name,
+  placeholder,
+  value,
+  onBlur,
+  onChange,
+  error,
+  type = "text",
+  as = "input",
+  className = "",
+  required = true,
+}) {
+  const FieldTag = as;
+
+  return (
+    <label className={`flex min-w-0 flex-col gap-1 ${className}`}>
+      <span className="font-jakarta text-[14px] font-semibold normal-case leading-5 text-white/40">
+        {label}
+      </span>
+      <FieldTag
+        aria-invalid={error ? "true" : "false"}
+        className={`footer-field-control min-w-0 w-full rounded-[1px] border border-[#94A3B8] bg-transparent px-[11px] font-jakarta text-base font-normal normal-case leading-6 text-white/60 outline-none placeholder:text-white/60 ${
+          as === "textarea" ? "h-[100px] resize-none py-[15px]" : "h-14"
+        }`}
+        name={name}
+        onBlur={onBlur}
+        onChange={onChange}
+        placeholder={placeholder}
+        required={required}
+        type={as === "input" ? type : undefined}
+        value={value}
+      />
+      {error && (
+        <span className="flex items-center gap-1 font-jakarta text-[14px] font-semibold normal-case leading-5 text-white">
+          <span className="h-1 w-1 rounded-full bg-white" />
+          {error}
+        </span>
+      )}
+    </label>
+  );
+}
+
 function Display({ as: Tag = "h2", children, className = "", buffon = false }) {
   const fontClass = buffon ? "font-buffon font-normal" : "font-display font-light";
   const sizeClass = buffon
@@ -192,7 +236,7 @@ function MonoText({ children, className = "", as: Tag = "p", italic = false, bol
   return (
     <Tag
       data-gl-text
-      className={`font-jakarta text-base uppercase leading-[25px] text-white ${italic ? "italic md:text-[22px] md:leading-[28px]" : ""} ${bold ? "font-bold" : "font-normal"} ${className}`}
+      className={`font-jakarta text-base uppercase leading-[25px] text-white ${italic ? "italic md:text-[22px] md:leading-[28px]" : ""} ${bold ? "font-bold" : "font-light"} ${className}`}
     >
       {children}
     </Tag>
@@ -214,6 +258,40 @@ function TopLinks() {
         </a>
       ))}
     </nav>
+  );
+}
+
+function FirstViewportGuide() {
+  const lines = [59, 431, 902, 1271];
+  const labels = [
+    { x: 49, text: "Personal page" },
+    { x: 421, text: "Poland, Poznan" },
+    { x: 1261, text: "Scroll to explore ↓" },
+  ];
+
+  return (
+    <div className="pointer-events-none absolute inset-x-0 top-0 z-20 hidden h-[789px] lg:block" aria-hidden="true">
+      {lines.map((x) => (
+        <span
+          key={x}
+          className="absolute top-0 h-full w-px bg-gradient-to-b from-white/20 via-white/20 to-transparent"
+          style={{ left: `${x}px` }}
+        />
+      ))}
+      {labels.map((label) => (
+        <div
+          key={label.text}
+          className="absolute top-[214px] flex h-[25px] items-center gap-[22px] font-jakarta text-[13px] uppercase leading-[25px] text-white/40"
+          style={{ left: `${label.x}px` }}
+        >
+          <span className="relative block h-[20px] w-[20px] shrink-0">
+            <span className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-white" />
+            <span className="absolute left-0 top-1/2 h-px w-full -translate-y-1/2 bg-white" />
+          </span>
+          <span>{label.text}</span>
+        </div>
+      ))}
+    </div>
   );
 }
 
@@ -269,9 +347,10 @@ function ProductIntro() {
           Product
         </Display>
         <div className="flex w-full flex-col gap-5 lg:flex-row lg:items-start lg:gap-[194px]">
-          <div className="order-2 flex flex-row gap-4 pt-0 font-jakarta text-base uppercase leading-[25px] text-white lg:order-1 lg:flex-col lg:gap-0 lg:pt-4">
+          <div className="order-2 flex flex-row gap-4 pt-0 font-jakarta text-base font-light uppercase leading-[25px] text-white lg:order-1 lg:flex-col lg:gap-0 lg:pt-4">
             <span data-gl-text className="inline-block whitespace-nowrap">/ Web</span>
             <span data-gl-text className="inline-block whitespace-nowrap">/ Graphic</span>
+            <span data-gl-text className="inline-block whitespace-nowrap">/ identity</span>
           </div>
           <Display className="order-1 lg:order-2 lg:tracking-[-6.72px]">Designer</Display>
         </div>
@@ -351,8 +430,8 @@ function Purpose() {
           <MonoText className="w-[251px] max-w-full">Delivering tailored solutions for my clients</MonoText>
           <div className="flex w-[251px] max-w-full flex-col gap-[42px]">
             <div data-gl-background className="flex w-full flex-col overflow-hidden border-b border-white">
-              {services.map((service) => (
-                <div data-gl-background className="flex h-[42px] items-center border-t border-white" key={service}>
+              {services.map((service, index) => (
+                <div data-gl-background className={`flex h-[42px] items-center ${index === 0 ? "" : "border-t border-white"}`} key={service}>
                   <MonoText className="whitespace-nowrap">{service}</MonoText>
                 </div>
               ))}
@@ -384,9 +463,9 @@ function WorksHeading() {
 function ProjectCard({ work }) {
   return (
     <article className="flex w-[321px] max-w-full flex-col gap-3 md:w-[411px] lg:w-[458px]">
-      <MonoText bold className="text-white/40">
+      <p data-gl-text className="font-jakarta text-[13px] font-normal uppercase leading-[25px] text-white/40">
         {work.kind}
-      </MonoText>
+      </p>
       <div data-gl-media className="relative h-[380px] w-full overflow-hidden bg-white md:h-[542px]">
         <img src={work.image} alt="" className="h-full w-full object-cover" />
       </div>
@@ -407,7 +486,7 @@ function ProjectCard({ work }) {
 
 function Works() {
   return (
-    <section className="flex w-full flex-col gap-[154px] pb-24 lg:pb-[180px]">
+    <section className="flex w-full flex-col gap-[154px] pb-24 lg:pb-0">
       <div className="flex w-full flex-col gap-16 lg:gap-[154px]">
         <div className="flex w-full flex-col items-start gap-12 lg:flex-row lg:justify-between">
           <div className="flex flex-col gap-12 lg:flex-row lg:gap-[113px]">
@@ -429,21 +508,128 @@ function Works() {
 }
 
 function Footer() {
+  const [formValues, setFormValues] = useState({
+    email: "",
+    name: "",
+    project: "",
+    message: "",
+  });
+  const [formTouched, setFormTouched] = useState({});
+  const [formSubmitted, setFormSubmitted] = useState(false);
+
+  const validateFooterForm = (values) => {
+    const errors = {};
+
+    if (!values.email.trim()) {
+      errors.email = "Please fill out this field.";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email.trim())) {
+      errors.email = "Please enter a valid email address.";
+    }
+
+    if (!values.name.trim()) {
+      errors.name = "Please fill out this field.";
+    }
+
+    return errors;
+  };
+
+  const formErrors = validateFooterForm(formValues);
+  const getFieldError = (fieldName) => (formSubmitted || formTouched[fieldName] ? formErrors[fieldName] : "");
+  const updateField = (event) => {
+    const { name, value } = event.target;
+    setFormValues((current) => ({ ...current, [name]: value }));
+  };
+  const markFieldTouched = (event) => {
+    const { name } = event.target;
+    setFormTouched((current) => ({ ...current, [name]: true }));
+  };
+  const submitFooterForm = (event) => {
+    setFormSubmitted(true);
+
+    if (Object.keys(formErrors).length > 0) {
+      event.preventDefault();
+    }
+  };
+
   return (
-    <section className="flex w-full flex-col items-center gap-[67px]">
-      <div className="flex w-full justify-center">
-        <h2 className="mx-auto w-fit max-w-full whitespace-pre-wrap text-center font-display text-[56px] font-light uppercase leading-[58px] tracking-normal text-white md:text-[96px] md:leading-[94px] lg:text-[168px] lg:leading-[154px] lg:tracking-[-11.76px]">
-          Made to leave
-          <br />a mark
-        </h2>
-      </div>
-      <div className="flex flex-col items-center gap-[42px]">
-        <MonoText className="w-[288px] text-center">
+    <section className="relative flex h-[806px] w-full flex-col">
+      <div className="flex w-full items-start justify-between">
+        <p data-gl-text className="font-jakarta text-[13px] font-normal uppercase leading-[25px] text-white/40">
+          Start a project
+        </p>
+        <MonoText className="w-[180px] text-right">
           Open for a few
           <br />
           selected projects
         </MonoText>
-        <Button />
+      </div>
+
+      <h2 className="mt-[42px] font-display text-[62px] font-light uppercase leading-[68px] tracking-[-2px] text-white md:text-[96px] md:leading-[106px] lg:text-[96px] lg:leading-[106px] lg:tracking-[-6.72px]">
+        Let`s create something
+        <br />
+        <span className="text-white/35">amazing</span> together
+      </h2>
+
+      <div className="mt-[42px] grid w-full grid-cols-1 gap-12 lg:h-[460px] lg:grid-cols-[496px_minmax(0,1fr)] lg:gap-[40px] lg:p-6">
+        <div data-gl-media className="relative h-[412px] w-[496px] max-w-full overflow-hidden">
+          <img
+            src={footerFormImage}
+            alt=""
+            aria-hidden="true"
+            className="h-full w-full object-cover"
+          />
+        </div>
+
+        <form action={briefHref} className="flex min-w-0 flex-col gap-[32px]" aria-label="Project request form" noValidate onSubmit={submitFooterForm}>
+          <div className="flex w-full flex-col gap-[24px]">
+            <FooterField
+              error={getFieldError("email")}
+              label="Email*"
+              name="email"
+              onBlur={markFieldTouched}
+              onChange={updateField}
+              placeholder="example@gmail.com"
+              type="email"
+              value={formValues.email}
+            />
+            <div className="grid min-w-0 w-full grid-cols-1 gap-3 md:grid-cols-2">
+              <FooterField
+                error={getFieldError("name")}
+                label="Full name*"
+                name="name"
+                onBlur={markFieldTouched}
+                onChange={updateField}
+                placeholder="Jane Smith"
+                value={formValues.name}
+              />
+              <FooterField
+                label="Company name"
+                name="project"
+                onBlur={markFieldTouched}
+                onChange={updateField}
+                placeholder="Orange"
+                required={false}
+                value={formValues.project}
+              />
+            </div>
+            <FooterField
+              as="textarea"
+              label="Message"
+              name="message"
+              onBlur={markFieldTouched}
+              onChange={updateField}
+              placeholder="Type your message here..."
+              required={false}
+              value={formValues.message}
+            />
+          </div>
+          <button
+            className="flex h-12 w-full items-center justify-center border-b border-black bg-white px-10 pb-[6px] pt-0 font-jakarta text-base font-bold uppercase leading-[25px] text-black"
+            type="submit"
+          >
+            Start a project
+          </button>
+        </form>
       </div>
     </section>
   );
@@ -494,7 +680,6 @@ export default function App() {
         <WorksHeading />
         <Works />
         <Footer />
-        <LoopStart />
       </>
     ),
     [],
@@ -503,8 +688,8 @@ export default function App() {
   return (
     <>
       <Preloader reduced={reduced} />
-      <WebGLCanvasLayer reduced={reduced} />
       <main className="relative z-10 flex min-h-screen flex-col gap-[114px] overflow-hidden px-5 py-5 md:px-9 md:py-9 lg:gap-[154px] lg:px-[49px] lg:py-[35px]" aria-label="Anna Loban portfolio">
+        <FirstViewportGuide />
         <div className="relative z-10 flex flex-col gap-[114px] lg:gap-[154px]">
           {page}
         </div>
