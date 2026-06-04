@@ -392,11 +392,11 @@ function About() {
         <div className="relative mt-1 hidden shrink-0 lg:block lg:mt-0 lg:h-[31px] lg:w-[84px]">
           <img src={quoteIcon} alt="" className="h-full w-full lg:absolute lg:left-[49px] lg:top-[6px] lg:h-[25px] lg:w-[28px]" />
         </div>
-        <div className="flex min-w-0 flex-1 flex-col gap-[88px] lg:w-[790px] lg:flex-none lg:gap-[91px]">
+        <div className="flex min-w-0 flex-1 flex-col gap-[88px] lg:gap-[91px]">
           <div className="font-jakarta text-[18px] font-normal uppercase leading-[29px] text-white md:text-[32px] md:leading-[49px] lg:text-[26px] lg:leading-[41px]">
             <div
               data-gl-media
-              className="float-right mb-4 ml-4 h-[104px] w-[104px] overflow-hidden bg-white min-[390px]:h-[132px] min-[390px]:w-[132px] md:h-[220px] md:w-[220px] lg:mb-0 lg:ml-6 lg:mt-[-174px] lg:h-[239px] lg:w-[239px]"
+              className="float-right mb-4 ml-4 h-[104px] w-[104px] overflow-hidden bg-white min-[390px]:h-[132px] min-[390px]:w-[132px] md:h-[220px] md:w-[220px] lg:mb-0 lg:ml-6 lg:mr-[28px] lg:mt-[-174px] lg:h-[239px] lg:w-[239px]"
             >
               <img src={aboutPortrait} alt="Anna Loban portrait" className="h-full w-full object-cover" />
             </div>
