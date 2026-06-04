@@ -9,7 +9,7 @@ import project2 from "../assets/ai-portfolio/figma/anna-redesign/project-2.png";
 import project3 from "../assets/ai-portfolio/figma/anna-redesign/project-3.png";
 import project4 from "../assets/ai-portfolio/figma/anna-redesign/project-4.png";
 import quoteIcon from "../assets/ai-portfolio/figma/anna-redesign/quote-icon.svg";
-import heroBackground from "../assets/ai-portfolio/figma/anna-redesign/hero-background.png";
+import heroBackground from "../assets/ai-portfolio/figma/anna-redesign/hero-background-var2.png";
 import footerFormImage from "../assets/ai-portfolio/figma/anna-redesign/footer-form-image.png";
 
 const briefHref = "mailto:ann.loban@gmail.com?subject=Website%20or%20visual%20system%20brief";
@@ -262,11 +262,13 @@ function TopLinks() {
 }
 
 function FirstViewportGuide() {
-  const lines = [59, 431, 902, 1271];
+  const firstLine = 59;
+  const lastLine = 1271;
+  const lineStep = (lastLine - firstLine) / 3;
+  const lines = [0, 1, 2, 3].map((index) => firstLine + lineStep * index);
   const labels = [
-    { x: 49, text: "Personal page" },
-    { x: 421, text: "Poland, Poznan" },
-    { x: 1261, text: "Scroll to explore ↓" },
+    { x: lines[0] - 10, text: "Personal page" },
+    { x: lines[1] - 10, text: "Poland, Poznan" },
   ];
 
   return (
@@ -281,7 +283,7 @@ function FirstViewportGuide() {
       {labels.map((label) => (
         <div
           key={label.text}
-          className="absolute top-[214px] flex h-[25px] items-center gap-[22px] font-jakarta text-[13px] uppercase leading-[25px] text-white/40"
+          className="absolute top-[204px] flex h-[25px] items-center gap-[22px] font-jakarta text-[13px] uppercase leading-[25px] text-white/40"
           style={{ left: `${label.x}px` }}
         >
           <span className="relative block h-[20px] w-[20px] shrink-0">
@@ -295,13 +297,43 @@ function FirstViewportGuide() {
   );
 }
 
+function PlusMarker() {
+  return (
+    <span className="relative block h-[20px] w-[20px] shrink-0" aria-hidden="true">
+      <span className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-white" />
+      <span className="absolute left-0 top-1/2 h-px w-full -translate-y-1/2 bg-white" />
+    </span>
+  );
+}
+
+function HeroTopBrief() {
+  const firstLine = 59;
+  const lastLine = 1271;
+  const thirdLine = firstLine + ((lastLine - firstLine) / 3) * 2;
+
+  return (
+    <div
+      className="absolute top-[206px] z-30 hidden w-[458px] items-start gap-[11px] lg:flex"
+      style={{ left: `${thirdLine - 10}px` }}
+    >
+      <PlusMarker />
+      <div className="mt-[-4px] flex min-w-0 flex-1 flex-col items-start gap-[26px] pr-8">
+        <MonoText italic className="w-full max-w-[360px] !text-[20px] font-normal !leading-[31px] md:!text-[20px] md:!leading-[31px]">
+          Digital design beyond trends — built to be clear, logical, and easy to launch.
+        </MonoText>
+        <Button />
+      </div>
+    </div>
+  );
+}
+
 function BackgroundGlow() {
   return (
     <img
       src={heroBackground}
       alt=""
       aria-hidden="true"
-      className="pointer-events-none absolute left-[17%] top-[-64px] z-0 h-[420px] w-[780px] max-w-none object-cover opacity-100 blur-[6px] md:left-[18%] md:top-[-86px] md:h-[560px] md:w-[980px] lg:left-[259px] lg:top-[-102px] lg:h-[605px] lg:w-[1114px]"
+      className="pointer-events-none absolute left-[17%] top-[-64px] z-0 h-[420px] w-[780px] max-w-none object-cover opacity-100 blur-[6px] md:left-[18%] md:top-[-86px] md:h-[560px] md:w-[980px] lg:left-[277px] lg:top-[-102px] lg:h-[605px] lg:w-[1114px]"
     />
   );
 }
@@ -315,14 +347,8 @@ function Hero() {
           Hello!
         </Display>
       </div>
-      <div className="relative z-10 flex w-full flex-col items-start gap-10 lg:flex-row lg:items-end lg:justify-between lg:gap-8">
-        <div className="flex w-full max-w-[641px] flex-col items-start gap-[26px] lg:pr-8">
-          <MonoText italic className="w-full max-w-[641px] md:leading-[33px]">
-            Digital design beyond trends — built to be clear, logical, and easy to launch.
-          </MonoText>
-          <Button />
-        </div>
-        <Display as="h2" className="self-end text-right lg:tracking-[-6.72px]">
+      <div className="relative z-10 flex w-full items-end lg:pl-[287px]">
+        <Display as="h2" className="text-right lg:tracking-[-6.72px]">
           Iam ANNa
         </Display>
       </div>
@@ -653,6 +679,7 @@ function WebGLCanvasLayer({ reduced }) {
 
     const scene = new CanvasScene({
       canvas: canvasRef.current,
+      enableSmoothScroll: false,
       onReady: () => document.body.classList.add("gl-ready"),
       onFallback: () => document.body.classList.remove("gl-ready"),
     });
@@ -688,8 +715,10 @@ export default function App() {
   return (
     <>
       <Preloader reduced={reduced} />
+      <WebGLCanvasLayer reduced={reduced} />
       <main className="relative z-10 flex min-h-screen flex-col gap-[114px] overflow-hidden px-5 py-5 md:px-9 md:py-9 lg:gap-[154px] lg:px-[49px] lg:py-[35px]" aria-label="Anna Loban portfolio">
         <FirstViewportGuide />
+        <HeroTopBrief />
         <div className="relative z-10 flex flex-col gap-[114px] lg:gap-[154px]">
           {page}
         </div>

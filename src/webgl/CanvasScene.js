@@ -24,10 +24,11 @@ function isDesktop() {
 }
 
 export class CanvasScene {
-  constructor({ canvas, onReady, onFallback }) {
+  constructor({ canvas, onReady, onFallback, enableSmoothScroll = false }) {
     this.canvas = canvas;
     this.onReady = onReady;
     this.onFallback = onFallback;
+    this.enableSmoothScroll = enableSmoothScroll;
     this.pointer = { x: -9999, y: -9999, px: -9999, py: -9999 };
     this.viewport = { x: window.innerWidth, y: window.innerHeight };
     this.sizes = { x: 1, y: 1 };
@@ -75,12 +76,14 @@ export class CanvasScene {
       },
     });
 
-    this.lenis = new Lenis({
-      infinite: true,
-      lerp: 0.1,
-      smoothWheel: true,
-      wheelMultiplier: 1,
-    });
+    if (this.enableSmoothScroll) {
+      this.lenis = new Lenis({
+        infinite: true,
+        lerp: 0.1,
+        smoothWheel: true,
+        wheelMultiplier: 1,
+      });
+    }
 
     this.createPlanes();
     this.bindEvents();
