@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import gsap from "gsap";
 import SplitType from "split-type";
-import { CanvasScene } from "./webgl/CanvasScene.js";
 
 import aboutPortrait from "../assets/ai-portfolio/figma/anna-redesign/about.png";
 import project1 from "../assets/ai-portfolio/figma/anna-redesign/project-1.png";
@@ -166,7 +165,7 @@ function Button({ className = "" }) {
       href={briefHref}
       className={`inline-flex h-12 w-fit items-center justify-center border-b border-black bg-white px-10 text-black ${className}`}
     >
-      <span className="block whitespace-nowrap font-jakarta text-base font-bold uppercase leading-none">
+      <span className="block whitespace-nowrap font-jakarta text-base font-bold uppercase leading-[25px]">
         start a project
       </span>
     </a>
@@ -189,7 +188,7 @@ function FooterField({
   const FieldTag = as;
 
   return (
-    <label className={`flex min-w-0 flex-col gap-1 ${className}`}>
+    <label className={`relative flex min-w-0 flex-col gap-1 ${className}`}>
       <span className="font-jakarta text-[14px] font-semibold normal-case leading-5 text-white/40">
         {label}
       </span>
@@ -201,15 +200,21 @@ function FooterField({
         name={name}
         onBlur={onBlur}
         onChange={onChange}
+        onInput={onChange}
         placeholder={placeholder}
         required={required}
         type={as === "input" ? type : undefined}
         value={value}
       />
-      {error && (
-        <span className="flex items-center gap-1 font-jakarta text-[14px] font-semibold normal-case leading-5 text-white">
+      {required && (
+        <span
+          aria-live="polite"
+          className={`absolute left-0 top-full z-10 mt-1 flex items-center gap-1 font-jakarta text-[14px] font-semibold normal-case leading-5 text-white ${
+            error ? "visible" : "invisible pointer-events-none"
+          }`}
+        >
           <span className="h-1 w-1 rounded-full bg-white" />
-          {error}
+          {error || "Validation message"}
         </span>
       )}
     </label>
@@ -219,8 +224,8 @@ function FooterField({
 function Display({ as: Tag = "h2", children, className = "", buffon = false }) {
   const fontClass = buffon ? "font-buffon font-normal" : "font-display font-light";
   const sizeClass = buffon
-    ? "text-[72px] leading-[62px] md:text-[118px] md:leading-[110px] lg:text-[175px] lg:leading-[160px]"
-    : "text-[56px] leading-[58px] md:text-[96px] md:leading-[94px] lg:text-[168px] lg:leading-[154px] lg:tracking-[-7px]";
+    ? "text-[84px] leading-[85px] md:text-[118px] md:leading-[110px] lg:text-[175px] lg:leading-[160px]"
+    : "text-[78px] leading-[84px] tracking-[-3.12px] md:text-[96px] md:leading-[94px] lg:text-[168px] lg:leading-[154px] lg:tracking-[-7px]";
 
   return (
     <Tag
@@ -245,7 +250,7 @@ function MonoText({ children, className = "", as: Tag = "p", italic = false, bol
 
 function TopLinks() {
   return (
-    <nav className="relative z-40 flex w-full flex-wrap items-start justify-between gap-x-6 gap-y-2 font-jakarta text-[12px] uppercase leading-[18px] text-white min-[390px]:text-sm sm:text-base sm:leading-[25px] lg:justify-end lg:gap-[40px]">
+    <nav className="relative z-40 flex w-full flex-wrap items-start justify-between gap-x-6 gap-y-2 font-jakarta text-base uppercase leading-[25px] text-white lg:justify-end lg:gap-[40px]">
       {footerLinks.map((link) => (
         <a
           href={link.href}
@@ -297,9 +302,9 @@ function FirstViewportGuide() {
   );
 }
 
-function PlusMarker() {
+function PlusMarker({ className = "" }) {
   return (
-    <span className="relative block h-[20px] w-[20px] shrink-0" aria-hidden="true">
+    <span className={`relative block h-[20px] w-[20px] shrink-0 ${className}`} aria-hidden="true">
       <span className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-white" />
       <span className="absolute left-0 top-1/2 h-px w-full -translate-y-1/2 bg-white" />
     </span>
@@ -318,12 +323,78 @@ function HeroTopBrief() {
     >
       <PlusMarker />
       <div className="mt-[-4px] flex min-w-0 flex-1 flex-col items-start gap-[26px] pr-8">
-        <MonoText italic className="w-full max-w-[360px] !text-[20px] font-normal !leading-[31px] md:!text-[20px] md:!leading-[31px]">
+        <MonoText italic className="w-full !text-[20px] font-normal !leading-[33px] md:!text-[20px] md:!leading-[33px]">
           Digital design beyond trends — built to be clear, logical, and easy to launch.
         </MonoText>
         <Button />
       </div>
     </div>
+  );
+}
+
+function ResponsiveViewportGuide() {
+  return (
+    <div className="pointer-events-none absolute inset-x-0 top-[2px] z-20 h-[787px] min-[500px]:top-0 min-[500px]:h-[932px] lg:hidden" aria-hidden="true">
+      <span className="absolute left-[30px] top-0 h-full w-px bg-gradient-to-b from-white/25 via-white/25 to-transparent min-[500px]:left-[38px]" />
+      <span className="absolute right-[30px] top-0 h-full w-px bg-gradient-to-b from-white/25 via-white/25 to-transparent min-[500px]:right-[38px]" />
+    </div>
+  );
+}
+
+function ResponsiveIntro() {
+  return (
+    <section className="relative mt-[59px] mb-[72px] h-[920px] w-full lg:hidden">
+      <div className="absolute left-0 top-[-1px] z-20 flex w-[390px] max-w-none items-start gap-[11px]">
+        <PlusMarker className="mt-2" />
+        <div className="flex w-[359px] shrink-0 flex-col items-start gap-[26px] pr-8">
+          <MonoText italic className="w-full !text-[20px] font-normal !leading-[33px] md:!text-[20px] md:!leading-[33px]">
+            Digital design beyond trends — built to be clear, logical, and easy to launch.
+          </MonoText>
+          <Button className="h-12" />
+        </div>
+      </div>
+
+      <div className="absolute left-0 top-0 h-[425px] w-full overflow-visible">
+        <img
+          src={heroBackground}
+          alt=""
+          aria-hidden="true"
+          className="pointer-events-none absolute left-[-37px] top-[-41px] h-[439px] w-[808px] max-w-none object-cover opacity-100 blur-[6px]"
+        />
+        <div className="absolute left-0 top-[272px] z-10 w-full">
+          <h1 className="mb-[-16px] font-buffon text-[84px] font-normal uppercase leading-[85px] text-white">
+            Hello!
+          </h1>
+          <h2 className="font-display text-[78px] font-light uppercase leading-[84px] tracking-[-3.12px] text-white">
+            Iam ANNa
+          </h2>
+        </div>
+      </div>
+
+      <div className="absolute left-0 top-[505px] flex w-full flex-col items-start">
+        <div className="flex w-full flex-col gap-6 pb-1">
+          <MonoText className="ml-[104px] w-full max-w-[296px] font-normal">
+            Shaping clear visual interfaces for thoughtful digital products and the people who use them.
+          </MonoText>
+          <h2 className="font-display text-[78px] font-light uppercase leading-[84px] tracking-[-3.12px] text-white">
+            UX/UI
+          </h2>
+        </div>
+        <div className="flex w-full flex-col items-start text-white">
+          <h2 className="mb-[-16px] font-buffon text-[84px] font-normal uppercase leading-[85px] text-white">
+            Product
+          </h2>
+          <h2 className="font-display text-[78px] font-light uppercase leading-[84px] tracking-[-3.12px] text-white">
+            Designer
+          </h2>
+          <div className="flex flex-col pt-4 font-jakarta text-base font-normal uppercase leading-[25px] text-white">
+            <span data-gl-text className="inline-block whitespace-nowrap">/ Web</span>
+            <span data-gl-text className="inline-block whitespace-nowrap">/ Graphic</span>
+            <span data-gl-text className="inline-block whitespace-nowrap">/ identity</span>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -340,7 +411,7 @@ function BackgroundGlow() {
 
 function Hero() {
   return (
-    <header className="relative -mx-5 flex w-[calc(100%+40px)] flex-col gap-2 overflow-hidden px-5 pb-16 pt-36 md:-mx-9 md:w-[calc(100%+72px)] md:px-9 md:pt-44 lg:mx-0 lg:w-full lg:overflow-visible lg:px-0 lg:pb-0 lg:pt-[192px]">
+    <header className="relative hidden w-full flex-col gap-2 overflow-visible pb-0 pt-[192px] lg:flex">
       <BackgroundGlow />
       <div className="relative z-10 flex w-full items-center">
         <Display as="h1" buffon>
@@ -358,7 +429,7 @@ function Hero() {
 
 function ProductIntro() {
   return (
-    <section className="flex w-full flex-col items-start">
+    <section className="hidden w-full flex-col items-start lg:flex">
       <div className="flex w-full flex-col gap-10 pb-1 lg:flex-row lg:items-end lg:justify-between lg:gap-8">
         <Display className="lg:tracking-[-6.72px]">UX/UI</Display>
         <div className="flex w-[286px] max-w-full flex-col items-start gap-[42px] lg:w-[359px] lg:pr-8">
@@ -387,28 +458,37 @@ function ProductIntro() {
 
 function About() {
   return (
-    <section className="relative ml-auto flex w-full max-w-[1202px] flex-col gap-12 lg:h-[737px]">
-      <div className="flex w-full gap-10 lg:absolute lg:left-[181px] lg:top-[205px] lg:w-[1021px] lg:gap-4">
-        <div className="relative mt-1 hidden shrink-0 lg:block lg:mt-0 lg:h-[31px] lg:w-[84px]">
-          <img src={quoteIcon} alt="" className="h-full w-full lg:absolute lg:left-[49px] lg:top-[6px] lg:h-[25px] lg:w-[28px]" />
+    <section className="relative ml-auto flex w-full max-w-[1202px] flex-col gap-12 max-[499px]:mt-[41px] max-[499px]:h-[733px] lg:mt-0 lg:h-[737px]">
+      <div
+        data-gl-media
+        className="absolute right-[3px] top-0 hidden h-[200px] w-[200px] overflow-hidden bg-white max-[499px]:block"
+      >
+        <img src={aboutPortrait} alt="Anna Loban portrait" className="h-full w-full object-cover" />
+      </div>
+      <div className="flex w-full gap-[21px] max-[499px]:absolute max-[499px]:left-0 max-[499px]:top-[144px] max-[499px]:w-[397px] max-[499px]:gap-4 lg:absolute lg:left-[181px] lg:top-[205px] lg:w-[1021px] lg:gap-4">
+        <div className="relative mt-[6px] block h-[31px] w-[28px] shrink-0 max-[499px]:mt-0 lg:mt-0 lg:w-[84px]">
+          <img src={quoteIcon} alt="" className="h-[25px] w-[28px] max-[499px]:mt-[6px] lg:absolute lg:left-[49px] lg:top-[6px] lg:mt-0" />
         </div>
-        <div className="flex min-w-0 flex-1 flex-col gap-[88px] lg:gap-[91px]">
-          <div className="font-jakarta text-[18px] font-normal uppercase leading-[29px] text-white md:text-[32px] md:leading-[49px] lg:text-[26px] lg:leading-[41px]">
+        <div className="flex min-w-0 flex-1 flex-col gap-[88px] max-[499px]:w-[353px] max-[499px]:flex-none max-[499px]:gap-[72px] lg:gap-[91px]">
+          <div className="font-jakarta text-[18px] font-normal uppercase leading-[29px] text-white max-[499px]:text-[20px] max-[499px]:leading-[32px] md:text-[32px] md:leading-[49px] lg:text-[26px] lg:leading-[41px]">
             <div
               data-gl-media
-              className="float-right mb-4 ml-4 h-[104px] w-[104px] overflow-hidden bg-white min-[390px]:h-[132px] min-[390px]:w-[132px] md:h-[220px] md:w-[220px] lg:mb-0 lg:ml-6 lg:mr-[28px] lg:mt-[-174px] lg:h-[239px] lg:w-[239px]"
+              className="float-right mb-2 ml-5 mt-[-120px] h-[180px] w-[180px] overflow-hidden bg-white max-[499px]:hidden min-[500px]:ml-7 min-[500px]:mt-[-198px] min-[500px]:h-[264px] min-[500px]:w-[264px] md:mt-[-210px] md:h-[300px] md:w-[300px] lg:mb-0 lg:ml-6 lg:mr-[28px] lg:mt-[-174px] lg:h-[239px] lg:w-[239px]"
             >
               <img src={aboutPortrait} alt="Anna Loban portrait" className="h-full w-full object-cover" />
             </div>
             <span>About . </span>
             <span className="text-white/60">
-              I am a senior UX/UI designer. Strong product structure and refined visuals go hand in hand. Working
+              I am a <br className="hidden max-[499px]:block" />
+              senior UX/UI <br className="hidden max-[499px]:block" />
+              designer. Strong product <br className="hidden max-[499px]:block" />
+              structure and refined visuals go hand in hand. Working
               independently, I create design systems that move business forward and save development time.{" "}
             </span>
             <span>The result: no chaotic iterations — just constructive decisions that make sense.</span>
           </div>
-          <div className="flex w-[286px] max-w-full flex-col gap-[42px] lg:w-[359px] lg:pr-6">
-            <MonoText>Combining real human behavior, clear product logic, and strong visual appeal.</MonoText>
+          <div className="flex w-[286px] max-w-full flex-col gap-[42px] max-[499px]:h-[165px] max-[499px]:w-[353px] max-[499px]:pr-6 lg:w-[359px] lg:pr-6">
+            <MonoText className="font-normal">Combining real human behavior, clear product logic, and strong visual appeal.</MonoText>
             <Button />
           </div>
         </div>
@@ -419,46 +499,53 @@ function About() {
 
 function Purpose() {
   return (
-    <section className="flex w-full flex-col items-end">
+    <section className="flex w-full flex-col items-end pt-[96px] max-[499px]:mt-[72px] max-[499px]:h-[1224px] max-[499px]:pt-0 lg:mt-0 lg:h-auto lg:pt-0">
       <div className="flex w-full flex-col items-start">
         <div className="flex w-full flex-col gap-8 lg:flex-row lg:items-start lg:gap-28">
-          <Display className="lg:tracking-[-6.72px]">digital</Display>
-          <MonoText className="w-[264px] pt-2">
+          <Display className="hidden lg:block lg:tracking-[-6.72px]">digital</Display>
+          <MonoText className="order-first mt-2 w-[296px] max-w-full self-start font-normal !text-base !leading-[25px] max-[499px]:ml-[104px] lg:order-none lg:mt-0 lg:w-[264px] lg:pt-2 lg:!text-base lg:!leading-[25px]">
             A web/UI designer crafting intuitive and engaging digital experiences
           </MonoText>
         </div>
-        <div className="flex w-full items-center lg:px-[270px]">
-          <Display className="lg:tracking-[-6.72px]">design with</Display>
+        <div className="mt-6 flex w-full items-center lg:mt-0 lg:px-[270px]">
+          <h2 className="font-display text-[78px] font-light uppercase leading-[84px] tracking-[-3.12px] text-white lg:hidden">
+            design
+            <br />
+            with
+          </h2>
+          <Display className="hidden lg:block lg:tracking-[-6.72px]">design with</Display>
         </div>
         <div className="flex w-full items-end lg:pl-[178px]">
-          <Display buffon className="lg:tracking-[3.5px]">
+          <Display buffon className="!text-[84px] !leading-[85px] lg:!text-[175px] lg:!leading-[160px] lg:tracking-[3.5px]">
             purpose
           </Display>
         </div>
       </div>
 
-      <div className="mt-16 flex w-full flex-col gap-20 lg:mt-0 lg:flex-row lg:items-start lg:justify-between lg:pl-[376px]">
-        <div className="flex w-full flex-col gap-10 lg:w-[362px] lg:pt-[280px]">
+      <div className="mt-16 flex w-full flex-col gap-[72px] lg:mt-0 lg:flex-row lg:items-start lg:justify-between lg:gap-20 lg:pl-[376px]">
+        <div className="flex w-full flex-col gap-[24px] lg:w-[362px] lg:gap-10 lg:pt-[280px]">
           {advantageCards.map((card) => (
-            <div className="flex gap-8" key={card.number}>
-              <MonoText bold className="shrink-0 whitespace-nowrap">
+            <div className="flex w-full items-start gap-[32px]" key={card.number}>
+              <MonoText bold className="h-[25px] shrink-0 whitespace-nowrap">
                 {card.number}
               </MonoText>
-              <div className="flex flex-1 flex-col gap-5">
+              <div className="flex min-w-0 flex-1 flex-col gap-5">
                 <MonoText bold>{card.title}</MonoText>
-                <MonoText>{card.text}</MonoText>
+                <MonoText className="font-normal">{card.text}</MonoText>
               </div>
             </div>
           ))}
         </div>
 
         <div className="flex w-full flex-col gap-4 lg:h-[361px] lg:w-[359px] lg:pr-[108px]">
-          <MonoText className="w-[251px] max-w-full">Delivering tailored solutions for my clients</MonoText>
-          <div className="flex w-[251px] max-w-full flex-col gap-[42px]">
+          <MonoText className="w-full max-w-full font-normal lg:w-[251px]">
+            Delivering tailored solutions for my <br className="hidden max-[499px]:block" /> clients
+          </MonoText>
+          <div className="flex w-full flex-col gap-[42px] lg:w-[251px] lg:max-w-full">
             <div data-gl-background className="flex w-full flex-col overflow-hidden border-b border-white">
               {services.map((service, index) => (
-                <div data-gl-background className={`flex h-[42px] items-center ${index === 0 ? "" : "border-t border-white"}`} key={service}>
-                  <MonoText className="whitespace-nowrap">{service}</MonoText>
+                <div data-gl-background className={`flex h-[41px] items-center lg:h-[42px] ${index === 0 ? "" : "border-t border-white"}`} key={service}>
+                  <MonoText className="whitespace-nowrap font-normal">{service}</MonoText>
                 </div>
               ))}
             </div>
@@ -472,13 +559,13 @@ function Purpose() {
 
 function WorksHeading() {
   return (
-    <section className="flex w-full flex-col gap-2">
-      <div className="flex w-full items-center justify-between gap-8">
-        <Display className="lg:tracking-[-6.72px]">some</Display>
-        <Display className="lg:tracking-[-6.72px]">of my</Display>
+    <section className="mt-[72px] flex w-full flex-col gap-2 lg:mt-0">
+      <div className="flex h-[180px] w-full flex-col items-start gap-0 lg:h-auto lg:flex-row lg:items-center lg:justify-between lg:gap-8">
+        <Display className="!text-[78px] !leading-[96px] !tracking-[-3.12px] lg:!text-[168px] lg:!leading-[154px] lg:tracking-[-6.72px]">some</Display>
+        <Display className="!text-[78px] !leading-[84px] !tracking-[-3.12px] lg:!text-[168px] lg:!leading-[154px] lg:tracking-[-6.72px]">of my</Display>
       </div>
-      <div className="flex w-full items-center pl-10 lg:pl-[188px]">
-        <Display buffon className="w-[1338px] lg:tracking-[1.75px]">
+      <div className="flex w-full items-center pl-0 lg:pl-[188px]">
+        <Display buffon className="w-[1338px] !text-[84px] !leading-[85px] lg:!text-[175px] lg:!leading-[160px] lg:tracking-[1.75px]">
           works
         </Display>
       </div>
@@ -488,11 +575,11 @@ function WorksHeading() {
 
 function ProjectCard({ work }) {
   return (
-    <article className="flex w-[321px] max-w-full flex-col gap-3 md:w-[411px] lg:w-[458px]">
+    <article className="flex w-full max-w-full flex-col gap-3 lg:w-[458px]">
       <p data-gl-text className="font-jakarta text-[13px] font-normal uppercase leading-[25px] text-white/40">
         {work.kind}
       </p>
-      <div data-gl-media className="relative h-[380px] w-full overflow-hidden bg-white md:h-[542px]">
+      <div data-gl-media className="relative h-[542px] w-full overflow-hidden bg-white lg:h-[628px]">
         <img src={work.image} alt="" className="h-full w-full object-cover" />
       </div>
       <div
@@ -512,18 +599,18 @@ function ProjectCard({ work }) {
 
 function Works() {
   return (
-    <section className="flex w-full flex-col gap-[154px] pb-24 lg:pb-0">
-      <div className="flex w-full flex-col gap-16 lg:gap-[154px]">
-        <div className="flex w-full flex-col items-start gap-12 lg:flex-row lg:justify-between">
-          <div className="flex flex-col gap-12 lg:flex-row lg:gap-[113px]">
+    <section className="mt-[72px] flex w-full flex-col gap-[92px] px-4 pb-0 lg:mt-0 lg:gap-[154px] lg:px-0">
+      <div className="flex w-full flex-col gap-[72px] lg:gap-[154px]">
+        <div className="flex w-full flex-col items-start gap-[72px] lg:flex-row lg:justify-between">
+          <div className="flex w-full flex-col gap-[72px] lg:w-auto lg:flex-row lg:gap-[113px]">
             <ProjectCard work={works[0]} />
             <ProjectCard work={works[1]} />
           </div>
-          <MonoText className="w-[257px]">Users always compare options.</MonoText>
+          <MonoText className="hidden w-[257px] lg:block">Users always compare options.</MonoText>
         </div>
-        <div className="flex w-full flex-col items-start gap-12 lg:h-[628px] lg:flex-row lg:justify-between">
-          <MonoText className="w-[271px]">The context changes with the audience.</MonoText>
-          <div className="flex flex-col gap-12 lg:flex-row lg:gap-28">
+        <div className="hidden w-full flex-col items-start gap-[72px] lg:flex lg:h-[628px] lg:flex-row lg:justify-between">
+          <MonoText className="hidden w-[271px] lg:block">The context changes with the audience.</MonoText>
+          <div className="flex w-full flex-col gap-[72px] lg:w-auto lg:flex-row lg:gap-28">
             <ProjectCard work={works[2]} />
             <ProjectCard work={works[3]} />
           </div>
@@ -566,7 +653,8 @@ function Footer() {
     setFormValues((current) => ({ ...current, [name]: value }));
   };
   const markFieldTouched = (event) => {
-    const { name } = event.target;
+    const { name, value } = event.target;
+    setFormValues((current) => ({ ...current, [name]: value }));
     setFormTouched((current) => ({ ...current, [name]: true }));
   };
   const submitFooterForm = (event) => {
@@ -578,26 +666,26 @@ function Footer() {
   };
 
   return (
-    <section className="relative flex h-[806px] w-full flex-col">
+    <section className="relative mt-[72px] flex w-full flex-col lg:mt-0 lg:h-[806px]">
       <div className="flex w-full items-start justify-between">
         <p data-gl-text className="font-jakarta text-[13px] font-normal uppercase leading-[25px] text-white/40">
           Start a project
         </p>
-        <MonoText className="w-[180px] text-right">
+        <p className="w-[288px] font-jakarta text-base font-normal uppercase leading-[25px] text-right text-white lg:w-[180px] lg:font-mono">
           Open for a few
           <br />
           selected projects
-        </MonoText>
+        </p>
       </div>
 
-      <h2 className="mt-[42px] font-display text-[62px] font-light uppercase leading-[68px] tracking-[-2px] text-white md:text-[96px] md:leading-[106px] lg:text-[96px] lg:leading-[106px] lg:tracking-[-6.72px]">
+      <h2 className="mt-[32px] font-display text-[32px] font-light uppercase leading-[48px] tracking-[-2.24px] text-white md:text-[54px] md:leading-[62px] md:tracking-[-0.5px] lg:mt-[42px] lg:text-[96px] lg:leading-[106px] lg:tracking-[-6.72px]">
         Let`s create something
         <br />
         <span className="text-white/35">amazing</span> together
       </h2>
 
-      <div className="mt-[42px] grid w-full grid-cols-1 gap-12 lg:h-[460px] lg:grid-cols-[496px_minmax(0,1fr)] lg:gap-[40px] lg:p-6">
-        <div data-gl-media className="relative h-[412px] w-[496px] max-w-full overflow-hidden">
+      <div className="mt-[32px] grid w-full grid-cols-1 gap-[40px] pt-6 md:grid-cols-[300px_minmax(0,1fr)] md:gap-10 lg:mt-[42px] lg:h-[460px] lg:grid-cols-[496px_minmax(0,1fr)] lg:gap-[40px] lg:p-6">
+        <div data-gl-media className="relative order-2 h-[412px] w-[496px] max-w-full overflow-hidden md:order-1 md:h-[300px] md:w-[300px] lg:h-[412px] lg:w-[496px]">
           <img
             src={footerFormImage}
             alt=""
@@ -606,7 +694,7 @@ function Footer() {
           />
         </div>
 
-        <form action={briefHref} className="flex min-w-0 flex-col gap-[32px]" aria-label="Project request form" noValidate onSubmit={submitFooterForm}>
+        <form action={briefHref} className="order-1 flex min-w-0 flex-col gap-[24px] md:order-2 lg:gap-[32px]" aria-label="Project request form" noValidate onSubmit={submitFooterForm}>
           <div className="flex w-full flex-col gap-[24px]">
             <FooterField
               error={getFieldError("email")}
@@ -618,7 +706,7 @@ function Footer() {
               type="email"
               value={formValues.email}
             />
-            <div className="grid min-w-0 w-full grid-cols-1 gap-3 md:grid-cols-2">
+            <div className="grid min-w-0 w-full grid-cols-2 gap-3 md:grid-cols-1 md:gap-6 lg:grid-cols-2 lg:gap-3">
               <FooterField
                 error={getFieldError("name")}
                 label="Full name*"
@@ -650,10 +738,10 @@ function Footer() {
             />
           </div>
           <button
-            className="flex h-12 w-full items-center justify-center border-b border-black bg-white px-10 pb-[6px] pt-0 font-jakarta text-base font-bold uppercase leading-[25px] text-black"
+            className="flex h-12 w-full items-center justify-center border-b border-black bg-white px-10 font-jakarta text-base font-bold uppercase leading-[25px] text-black"
             type="submit"
           >
-            Start a project
+            <span className="block whitespace-nowrap leading-[25px]">Start a project</span>
           </button>
         </form>
       </div>
@@ -671,35 +759,13 @@ function LoopStart() {
   );
 }
 
-function WebGLCanvasLayer({ reduced }) {
-  const canvasRef = useRef(null);
-
-  useEffect(() => {
-    if (reduced || !canvasRef.current) return undefined;
-
-    const scene = new CanvasScene({
-      canvas: canvasRef.current,
-      enableSmoothScroll: false,
-      onReady: () => document.body.classList.add("gl-ready"),
-      onFallback: () => document.body.classList.remove("gl-ready"),
-    });
-
-    return () => {
-      scene.destroy();
-      document.body.classList.remove("gl-ready");
-    };
-  }, [reduced]);
-
-  if (reduced) return null;
-  return <canvas ref={canvasRef} className="webgl-layer" aria-hidden="true" />;
-}
-
 export default function App() {
   const reduced = useReducedMotion();
   const page = useMemo(
     () => (
       <>
         <TopLinks />
+        <ResponsiveIntro />
         <Hero />
         <ProductIntro />
         <About />
@@ -715,11 +781,11 @@ export default function App() {
   return (
     <>
       <Preloader reduced={reduced} />
-      <WebGLCanvasLayer reduced={reduced} />
-      <main className="relative z-10 flex min-h-screen flex-col gap-[114px] overflow-hidden px-5 py-5 md:px-9 md:py-9 lg:gap-[154px] lg:px-[49px] lg:py-[35px]" aria-label="Anna Loban portfolio">
+      <main className="relative z-10 flex min-h-screen flex-col gap-0 overflow-hidden px-5 pb-5 pt-[49px] min-[500px]:px-[38px] lg:gap-[154px] lg:px-[49px] lg:py-[35px]" aria-label="Anna Loban portfolio">
         <FirstViewportGuide />
+        <ResponsiveViewportGuide />
         <HeroTopBrief />
-        <div className="relative z-10 flex flex-col gap-[114px] lg:gap-[154px]">
+        <div className="relative z-10 flex flex-col gap-0 lg:gap-[154px]">
           {page}
         </div>
       </main>

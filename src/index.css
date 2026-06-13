@@ -70,45 +70,6 @@ img {
   border-color: #fff;
 }
 
-.webgl-layer {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  width: 100vw;
-  height: 100vh;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 500ms ease-in-out;
-}
-
-.gl-ready .webgl-layer {
-  opacity: 1;
-}
-
-.gl-ready main [data-gl-text-active] {
-  color: transparent !important;
-  text-decoration-color: transparent !important;
-}
-
-.gl-ready main [data-gl-media-active] {
-  background: transparent !important;
-}
-
-.gl-ready main [data-gl-media-active] img,
-.gl-ready main [data-gl-media-active] picture {
-  opacity: 0 !important;
-}
-
-.gl-ready main [data-gl-background-active] {
-  border-color: transparent !important;
-}
-
-@media (max-width: 1023px) {
-  .webgl-layer {
-    opacity: 0.7;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
