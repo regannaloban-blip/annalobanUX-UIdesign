@@ -343,7 +343,7 @@ function ResponsiveViewportGuide() {
 
 function ResponsiveIntro() {
   return (
-    <section className="relative mt-[59px] mb-[72px] h-[920px] w-full lg:hidden">
+    <section className="relative mt-[59px] mb-[72px] h-[920px] w-full min-[500px]:ml-[11px] min-[500px]:mt-[67px] min-[500px]:w-[775px] lg:hidden">
       <div className="absolute left-0 top-[-1px] z-20 flex w-[390px] max-w-none items-start gap-[11px]">
         <PlusMarker className="mt-2" />
         <div className="flex w-[359px] shrink-0 flex-col items-start gap-[26px] pr-8">
@@ -359,35 +359,35 @@ function ResponsiveIntro() {
           src={heroBackground}
           alt=""
           aria-hidden="true"
-          className="pointer-events-none absolute left-[-37px] top-[-41px] h-[439px] w-[808px] max-w-none object-cover opacity-100 blur-[6px]"
+          className="pointer-events-none absolute left-[-37px] top-[-41px] h-[439px] w-[808px] max-w-none object-cover opacity-100 blur-[6px] min-[500px]:left-[-48px] min-[500px]:top-[-102px] min-[500px]:h-[605px] min-[500px]:w-[1114px]"
         />
-        <div className="absolute left-0 top-[272px] z-10 w-full">
-          <h1 className="mb-[-16px] font-buffon text-[84px] font-normal uppercase leading-[85px] text-white">
+        <div className="absolute left-0 top-[272px] z-10 w-full min-[500px]:top-[277px]">
+          <h1 className="mb-[-16px] w-fit whitespace-nowrap font-buffon text-[84px] font-normal uppercase leading-[85px] text-white min-[500px]:leading-[122px] min-[500px]:text-[132px]">
             Hello!
           </h1>
-          <h2 className="font-display text-[78px] font-light uppercase leading-[84px] tracking-[-3.12px] text-white">
+          <h2 className="w-fit whitespace-nowrap font-display text-[78px] font-light uppercase leading-[84px] tracking-[-3.12px] text-white min-[500px]:ml-[196px] min-[500px]:text-[126px] min-[500px]:leading-[136px] min-[500px]:tracking-[-5.04px]">
             Iam ANNa
           </h2>
         </div>
       </div>
 
-      <div className="absolute left-0 top-[505px] flex w-full flex-col items-start">
-        <div className="flex w-full flex-col gap-6 pb-1">
-          <MonoText className="ml-[104px] w-full max-w-[296px] font-normal">
+      <div className="absolute left-0 top-[505px] flex w-full flex-col items-start min-[500px]:top-[599px]">
+        <div className="flex w-full flex-col gap-6 pb-1 min-[500px]:relative min-[500px]:h-[140px] min-[500px]:gap-0 min-[500px]:pb-0">
+          <MonoText className="ml-[104px] w-full max-w-[296px] font-normal min-[500px]:absolute min-[500px]:left-[416px] min-[500px]:top-[30.5px] min-[500px]:ml-0 min-[500px]:w-[327px] min-[500px]:max-w-none">
             Shaping clear visual interfaces for thoughtful digital products and the people who use them.
           </MonoText>
-          <h2 className="font-display text-[78px] font-light uppercase leading-[84px] tracking-[-3.12px] text-white">
+          <h2 className="font-display text-[78px] font-light uppercase leading-[84px] tracking-[-3.12px] text-white min-[500px]:absolute min-[500px]:left-0 min-[500px]:top-0 min-[500px]:w-fit min-[500px]:whitespace-nowrap min-[500px]:text-[126px] min-[500px]:leading-[136px] min-[500px]:tracking-[-5.04px]">
             UX/UI
           </h2>
         </div>
-        <div className="flex w-full flex-col items-start text-white">
-          <h2 className="mb-[-16px] font-buffon text-[84px] font-normal uppercase leading-[85px] text-white">
+        <div className="flex w-full flex-col items-start text-white min-[500px]:relative min-[500px]:h-[242px]">
+          <h2 className="mb-[-16px] font-buffon text-[84px] font-normal uppercase leading-[85px] text-white min-[500px]:mb-0 min-[500px]:h-[122px] min-[500px]:w-full min-[500px]:text-[132px] min-[500px]:leading-[122px]">
             Product
           </h2>
-          <h2 className="font-display text-[78px] font-light uppercase leading-[84px] tracking-[-3.12px] text-white">
+          <h2 className="font-display text-[78px] font-light uppercase leading-[84px] tracking-[-3.12px] text-white min-[500px]:absolute min-[500px]:left-[189px] min-[500px]:top-[106px] min-[500px]:w-fit min-[500px]:whitespace-nowrap min-[500px]:text-[126px] min-[500px]:leading-[136px] min-[500px]:tracking-[-5.04px]">
             Designer
           </h2>
-          <div className="flex flex-col pt-4 font-jakarta text-base font-normal uppercase leading-[25px] text-white">
+          <div className="flex flex-col pt-4 font-jakarta text-base font-normal uppercase leading-[25px] text-white min-[500px]:absolute min-[500px]:left-0 min-[500px]:top-[106px] min-[500px]:pt-4">
             <span data-gl-text className="inline-block whitespace-nowrap">/ Web</span>
             <span data-gl-text className="inline-block whitespace-nowrap">/ Graphic</span>
             <span data-gl-text className="inline-block whitespace-nowrap">/ identity</span>
@@ -458,36 +458,36 @@ function ProductIntro() {
 
 function About() {
   return (
-    <section className="relative ml-auto flex w-full max-w-[1202px] flex-col gap-12 max-[499px]:mt-[41px] max-[499px]:h-[733px] lg:mt-0 lg:h-[737px]">
+    <section className="relative ml-auto flex w-full max-w-[1202px] flex-col gap-12 max-[499px]:mt-[41px] max-[499px]:h-[733px] min-[500px]:max-lg:ml-[11px] min-[500px]:max-lg:mt-[69px] min-[500px]:max-lg:h-[758px] min-[500px]:max-lg:w-[775px] lg:mt-0 lg:h-[737px]">
       <div
         data-gl-media
-        className="absolute right-[3px] top-0 hidden h-[200px] w-[200px] overflow-hidden bg-white max-[499px]:block"
+        className="absolute right-[3px] top-0 hidden h-[200px] w-[200px] overflow-hidden bg-white max-[499px]:block min-[500px]:max-lg:right-0 min-[500px]:max-lg:block min-[500px]:max-lg:h-[239px] min-[500px]:max-lg:w-[239px]"
       >
         <img src={aboutPortrait} alt="Anna Loban portrait" className="h-full w-full object-cover" />
       </div>
-      <div className="flex w-full gap-[21px] max-[499px]:absolute max-[499px]:left-0 max-[499px]:top-[144px] max-[499px]:w-[397px] max-[499px]:gap-4 lg:absolute lg:left-[181px] lg:top-[205px] lg:w-[1021px] lg:gap-4">
-        <div className="relative mt-[6px] block h-[31px] w-[28px] shrink-0 max-[499px]:mt-0 lg:mt-0 lg:w-[84px]">
-          <img src={quoteIcon} alt="" className="h-[25px] w-[28px] max-[499px]:mt-[6px] lg:absolute lg:left-[49px] lg:top-[6px] lg:mt-0" />
+      <div className="flex w-full gap-[21px] max-[499px]:absolute max-[499px]:left-0 max-[499px]:top-[144px] max-[499px]:w-[397px] max-[499px]:gap-4 min-[500px]:max-lg:absolute min-[500px]:max-lg:left-0 min-[500px]:max-lg:top-[174px] min-[500px]:max-lg:w-[775px] min-[500px]:max-lg:gap-4 lg:absolute lg:left-[181px] lg:top-[205px] lg:w-[1021px] lg:gap-4">
+        <div className="relative mt-[6px] block h-[31px] w-[28px] shrink-0 max-[499px]:mt-0 min-[500px]:max-lg:mt-0 min-[500px]:max-lg:w-[84px] lg:mt-0 lg:w-[84px]">
+          <img src={quoteIcon} alt="" className="h-[25px] w-[28px] max-[499px]:mt-[6px] min-[500px]:max-lg:absolute min-[500px]:max-lg:left-[49px] min-[500px]:max-lg:top-[6px] min-[500px]:max-lg:mt-0 lg:absolute lg:left-[49px] lg:top-[6px] lg:mt-0" />
         </div>
-        <div className="flex min-w-0 flex-1 flex-col gap-[88px] max-[499px]:w-[353px] max-[499px]:flex-none max-[499px]:gap-[72px] lg:gap-[91px]">
-          <div className="font-jakarta text-[18px] font-normal uppercase leading-[29px] text-white max-[499px]:text-[20px] max-[499px]:leading-[32px] md:text-[32px] md:leading-[49px] lg:text-[26px] lg:leading-[41px]">
+        <div className="flex min-w-0 flex-1 flex-col gap-[88px] max-[499px]:w-[353px] max-[499px]:flex-none max-[499px]:gap-[72px] min-[500px]:max-lg:gap-[91px] lg:gap-[91px]">
+          <div className="font-jakarta text-[18px] font-normal uppercase leading-[29px] text-white max-[499px]:text-[20px] max-[499px]:leading-[32px] min-[500px]:max-lg:!text-[26px] min-[500px]:max-lg:!leading-[41px] md:text-[32px] md:leading-[49px] lg:text-[26px] lg:leading-[41px]">
             <div
               data-gl-media
-              className="float-right mb-2 ml-5 mt-[-120px] h-[180px] w-[180px] overflow-hidden bg-white max-[499px]:hidden min-[500px]:ml-7 min-[500px]:mt-[-198px] min-[500px]:h-[264px] min-[500px]:w-[264px] md:mt-[-210px] md:h-[300px] md:w-[300px] lg:mb-0 lg:ml-6 lg:mr-[28px] lg:mt-[-174px] lg:h-[239px] lg:w-[239px]"
+              className="float-right mb-2 ml-5 mt-[-120px] h-[180px] w-[180px] overflow-hidden bg-white max-[499px]:hidden min-[500px]:ml-7 min-[500px]:mt-[-198px] min-[500px]:h-[264px] min-[500px]:w-[264px] min-[500px]:max-lg:hidden md:mt-[-210px] md:h-[300px] md:w-[300px] lg:mb-0 lg:ml-6 lg:mr-[28px] lg:mt-[-174px] lg:h-[239px] lg:w-[239px]"
             >
               <img src={aboutPortrait} alt="Anna Loban portrait" className="h-full w-full object-cover" />
             </div>
             <span>About . </span>
             <span className="text-white/60">
               I am a <br className="hidden max-[499px]:block" />
-              senior UX/UI <br className="hidden max-[499px]:block" />
-              designer. Strong product <br className="hidden max-[499px]:block" />
+              senior UX/UI <br className="hidden max-[499px]:block min-[500px]:max-lg:block" />
+              designer. Strong product <br className="hidden max-[499px]:block min-[500px]:max-lg:block" />
               structure and refined visuals go hand in hand. Working
               independently, I create design systems that move business forward and save development time.{" "}
             </span>
             <span>The result: no chaotic iterations — just constructive decisions that make sense.</span>
           </div>
-          <div className="flex w-[286px] max-w-full flex-col gap-[42px] max-[499px]:h-[165px] max-[499px]:w-[353px] max-[499px]:pr-6 lg:w-[359px] lg:pr-6">
+          <div className="flex w-[286px] max-w-full flex-col gap-[42px] max-[499px]:h-[165px] max-[499px]:w-[353px] max-[499px]:pr-6 min-[500px]:max-lg:h-[165px] min-[500px]:max-lg:w-[353px] min-[500px]:max-lg:pr-6 lg:w-[359px] lg:pr-6">
             <MonoText className="font-normal">Combining real human behavior, clear product logic, and strong visual appeal.</MonoText>
             <Button />
           </div>
@@ -499,7 +499,63 @@ function About() {
 
 function Purpose() {
   return (
-    <section className="flex w-full flex-col items-end pt-[96px] max-[499px]:mt-[72px] max-[499px]:h-[1224px] max-[499px]:pt-0 lg:mt-0 lg:h-auto lg:pt-0">
+    <>
+    <section className="relative ml-[11px] mt-[80px] hidden h-[1239px] w-[775px] min-[500px]:max-lg:block lg:hidden">
+      <div className="absolute left-0 top-0 h-[405px] w-full">
+        <h2
+          data-gl-text
+          className="absolute left-0 top-0 w-[437px] whitespace-nowrap text-right font-display text-[126px] font-light uppercase leading-[136px] tracking-[-5.04px] text-white"
+        >
+          digital
+        </h2>
+        <MonoText className="absolute left-[511px] top-2 h-[75px] w-[264px] font-normal !text-base !leading-[25px]">
+          A web/UI designer crafting intuitive and engaging digital experiences
+        </MonoText>
+        <h2
+          data-gl-text
+          className="absolute left-0 top-[136px] w-full whitespace-nowrap text-center font-display text-[126px] font-light uppercase leading-[136px] tracking-[-5.04px] text-white"
+        >
+          design with
+        </h2>
+        <h2 className="absolute left-0 top-[283px] w-[544px] whitespace-nowrap font-buffon text-[132px] font-normal uppercase leading-[122px] text-white">
+          purpose
+        </h2>
+      </div>
+
+      <div className="absolute left-0 top-[405px] h-[834px] w-full">
+        <div className="absolute left-0 top-16 flex w-[362px] flex-col gap-10 pt-[280px]">
+          {advantageCards.map((card) => (
+            <div className="flex w-full items-start gap-[32px]" key={card.number}>
+              <MonoText bold className="h-[25px] shrink-0 whitespace-nowrap">
+                {card.number}
+              </MonoText>
+              <div className="flex min-w-0 flex-1 flex-col gap-5">
+                <MonoText bold>{card.title}</MonoText>
+                <MonoText className="font-normal">{card.text}</MonoText>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="absolute left-[524px] top-16 flex h-[361px] w-[251px] flex-col items-start gap-4">
+          <MonoText className="w-[251px] font-normal">
+            Delivering tailored solutions for my clients
+          </MonoText>
+          <div className="flex w-[251px] flex-col gap-[42px]">
+            <div data-gl-background className="flex w-full flex-col overflow-hidden border-b border-white">
+              {services.map((service, index) => (
+                <div data-gl-background className={`flex h-[41px] items-center ${index === 0 ? "border-t border-white" : "border-t border-white"}`} key={service}>
+                  <MonoText className="whitespace-nowrap font-normal">{service}</MonoText>
+                </div>
+              ))}
+            </div>
+            <Button />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section className="flex w-full flex-col items-end pt-[96px] max-[499px]:mt-[72px] max-[499px]:h-[1224px] max-[499px]:pt-0 min-[500px]:max-lg:hidden lg:mt-0 lg:h-auto lg:pt-0">
       <div className="flex w-full flex-col items-start">
         <div className="flex w-full flex-col gap-8 lg:flex-row lg:items-start lg:gap-28">
           <Display className="hidden lg:block lg:tracking-[-6.72px]">digital</Display>
@@ -554,6 +610,7 @@ function Purpose() {
         </div>
       </div>
     </section>
+    </>
   );
 }
 
@@ -573,9 +630,9 @@ function WorksHeading() {
   );
 }
 
-function ProjectCard({ work }) {
+function ProjectCard({ work, className = "" }) {
   return (
-    <article className="flex w-full max-w-full flex-col gap-3 lg:w-[458px]">
+    <article className={`flex w-full max-w-full flex-col gap-3 lg:w-[458px] ${className}`}>
       <p data-gl-text className="font-jakarta text-[13px] font-normal uppercase leading-[25px] text-white/40">
         {work.kind}
       </p>
@@ -584,7 +641,7 @@ function ProjectCard({ work }) {
       </div>
       <div
         data-gl-background
-        className="flex w-full items-start justify-between gap-4 border-b border-white pb-3 font-mono text-base uppercase leading-[25px] text-white"
+        className="flex w-full items-start justify-between gap-4 border-b border-white pb-3 font-mono text-base uppercase leading-[25px] text-white min-[500px]:max-lg:pb-[11px]"
       >
         <span data-gl-text className="min-w-0 whitespace-nowrap">
           {work.name}
@@ -599,12 +656,12 @@ function ProjectCard({ work }) {
 
 function Works() {
   return (
-    <section className="mt-[72px] flex w-full flex-col gap-[92px] px-4 pb-0 lg:mt-0 lg:gap-[154px] lg:px-0">
-      <div className="flex w-full flex-col gap-[72px] lg:gap-[154px]">
+    <section className="mt-[72px] flex w-full flex-col gap-[92px] px-4 pb-0 min-[500px]:max-lg:ml-[11px] min-[500px]:max-lg:mt-[72px] min-[500px]:max-lg:w-[775px] min-[500px]:max-lg:px-0 lg:mt-0 lg:gap-[154px] lg:px-0">
+      <div className="flex w-full flex-col gap-[72px] min-[500px]:max-lg:gap-[72px] lg:gap-[154px]">
         <div className="flex w-full flex-col items-start gap-[72px] lg:flex-row lg:justify-between">
-          <div className="flex w-full flex-col gap-[72px] lg:w-auto lg:flex-row lg:gap-[113px]">
-            <ProjectCard work={works[0]} />
-            <ProjectCard work={works[1]} />
+          <div className="flex w-full flex-col gap-[72px] min-[500px]:max-lg:gap-[72px] lg:w-auto lg:flex-row lg:gap-[113px]">
+            <ProjectCard work={works[0]} className="min-[500px]:max-lg:ml-[352px] min-[500px]:max-lg:w-[423px]" />
+            <ProjectCard work={works[1]} className="min-[500px]:max-lg:w-[423px]" />
           </div>
           <MonoText className="hidden w-[257px] lg:block">Users always compare options.</MonoText>
         </div>
@@ -666,7 +723,7 @@ function Footer() {
   };
 
   return (
-    <section className="relative mt-[72px] flex w-full flex-col lg:mt-0 lg:h-[806px]">
+    <section className="relative mt-[72px] flex w-full flex-col min-[500px]:max-lg:ml-[11px] min-[500px]:max-lg:mt-[89px] min-[500px]:max-lg:h-[1190px] min-[500px]:max-lg:w-[775px] lg:mt-0 lg:h-[806px]">
       <div className="flex w-full items-start justify-between">
         <p data-gl-text className="font-jakarta text-[13px] font-normal uppercase leading-[25px] text-white/40">
           Start a project
@@ -678,23 +735,23 @@ function Footer() {
         </p>
       </div>
 
-      <h2 className="mt-[32px] font-display text-[32px] font-light uppercase leading-[48px] tracking-[-2.24px] text-white md:text-[54px] md:leading-[62px] md:tracking-[-0.5px] lg:mt-[42px] lg:text-[96px] lg:leading-[106px] lg:tracking-[-6.72px]">
+      <h2 className="mt-[32px] font-display text-[32px] font-light uppercase leading-[48px] tracking-[-2.24px] text-white md:text-[54px] md:leading-[62px] md:tracking-[-0.5px] min-[500px]:max-lg:!mt-[40px] min-[500px]:max-lg:!text-[56px] min-[500px]:max-lg:!leading-[74px] min-[500px]:max-lg:!tracking-[-3.92px] lg:mt-[42px] lg:text-[96px] lg:leading-[106px] lg:tracking-[-6.72px]">
         Let`s create something
         <br />
         <span className="text-white/35">amazing</span> together
       </h2>
 
-      <div className="mt-[32px] grid w-full grid-cols-1 gap-[40px] pt-6 md:grid-cols-[300px_minmax(0,1fr)] md:gap-10 lg:mt-[42px] lg:h-[460px] lg:grid-cols-[496px_minmax(0,1fr)] lg:gap-[40px] lg:p-6">
-        <div data-gl-media className="relative order-2 h-[412px] w-[496px] max-w-full overflow-hidden md:order-1 md:h-[300px] md:w-[300px] lg:h-[412px] lg:w-[496px]">
+      <div className="mt-[32px] grid w-full grid-cols-1 gap-[40px] pt-6 md:grid-cols-[300px_minmax(0,1fr)] md:gap-10 min-[500px]:max-lg:!mt-[40px] min-[500px]:max-lg:flex min-[500px]:max-lg:h-[912px] min-[500px]:max-lg:flex-col min-[500px]:max-lg:gap-[40px] min-[500px]:max-lg:px-0 min-[500px]:max-lg:py-6 lg:mt-[42px] lg:h-[460px] lg:grid-cols-[496px_minmax(0,1fr)] lg:gap-[40px] lg:p-6">
+        <div data-gl-media className="relative order-2 h-[412px] w-[496px] max-w-full overflow-hidden md:order-1 md:h-[300px] md:w-[300px] min-[500px]:max-lg:!order-2 min-[500px]:max-lg:!h-[412px] min-[500px]:max-lg:!w-full lg:h-[412px] lg:w-[496px]">
           <img
             src={footerFormImage}
             alt=""
             aria-hidden="true"
-            className="h-full w-full object-cover"
+            className="h-full w-full object-cover min-[500px]:max-lg:ml-[-11px] min-[500px]:max-lg:mt-[-10px] min-[500px]:max-lg:h-[432px] min-[500px]:max-lg:w-[749px] min-[500px]:max-lg:max-w-none"
           />
         </div>
 
-        <form action={briefHref} className="order-1 flex min-w-0 flex-col gap-[24px] md:order-2 lg:gap-[32px]" aria-label="Project request form" noValidate onSubmit={submitFooterForm}>
+        <form action={briefHref} className="order-1 flex min-w-0 flex-col gap-[24px] md:order-2 min-[500px]:max-lg:!order-1 min-[500px]:max-lg:!h-[412px] min-[500px]:max-lg:!w-full min-[500px]:max-lg:!gap-[32px] lg:gap-[32px]" aria-label="Project request form" noValidate onSubmit={submitFooterForm}>
           <div className="flex w-full flex-col gap-[24px]">
             <FooterField
               error={getFieldError("email")}
@@ -706,7 +763,7 @@ function Footer() {
               type="email"
               value={formValues.email}
             />
-            <div className="grid min-w-0 w-full grid-cols-2 gap-3 md:grid-cols-1 md:gap-6 lg:grid-cols-2 lg:gap-3">
+            <div className="grid min-w-0 w-full grid-cols-2 gap-3 md:grid-cols-1 md:gap-6 min-[500px]:max-lg:!grid-cols-2 min-[500px]:max-lg:!gap-3 lg:grid-cols-2 lg:gap-3">
               <FooterField
                 error={getFieldError("name")}
                 label="Full name*"
