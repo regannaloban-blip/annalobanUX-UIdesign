@@ -333,7 +333,7 @@ function HeroTopBrief() {
 
   return (
     <div
-      className="pointer-events-auto absolute top-[17px] z-30 hidden w-[390px] items-start gap-[11px] lg:flex"
+      className="pointer-events-auto absolute top-[178px] z-30 hidden w-[390px] items-start gap-[11px] lg:flex"
       style={{ left: `${thirdLine - 10}px` }}
     >
       <PlusMarker />
@@ -358,8 +358,8 @@ function ResponsiveViewportGuide() {
 
 function ResponsiveIntro() {
   return (
-    <section className="relative mt-[59px] mb-[72px] h-[920px] w-full min-[500px]:mt-[67px] min-[500px]:w-[775px] lg:hidden">
-      <div className="absolute left-0 top-[7px] z-20 flex w-[390px] max-w-none items-start gap-[11px] min-[500px]:top-[-1px]">
+    <section className="relative mt-[59px] mb-[72px] h-[920px] w-full min-[500px]:mt-0 min-[500px]:h-[1029px] min-[500px]:w-[775px] lg:hidden">
+      <div className="absolute left-0 top-[7px] z-20 flex w-[390px] max-w-none items-start gap-[11px] min-[500px]:top-[112px]">
         <PlusMarker className="mt-2" />
         <div className="flex w-[359px] shrink-0 flex-col items-start gap-[26px] pr-8">
           <MonoText italic className="w-full !text-[20px] font-normal !leading-[33px] md:!text-[20px] md:!leading-[33px]">
@@ -374,9 +374,9 @@ function ResponsiveIntro() {
           src={heroBackground}
           alt=""
           aria-hidden="true"
-          className="pointer-events-none absolute left-0 top-[104px] h-[407px] w-[750px] max-w-none object-cover opacity-100 blur-[6px] min-[500px]:left-[-48px] min-[500px]:top-[-102px] min-[500px]:h-[605px] min-[500px]:w-[1114px]"
+          className="pointer-events-none absolute left-0 top-[104px] h-[407px] w-[750px] max-w-none object-cover opacity-100 blur-[6px] min-[500px]:left-0 min-[500px]:top-[-22px] min-[500px]:h-[608px] min-[500px]:w-[1120px]"
         />
-        <div className="absolute left-0 top-[280px] z-10 w-full min-[500px]:top-[277px]">
+        <div className="absolute left-0 top-[280px] z-10 w-full min-[500px]:top-[365px]">
           <h1 className="mb-[-16px] w-fit whitespace-nowrap font-buffon text-[84px] font-normal uppercase leading-[85px] text-white min-[500px]:leading-[122px] min-[500px]:text-[132px]">
             Hello!
           </h1>
@@ -386,7 +386,7 @@ function ResponsiveIntro() {
         </div>
       </div>
 
-      <div className="absolute left-0 top-[526px] flex w-full flex-col items-start min-[500px]:top-[599px]">
+      <div className="absolute left-0 top-[526px] flex w-full flex-col items-start min-[500px]:top-[647px]">
         <div className="flex w-full flex-col gap-6 pb-1 pt-2 min-[500px]:relative min-[500px]:h-[140px] min-[500px]:gap-0 min-[500px]:pb-0 min-[500px]:pt-0">
           <MonoText className="ml-[104px] w-full max-w-[296px] font-normal min-[500px]:absolute min-[500px]:left-[416px] min-[500px]:top-[30.5px] min-[500px]:ml-0 min-[500px]:w-[327px] min-[500px]:max-w-none">
             Shaping clear visual interfaces for thoughtful digital products and the people who use them.
@@ -419,14 +419,14 @@ function BackgroundGlow() {
       src={heroBackground}
       alt=""
       aria-hidden="true"
-      className="pointer-events-none absolute left-[17%] top-[-64px] z-0 h-[420px] w-[780px] max-w-none object-cover opacity-100 blur-[6px] md:left-[18%] md:top-[-86px] md:h-[560px] md:w-[980px] lg:left-[302px] lg:top-[-106px] lg:h-[608px] lg:w-[1120px]"
+      className="pointer-events-none absolute left-[17%] top-[-64px] z-0 h-[420px] w-[780px] max-w-none object-cover opacity-100 blur-[6px] md:left-[18%] md:top-[-86px] md:h-[560px] md:w-[980px] lg:left-[302px] lg:top-[50px] lg:h-[608px] lg:w-[1120px]"
     />
   );
 }
 
 function Hero() {
   return (
-    <header className="relative hidden w-full flex-col gap-2 overflow-visible pb-0 pt-[192px] lg:flex">
+    <header className="relative hidden h-[748px] w-full flex-col gap-2 overflow-visible pb-0 pt-[354px] lg:flex">
       <BackgroundGlow />
       <div className="relative z-10 flex w-full items-center">
         <Display as="h1" buffon>
@@ -472,14 +472,14 @@ function ProductIntro() {
 
 function About() {
   return (
-    <section className="relative ml-auto flex w-full max-w-[1202px] flex-col gap-12 max-[499px]:mt-[6px] max-[499px]:h-[833px] min-[500px]:max-lg:mt-[69px] min-[500px]:max-lg:h-[758px] min-[500px]:max-lg:w-[775px] lg:mt-0 lg:h-[815px]">
+    <section className="relative ml-auto flex w-full max-w-[1202px] flex-col gap-12 max-[499px]:mt-[6px] max-[499px]:h-[833px] min-[500px]:max-lg:mt-[9px] min-[500px]:max-lg:h-[833px] min-[500px]:max-lg:w-[775px] lg:mt-0 lg:h-[815px]">
       <div
         data-gl-media
-        className="absolute right-0 top-[40px] hidden h-[200px] w-[200px] overflow-hidden bg-white max-[499px]:block min-[500px]:max-lg:right-0 min-[500px]:max-lg:top-0 min-[500px]:max-lg:block min-[500px]:max-lg:h-[239px] min-[500px]:max-lg:w-[239px]"
+        className="absolute right-0 top-[40px] hidden h-[200px] w-[200px] overflow-hidden bg-white max-[499px]:block min-[500px]:max-lg:right-0 min-[500px]:max-lg:top-[40px] min-[500px]:max-lg:block min-[500px]:max-lg:h-[239px] min-[500px]:max-lg:w-[239px]"
       >
         <img src={aboutPortrait} alt="Anna Loban portrait" className="h-full w-full object-cover" />
       </div>
-      <div className="flex w-full gap-[21px] max-[499px]:absolute max-[499px]:left-0 max-[499px]:top-[184px] max-[499px]:w-[402px] max-[499px]:gap-4 min-[500px]:max-lg:absolute min-[500px]:max-lg:left-0 min-[500px]:max-lg:top-[174px] min-[500px]:max-lg:w-[775px] min-[500px]:max-lg:gap-4 lg:absolute lg:left-[181px] lg:top-[240px] lg:w-[1021px] lg:gap-4">
+      <div className="flex w-full gap-[21px] max-[499px]:absolute max-[499px]:left-0 max-[499px]:top-[184px] max-[499px]:w-[402px] max-[499px]:gap-4 min-[500px]:max-lg:absolute min-[500px]:max-lg:left-0 min-[500px]:max-lg:top-[208px] min-[500px]:max-lg:w-[775px] min-[500px]:max-lg:gap-4 lg:absolute lg:left-[181px] lg:top-[240px] lg:w-[1021px] lg:gap-4">
         <div className="relative mt-[6px] block h-[31px] w-[28px] shrink-0 max-[499px]:mt-0 min-[500px]:max-lg:mt-0 min-[500px]:max-lg:w-[84px] lg:mt-0 lg:w-[84px]">
           <img src={quoteIcon} alt="" className="h-[25px] w-[28px] max-[499px]:mt-[6px] min-[500px]:max-lg:absolute min-[500px]:max-lg:left-[49px] min-[500px]:max-lg:top-[6px] min-[500px]:max-lg:mt-0 lg:absolute lg:left-[49px] lg:top-[6px] lg:mt-0" />
         </div>
@@ -514,8 +514,8 @@ function About() {
 function Purpose() {
   return (
     <>
-    <section className="relative mt-[80px] hidden h-[1239px] w-[775px] min-[500px]:max-lg:block lg:hidden">
-      <div className="absolute left-0 top-0 h-[405px] w-full">
+    <section className="relative hidden h-[1319px] w-[775px] min-[500px]:max-lg:block lg:hidden">
+      <div className="absolute left-0 top-[40px] h-[405px] w-full">
         <h2
           data-gl-text
           className="absolute left-0 top-0 w-[437px] whitespace-nowrap text-right font-display text-[126px] font-light uppercase leading-[136px] tracking-[-5.04px] text-white"
@@ -536,7 +536,7 @@ function Purpose() {
         </h2>
       </div>
 
-      <div className="absolute left-0 top-[405px] h-[834px] w-full">
+      <div className="absolute left-0 top-[445px] h-[834px] w-full">
         <div className="absolute left-0 top-16 flex w-[362px] flex-col gap-10 pt-[280px]">
           {advantageCards.map((card) => (
             <div className="flex w-full items-start gap-[32px]" key={card.number}>
@@ -630,13 +630,13 @@ function Purpose() {
 
 function WorksHeading() {
   return (
-    <section className="mt-0 flex w-full flex-col gap-2 max-[499px]:h-[353px] max-[499px]:pt-[40px] min-[500px]:mt-[72px] lg:mt-0 lg:h-[487px] lg:py-[72px]">
-      <div className="flex h-[180px] w-full flex-col items-start gap-0 min-[500px]:h-[96px] min-[500px]:flex-row min-[500px]:items-center min-[500px]:justify-between lg:h-[154px] lg:gap-8">
-        <Display className="!text-[78px] !leading-[96px] !tracking-[-3.12px] lg:!text-[168px] lg:!leading-[154px] lg:tracking-[-6.72px]">some</Display>
-        <Display className="!text-[78px] !leading-[84px] !tracking-[-3.12px] lg:!text-[168px] lg:!leading-[154px] lg:tracking-[-6.72px]">of my</Display>
+    <section className="mt-0 flex w-full flex-col gap-2 max-[499px]:h-[353px] max-[499px]:pt-[40px] min-[500px]:max-lg:h-[346px] min-[500px]:max-lg:py-[40px] lg:mt-0 lg:h-[487px] lg:py-[72px]">
+      <div className="flex h-[180px] w-full flex-col items-start gap-0 min-[500px]:h-[136px] min-[500px]:flex-row min-[500px]:items-center min-[500px]:justify-between lg:h-[154px] lg:gap-8">
+        <Display className="!text-[78px] !leading-[96px] !tracking-[-3.12px] min-[500px]:max-lg:!text-[126px] min-[500px]:max-lg:!leading-[136px] min-[500px]:max-lg:!tracking-[-5.04px] lg:!text-[168px] lg:!leading-[154px] lg:tracking-[-6.72px]">some</Display>
+        <Display className="!text-[78px] !leading-[84px] !tracking-[-3.12px] min-[500px]:max-lg:!text-[126px] min-[500px]:max-lg:!leading-[136px] min-[500px]:max-lg:!tracking-[-5.04px] lg:!text-[168px] lg:!leading-[154px] lg:tracking-[-6.72px]">of my</Display>
       </div>
       <div className="flex w-full items-center pl-0 lg:pl-[188px]">
-        <Display buffon className="w-[1338px] !text-[84px] !leading-[85px] lg:!text-[175px] lg:!leading-[180.7px] lg:tracking-[1.75px]">
+        <Display buffon className="w-[1338px] !text-[84px] !leading-[85px] min-[500px]:max-lg:!w-full min-[500px]:max-lg:!text-[132px] min-[500px]:max-lg:!leading-[122px] lg:!text-[175px] lg:!leading-[180.7px] lg:tracking-[1.75px]">
           works
         </Display>
       </div>
@@ -650,7 +650,7 @@ function ProjectCard({ work, className = "" }) {
       <p data-gl-text className="font-jakarta text-[13px] font-normal uppercase leading-[25px] text-white/40">
         {work.kind}
       </p>
-      <div data-gl-media className="relative h-[480px] w-full overflow-hidden bg-white min-[500px]:max-lg:h-[542px] lg:h-[480px]">
+      <div data-gl-media className="relative h-[480px] w-full overflow-hidden bg-white lg:h-[480px]">
         <img src={work.image} alt="" className="h-full w-full object-cover" />
       </div>
       <div
@@ -670,12 +670,12 @@ function ProjectCard({ work, className = "" }) {
 
 function Works() {
   return (
-    <section className="mt-0 flex w-full flex-col gap-[92px] px-4 py-[40px] min-[500px]:max-lg:mt-[72px] min-[500px]:max-lg:w-[775px] min-[500px]:max-lg:px-0 min-[500px]:max-lg:py-0 lg:mt-0 lg:gap-0 lg:px-0 lg:py-0">
+    <section className="mt-0 flex w-full flex-col gap-[92px] px-4 py-[40px] min-[500px]:max-lg:w-[775px] min-[500px]:max-lg:px-0 min-[500px]:max-lg:py-[40px] lg:mt-0 lg:gap-0 lg:px-0 lg:py-0">
       <div className="flex w-full flex-col gap-[72px] min-[500px]:max-lg:gap-[72px] lg:gap-0">
         <div className="flex w-full flex-col items-start gap-[72px] lg:h-[710px] lg:flex-row lg:justify-between lg:gap-0 lg:py-[72px]">
           <div className="flex w-full flex-col gap-[72px] min-[500px]:max-lg:gap-[72px] lg:w-auto lg:flex-row lg:gap-[113px]">
-            <ProjectCard work={works[0]} className="min-[500px]:max-lg:ml-[352px] min-[500px]:max-lg:w-[423px]" />
-            <ProjectCard work={works[1]} className="min-[500px]:max-lg:w-[423px]" />
+            <ProjectCard work={works[0]} className="min-[500px]:max-lg:ml-[407px] min-[500px]:max-lg:w-[368px]" />
+            <ProjectCard work={works[1]} className="min-[500px]:max-lg:w-[368px]" />
           </div>
           <MonoText className="hidden w-[257px] font-normal lg:block">Users always compare options.</MonoText>
         </div>
@@ -737,7 +737,7 @@ function Footer() {
   };
 
   return (
-    <section className="relative mt-0 flex w-full flex-col max-[499px]:h-[1162px] max-[499px]:pt-[40px] min-[500px]:max-lg:mt-[89px] min-[500px]:max-lg:h-[1190px] min-[500px]:max-lg:w-[775px] lg:mt-0 lg:h-[874px] lg:pt-[72px]">
+    <section className="relative mt-0 flex w-full flex-col max-[499px]:h-[1162px] max-[499px]:pt-[40px] min-[500px]:max-lg:h-[1230px] min-[500px]:max-lg:w-[775px] min-[500px]:max-lg:pt-[40px] lg:mt-0 lg:h-[874px] lg:pt-[72px]">
       <div className="flex w-full items-start justify-between">
         <p data-gl-text className="font-jakarta text-[13px] font-normal uppercase leading-[25px] text-white/40">
           Start a project
@@ -835,7 +835,7 @@ export default function App() {
   const page = useMemo(
     () => (
       <>
-        <SectionShell>
+        <SectionShell className="z-50">
           <TopLinks />
         </SectionShell>
         <SectionShell
