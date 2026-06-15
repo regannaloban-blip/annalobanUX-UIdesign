@@ -48,6 +48,32 @@ img {
   max-width: 100%;
 }
 
+.section-shell {
+  position: relative;
+  width: calc(100vw - 40px);
+  margin-inline: auto;
+}
+
+.decor-layer {
+  pointer-events: none;
+}
+
+.content-layer {
+  min-width: 0;
+}
+
+@media (min-width: 500px) {
+  .section-shell {
+    width: min(775px, calc(100vw - 98px));
+  }
+}
+
+@media (min-width: 1024px) {
+  .section-shell {
+    width: min(1488px, calc(100vw - 98px));
+  }
+}
+
 .red-stroke-bg {
   filter: blur(30px) saturate(1.08);
   transform: translateZ(0);
