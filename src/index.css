@@ -62,7 +62,7 @@ img {
   min-width: 0;
 }
 
-@media (min-width: 500px) {
+@media (min-width: 768px) {
   .section-shell {
     width: min(775px, calc(100vw - 98px));
   }
