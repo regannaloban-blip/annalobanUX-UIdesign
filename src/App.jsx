@@ -400,7 +400,7 @@ function StableHeroGridOverlay() {
   ];
 
   return (
-    <div className="pointer-events-none fixed inset-x-0 top-[-2px] z-[950] hidden h-[calc(100dvh+2px)] min-[1440px]:block" aria-hidden="true">
+    <div className="pointer-events-none absolute inset-x-0 top-[-2px] z-[950] hidden h-[calc(100dvh+2px)] min-[1440px]:block" aria-hidden="true">
       <div className="section-shell relative h-full">
         <div className="desktop-hero-grid-rail absolute inset-y-0">
           {desktopGridStops.map((stop) => (
@@ -561,24 +561,24 @@ function ProductIntro() {
   return (
     <section className="hidden h-[592px] w-full flex-col items-start py-[72px] min-[1440px]:flex">
       <div className="flex h-[158px] w-full flex-col gap-10 pb-1 lg:flex-row lg:items-center lg:justify-between lg:gap-8">
-        <Display className="lg:tracking-[-6.72px]">UX/UI</Display>
+        <Display className="lg:tracking-[-6.72px]" webglHero>UX/UI</Display>
         <div className="flex w-[286px] max-w-full flex-col items-start gap-[42px] lg:h-[75px] lg:w-[359px] lg:gap-0 lg:pr-8">
-          <MonoText className="w-full max-w-[327px] font-normal">
+          <MonoText webglHero className="w-full max-w-[327px] font-normal">
             Shaping clear visual interfaces for thoughtful digital products and the people who use them.
           </MonoText>
         </div>
       </div>
       <div className="flex w-full flex-col items-start text-white">
-        <Display buffon className="lg:mb-[-24px]">
+        <Display buffon webglHero className="lg:mb-[-24px]">
           Product
         </Display>
         <div className="flex w-full flex-col gap-5 lg:flex-row lg:items-start lg:gap-[194px]">
           <div className="order-2 flex flex-row gap-4 pt-0 font-jakarta text-base font-normal uppercase leading-[25px] text-white lg:order-1 lg:flex-col lg:gap-0 lg:pt-4">
-            <span data-gl-text className="inline-block whitespace-nowrap">/ Web</span>
-            <span data-gl-text className="inline-block whitespace-nowrap">/ Graphic</span>
-            <span data-gl-text className="inline-block whitespace-nowrap">/ identity</span>
+            <span data-gl-text data-gl-hero-text className="inline-block whitespace-nowrap">/ Web</span>
+            <span data-gl-text data-gl-hero-text className="inline-block whitespace-nowrap">/ Graphic</span>
+            <span data-gl-text data-gl-hero-text className="inline-block whitespace-nowrap">/ identity</span>
           </div>
-          <Display className="order-1 lg:order-2 lg:tracking-[-6.72px]">Designer</Display>
+          <Display webglHero className="order-1 lg:order-2 lg:tracking-[-6.72px]">Designer</Display>
         </div>
       </div>
     </section>
