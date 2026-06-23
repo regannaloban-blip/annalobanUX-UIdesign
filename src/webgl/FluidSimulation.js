@@ -325,4 +325,8 @@ export class FluidSimulation {
   get texture() {
     return this.density.read.texture;
   }
+
+  get velocityTexture() {
+    return this.velocity.read.texture;
+  }
 }

@@ -306,6 +306,14 @@ img {
   border-color: #fff;
 }
 
+@media (min-width: 1024px) {
+  body.gl-ready [data-gl-hero-text],
+  body.gl-ready [data-gl-hero-media],
+  body.gl-ready [data-gl-hero-background] {
+    opacity: 0;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

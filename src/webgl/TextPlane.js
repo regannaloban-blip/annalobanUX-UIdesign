@@ -9,7 +9,6 @@ export class TextPlane {
     this.element = element;
     this.canvas = canvas;
     this.bounds = this.getTextBounds();
-    this.color = element.dataset.color === "black" ? "#000" : "#fff";
     this.createTexture();
     this.createMesh();
     this.element.setAttribute("data-gl-text-active", "");
@@ -18,6 +17,7 @@ export class TextPlane {
   createTexture() {
     const { width, height } = this.bounds;
     const style = getComputedStyle(this.element);
+    this.color = this.element.dataset.color === "black" ? "#000" : style.color;
     const size = parseFloat(style.fontSize);
     this.fixedLines = this.element.hasAttribute("data-gl-fixed-lines");
     this.texturePadding = this.getTexturePadding(size);
@@ -29,8 +29,8 @@ export class TextPlane {
     const fontWeight = style.fontWeight || 400;
     const fontStyle = style.fontStyle === "italic" ? "italic" : "normal";
     const letterSpacing = style.letterSpacing !== "normal" ? parseFloat(style.letterSpacing) || 0 : 0;
-    const align = style.textAlign;
     const shouldWrap = !this.fixedLines && style.whiteSpace === "normal";
+    const align = shouldWrap ? style.textAlign : "left";
     let text = (this.element.innerText || this.element.textContent || "").trim();
     if (style.textTransform === "uppercase") {
       text = text.toUpperCase();
@@ -39,7 +39,7 @@ export class TextPlane {
     ctx.clearRect(0, 0, paddedWidth, paddedHeight);
     ctx.fillStyle = this.color;
     ctx.font = `${fontStyle} ${fontWeight} ${size}px ${fontFamily}`;
-    ctx.textBaseline = "top";
+    ctx.textBaseline = "alphabetic";
     ctx.textAlign = align === "right" ? "right" : align === "center" ? "center" : "left";
 
     const lines = shouldWrap ? this.getWrappedLines(ctx, text, width, letterSpacing) : this.getHardLines(text);
@@ -50,7 +50,9 @@ export class TextPlane {
           ? width / 2 + this.texturePadding
           : this.texturePadding;
     lines.forEach((line, lineIndex) => {
-      const y = lineIndex * lineHeight + this.texturePadding;
+      const metrics = ctx.measureText(line);
+      const ascent = metrics.actualBoundingBoxAscent || size * 0.8;
+      const y = lineIndex * lineHeight + this.texturePadding + Math.max(0, (lineHeight - size) * 0.5) + ascent;
       if (letterSpacing === 0) {
         if (align === "justify" && lineIndex < lines.length - 1) {
           this.drawJustified(ctx, line, this.texturePadding, y, width);
@@ -92,9 +94,7 @@ export class TextPlane {
   }
 
   getTexturePadding(fontSize) {
-    const maxPadding = this.fixedLines ? 96 : 56;
-    const ratio = this.fixedLines ? 0.32 : 0.2;
-    return Math.ceil(Math.max(10, Math.min(maxPadding, fontSize * ratio)));
+    return Math.min(96, Math.ceil(fontSize * 0.28));
   }
 
   getTextureBounds() {

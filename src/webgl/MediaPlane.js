@@ -9,7 +9,7 @@ export class MediaPlane {
     this.element = element;
     this.canvas = canvas;
     this.bounds = getBounds(element);
-    this.image = element.querySelector("img");
+    this.image = element.matches("img") ? element : element.querySelector("img");
     this.createTexture();
     this.createMesh();
     this.element.setAttribute("data-gl-media-active", "");

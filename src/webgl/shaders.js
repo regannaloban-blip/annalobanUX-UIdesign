@@ -229,13 +229,14 @@ export const compositeFragment = /* glsl */ `
   void main() {
     vec3 fluid = texture2D(tFluid, vUv).rgb;
     vec2 uv = vUv;
-    vec2 distortedUv = vUv - fluid.rg * 0.001;
-    vec4 scene = texture2D(tMap, distortedUv);
-    vec3 chroma = fluid * 0.003;
-    scene.g = texture2D(tMap, vec2(uv.x - chroma.x, uv.y + chroma.y)).g;
-    scene.b = texture2D(tMap, vec2(uv.x - chroma.x, uv.y + chroma.y)).b;
-    float colorAmount = clamp(length(fluid) * 0.018, 0.0, 0.45);
-    scene.rgb += vec3(0.9, 0.0, 0.025) * colorAmount;
-    gl_FragColor = scene;
+    vec2 uv2 = vUv - fluid.rg * 0.001;
+
+    vec4 color = texture2D(tMap, uv2);
+
+    vec3 rgb = fluid * 0.003;
+    color.g = texture2D(tMap, vec2(uv.x - rgb.x, uv.y + rgb.y)).g;
+    color.b = texture2D(tMap, vec2(uv.x - rgb.x, uv.y + rgb.y)).b;
+
+    gl_FragColor = color;
   }
 `;

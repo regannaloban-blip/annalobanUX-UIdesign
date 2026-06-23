@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import gsap from "gsap";
 import SplitType from "split-type";
+import { CanvasScene } from "./webgl/CanvasScene.js";
 
 import aboutPortrait from "../assets/ai-portfolio/figma/anna-redesign/about.png";
 import project1 from "../assets/ai-portfolio/figma/anna-redesign/project-1.png";
@@ -12,6 +13,7 @@ import heroBackground from "../assets/ai-portfolio/figma/anna-redesign/hero-back
 import footerFormImage from "../assets/ai-portfolio/figma/anna-redesign/footer-form-image.png";
 
 const briefHref = "mailto:ann.loban@gmail.com?subject=Website%20or%20visual%20system%20brief";
+const canvasSceneKey = "__annaPortfolioCanvasScene";
 const footerLinks = [
   { label: "Linkedin", href: "https://www.linkedin.com/in/annloban/" },
   { label: "Dribbble", href: "https://dribbble.com/azzaza" },
@@ -83,6 +85,20 @@ function useReducedMotion() {
   }, []);
 
   return reduced;
+}
+
+function useDesktopEffects() {
+  const [desktop, setDesktop] = useState(false);
+
+  useEffect(() => {
+    const query = window.matchMedia("(min-width: 1024px)");
+    const update = () => setDesktop(query.matches);
+    update();
+    query.addEventListener("change", update);
+    return () => query.removeEventListener("change", update);
+  }, []);
+
+  return desktop;
 }
 
 function Preloader({ reduced }) {
@@ -159,13 +175,72 @@ function Preloader({ reduced }) {
   );
 }
 
-function Button({ className = "" }) {
+function CanvasLayer({ enabled }) {
+  const canvasRef = useRef(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas || !enabled) return;
+
+    document.querySelectorAll("[data-webgl-canvas]").forEach((element) => {
+      if (element !== canvas) element.remove();
+    });
+    window[canvasSceneKey]?.destroy?.();
+
+    let active = true;
+    const scene = new CanvasScene({
+      canvas,
+      enableSmoothScroll: false,
+      onReady: () => {
+        if (!active) return;
+        canvas.dataset.webglState = "ready";
+        document.body.classList.add("gl-ready");
+      },
+      onFallback: () => {
+        if (!active) return;
+        canvas.dataset.webglState = "fallback";
+        document.body.classList.remove("gl-ready");
+      },
+    });
+    window[canvasSceneKey] = scene;
+
+    return () => {
+      active = false;
+      scene.destroy();
+      if (window[canvasSceneKey] === scene) delete window[canvasSceneKey];
+      canvas.style.opacity = "0";
+      delete canvas.dataset.webglState;
+      document.body.classList.remove("gl-ready");
+    };
+  }, [enabled]);
+
+  if (!enabled) return null;
+
+  return (
+    <canvas
+      key="fluid-overlay-v2"
+      ref={canvasRef}
+      aria-hidden="true"
+      className="pointer-events-none fixed inset-0 z-[900] h-[100dvh] w-screen opacity-0"
+      data-webgl-canvas
+    />
+  );
+}
+
+function Button({ className = "", webglHero = false }) {
   return (
     <a
+      {...(webglHero ? { "data-gl-hero-background": true } : {})}
       href={briefHref}
       className={`inline-flex h-12 w-fit items-center justify-center border-b border-black bg-white px-10 text-black ${className}`}
     >
-      <span className="block whitespace-nowrap font-jakarta text-base font-bold uppercase leading-[25px]">
+      <span
+        data-gl-text
+        data-gl-text-no-fluid={!webglHero ? true : undefined}
+        {...(webglHero ? { "data-gl-hero-text": true } : {})}
+        data-color="black"
+        className="block whitespace-nowrap font-jakarta text-base font-bold uppercase leading-[25px]"
+      >
         start a project
       </span>
     </a>
@@ -236,7 +311,7 @@ function FooterField({
   );
 }
 
-function Display({ as: Tag = "h2", children, className = "", buffon = false }) {
+function Display({ as: Tag = "h2", children, className = "", buffon = false, webglHero = false }) {
   const fontClass = buffon ? "font-buffon font-normal" : "font-display font-light";
   const sizeClass = buffon
     ? "text-[84px] leading-[85px] md:text-[118px] md:leading-[110px] lg:text-[175px] lg:leading-[160px]"
@@ -244,7 +319,7 @@ function Display({ as: Tag = "h2", children, className = "", buffon = false }) {
 
   return (
     <Tag
-      {...(!buffon ? { "data-gl-text": true } : {})}
+      {...(webglHero ? { "data-gl-text": true, "data-gl-hero-text": true } : {})}
       className={`${fontClass} ${sizeClass} whitespace-nowrap uppercase tracking-normal text-white ${className}`}
     >
       {children}
@@ -252,10 +327,11 @@ function Display({ as: Tag = "h2", children, className = "", buffon = false }) {
   );
 }
 
-function MonoText({ children, className = "", as: Tag = "p", italic = false, bold = false }) {
+function MonoText({ children, className = "", as: Tag = "p", italic = false, bold = false, webglHero = false }) {
   return (
     <Tag
       data-gl-text
+      {...(webglHero ? { "data-gl-hero-text": true } : {})}
       className={`font-jakarta text-base uppercase leading-[25px] text-white ${italic ? "italic md:text-[22px] md:leading-[28px]" : ""} ${bold ? "font-bold" : "font-light"} ${className}`}
     >
       {children}
@@ -268,6 +344,8 @@ function TopLinks() {
     <nav className="relative z-40 flex w-full flex-wrap items-start justify-between gap-x-6 gap-y-2 font-jakarta text-base uppercase leading-[25px] text-white lg:justify-end lg:gap-[40px]">
       {footerLinks.map((link) => (
         <a
+          data-gl-text
+          data-gl-hero-text
           href={link.href}
           target={link.external === false ? undefined : "_blank"}
           rel={link.external === false ? undefined : "noreferrer"}
@@ -290,7 +368,7 @@ function FirstViewportGuide() {
   ];
 
   return (
-    <div className="desktop-hero-grid-rail pointer-events-none absolute top-[-59px] z-20 hidden h-[787px] min-[1440px]:block" aria-hidden="true">
+    <div className="desktop-hero-grid-rail pointer-events-none absolute top-[-59px] z-20 hidden h-[calc(100dvh+2px)] min-[1440px]:block" aria-hidden="true">
       {desktopGridStops.map((stop) => (
         <span
           key={stop}
@@ -305,8 +383,8 @@ function FirstViewportGuide() {
           style={{ left: label.stop }}
         >
           <span className="relative block h-[20px] w-[20px] shrink-0">
-            <span className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-white" />
-            <span className="absolute left-0 top-1/2 h-px w-full -translate-y-1/2 bg-white" />
+            <span data-gl-hero-background className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-white" />
+            <span data-gl-hero-background className="absolute left-0 top-1/2 h-px w-full -translate-y-1/2 bg-white" />
           </span>
           <span>{label.text}</span>
         </div>
@@ -315,11 +393,47 @@ function FirstViewportGuide() {
   );
 }
 
+function StableHeroGridOverlay() {
+  const labels = [
+    { stop: desktopGridStops[0], text: "Personal page" },
+    { stop: desktopGridStops[1], text: "Poland, Poznan" },
+  ];
+
+  return (
+    <div className="pointer-events-none fixed inset-x-0 top-[-2px] z-[950] hidden h-[calc(100dvh+2px)] min-[1440px]:block" aria-hidden="true">
+      <div className="section-shell relative h-full">
+        <div className="desktop-hero-grid-rail absolute inset-y-0">
+          {desktopGridStops.map((stop) => (
+            <span
+              key={stop}
+              className="absolute top-0 h-full w-px bg-gradient-to-b from-white/20 via-white/20 to-transparent"
+              style={{ left: stop }}
+            />
+          ))}
+          {labels.map((label) => (
+            <div
+              key={label.text}
+              className="desktop-hero-grid-anchor absolute top-[236px] flex h-[25px] items-center gap-[22px] font-jakarta text-[13px] uppercase leading-[25px] text-white/40"
+              style={{ left: label.stop }}
+            >
+              <span className="relative block h-[20px] w-[20px] shrink-0">
+                <span className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-white" />
+                <span className="absolute left-0 top-1/2 h-px w-full -translate-y-1/2 bg-white" />
+              </span>
+              <span>{label.text}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function PlusMarker({ className = "" }) {
   return (
     <span className={`relative block h-[20px] w-[20px] shrink-0 ${className}`} aria-hidden="true">
-      <span className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-white" />
-      <span className="absolute left-0 top-1/2 h-px w-full -translate-y-1/2 bg-white" />
+      <span data-gl-hero-background className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-white" />
+      <span data-gl-hero-background className="absolute left-0 top-1/2 h-px w-full -translate-y-1/2 bg-white" />
     </span>
   );
 }
@@ -333,10 +447,10 @@ function HeroTopBrief() {
       >
         <PlusMarker />
         <div className="mt-[-4px] flex min-w-0 flex-1 flex-col items-start gap-[26px] pr-8">
-          <MonoText italic className="w-full !text-[20px] font-normal !leading-[33px] md:!text-[20px] md:!leading-[33px]">
+          <MonoText webglHero italic className="w-full !text-[20px] font-normal !leading-[33px] md:!text-[20px] md:!leading-[33px]">
             Digital design beyond trends — built to be clear, logical, and easy to launch.
           </MonoText>
-          <Button />
+          <Button webglHero />
         </div>
       </div>
     </div>
@@ -373,11 +487,11 @@ function ResponsiveIntro() {
           className="pointer-events-none absolute left-0 top-[104px] h-[407px] w-[750px] max-w-none object-cover opacity-100 blur-[6px] min-[600px]:max-md:left-0 min-[600px]:max-md:top-[104px] min-[600px]:max-md:h-[407px] min-[600px]:max-md:w-[750px] md:left-0 md:top-[-22px] md:h-[608px] md:w-[1120px]"
         />
         <div className="hero-title-block absolute left-0 top-[280px] z-10 w-full min-[600px]:max-md:top-[339px] md:top-[365px]">
-          <h1 className="mb-[-16px] w-fit whitespace-nowrap font-buffon text-[84px] font-normal uppercase leading-[85px] text-white md:leading-[122px] md:text-[132px]">
+          <h1 data-gl-text className="mb-[-16px] w-fit whitespace-nowrap font-buffon text-[84px] font-normal uppercase leading-[85px] text-white md:leading-[122px] md:text-[132px]">
             Hello!
           </h1>
           <div className="hero-anna-row w-full">
-            <h2 className="w-fit whitespace-nowrap font-display text-[78px] font-light uppercase leading-[84px] tracking-[-3.12px] text-white min-[600px]:shrink-0 min-[600px]:text-right md:text-[126px] md:leading-[136px] md:tracking-[-5.04px]">
+            <h2 data-gl-text className="w-fit whitespace-nowrap font-display text-[78px] font-light uppercase leading-[84px] tracking-[-3.12px] text-white min-[600px]:shrink-0 min-[600px]:text-right md:text-[126px] md:leading-[136px] md:tracking-[-5.04px]">
               Iam ANNa
             </h2>
           </div>
@@ -389,12 +503,12 @@ function ResponsiveIntro() {
           <MonoText className="ux-mini-text ml-auto w-full max-w-[296px] font-normal">
             Shaping clear visual interfaces for thoughtful digital products and the people who use them.
           </MonoText>
-          <h2 className="ux-title font-display text-[78px] font-light uppercase leading-[84px] tracking-[-3.12px] text-white">
+          <h2 data-gl-text className="ux-title font-display text-[78px] font-light uppercase leading-[84px] tracking-[-3.12px] text-white">
             UX/UI
           </h2>
         </div>
         <div className="flex w-full flex-col items-start text-white min-[600px]:max-md:h-[160px] md:h-[242px]">
-          <h2 className="mb-[-16px] font-buffon text-[84px] font-normal uppercase leading-[85px] text-white md:h-[122px] md:w-full md:text-[132px] md:leading-[122px]">
+          <h2 data-gl-text className="mb-[-16px] font-buffon text-[84px] font-normal uppercase leading-[85px] text-white md:h-[122px] md:w-full md:text-[132px] md:leading-[122px]">
             Product
           </h2>
           <div className="flex w-full flex-col items-start whitespace-nowrap min-[600px]:h-[91px] min-[600px]:flex-row min-[600px]:justify-between md:h-[136px]">
@@ -403,7 +517,7 @@ function ResponsiveIntro() {
               <span data-gl-text className="inline-block whitespace-nowrap">/ Graphic</span>
               <span data-gl-text className="inline-block whitespace-nowrap">/ identity</span>
             </div>
-            <h2 className="order-1 font-display text-[78px] font-light uppercase leading-[84px] tracking-[-3.12px] text-white min-[600px]:order-2 min-[600px]:w-fit md:whitespace-nowrap md:text-[126px] md:leading-[136px] md:tracking-[-5.04px]">
+            <h2 data-gl-text className="order-1 font-display text-[78px] font-light uppercase leading-[84px] tracking-[-3.12px] text-white min-[600px]:order-2 min-[600px]:w-fit md:whitespace-nowrap md:text-[126px] md:leading-[136px] md:tracking-[-5.04px]">
               Designer
             </h2>
           </div>
@@ -416,6 +530,7 @@ function ResponsiveIntro() {
 function BackgroundGlow() {
   return (
     <img
+      data-gl-hero-media
       src={heroBackground}
       alt=""
       aria-hidden="true"
@@ -429,12 +544,12 @@ function Hero() {
     <header className="relative hidden h-[748px] w-full flex-col gap-2 overflow-visible pb-0 pt-[354px] min-[1440px]:flex">
       <BackgroundGlow />
       <div className="relative z-10 flex w-full items-center">
-        <Display as="h1" buffon>
+        <Display as="h1" buffon webglHero>
           Hello!
         </Display>
       </div>
       <div className="relative z-10 flex w-full items-end lg:pl-[287px]">
-        <Display as="h2" className="text-right lg:tracking-[-6.72px]">
+        <Display as="h2" className="text-right lg:tracking-[-6.72px]" webglHero>
           Iam ANNa
         </Display>
       </div>
@@ -485,11 +600,11 @@ function About() {
             >
               <img src={aboutPortrait} alt="Anna Loban portrait" className="h-full w-full object-cover" />
             </div>
-            <span>About . </span>
-            <span className="text-white/60">
+            <span data-gl-text data-gl-text-no-fluid>About . </span>
+            <span data-gl-text data-gl-text-no-fluid className="text-white/60">
               I am a senior UX/UI designer. Strong product structure and refined visuals go hand in hand. Working independently, I create design systems that move business forward and save development time.{" "}
             </span>
-            <span>The result: no chaotic iterations — just constructive decisions that make sense.</span>
+            <span data-gl-text data-gl-text-no-fluid>The result: no chaotic iterations — just constructive decisions that make sense.</span>
           </div>
           <div className="flex h-[165px] w-[353px] max-w-full flex-col gap-[42px] pr-6">
             <MonoText className="font-normal">Combining real human behavior, clear product logic, and strong visual appeal.</MonoText>
@@ -553,7 +668,7 @@ function PurposeTitle() {
         <h2 data-gl-text className="h-[136px] w-full whitespace-nowrap text-center font-display text-[126px] font-light uppercase leading-[136px] tracking-[-5.04px] text-white">
           design with
         </h2>
-        <h2 className="mt-[11px] h-[122px] w-[544px] whitespace-nowrap font-buffon text-[132px] font-normal uppercase leading-[122px] text-white">
+        <h2 data-gl-text className="mt-[11px] h-[122px] w-[544px] whitespace-nowrap font-buffon text-[132px] font-normal uppercase leading-[122px] text-white">
           purpose
         </h2>
       </div>
@@ -743,7 +858,7 @@ function Footer() {
         <p data-gl-text className="font-jakarta text-[13px] font-normal uppercase leading-[25px] text-white/40">
           Start a project
         </p>
-        <p className="w-[288px] font-jakarta text-base font-normal uppercase leading-[25px] text-right text-white lg:w-[180px] lg:font-mono">
+        <p data-gl-text className="w-[288px] font-jakarta text-base font-normal uppercase leading-[25px] text-right text-white lg:w-[180px] lg:font-mono">
           Open for a few
           <br />
           selected projects
@@ -751,9 +866,10 @@ function Footer() {
       </div>
 
       <h2 className="mt-[32px] font-display text-[32px] font-light uppercase leading-[48px] tracking-[-2.24px] text-white md:text-[54px] md:leading-[62px] md:tracking-[-0.5px] md:max-lg:!mt-[40px] md:max-lg:!text-[56px] md:max-lg:!leading-[74px] md:max-lg:!tracking-[-3.92px] lg:mt-[40px] lg:text-[96px] lg:leading-[106px] lg:tracking-[-6.72px]">
-        Let`s create something
+        <span data-gl-text>Let`s create something</span>
         <br />
-        <span className="text-white/35">amazing</span> together
+        <span data-gl-text className="text-white/35">amazing</span>{" "}
+        <span data-gl-text>together</span>
       </h2>
 
       <div className="mt-[32px] grid w-full grid-cols-1 py-6 md:max-lg:!mt-[40px] md:max-lg:h-[460px] lg:mt-[40px] lg:h-[460px] lg:grid-cols-[3fr_9fr] lg:gap-[40px] lg:p-6 min-[1440px]:grid-cols-[496px_minmax(0,1fr)]">
@@ -766,7 +882,7 @@ function Footer() {
           />
         </div>
 
-        <form action={briefHref} className="order-1 flex min-w-0 flex-col gap-[24px] max-md:gap-[32px] md:order-2 md:max-lg:!order-1 md:max-lg:!h-[412px] md:max-lg:!w-full md:max-lg:!gap-[32px] lg:gap-[32px]" aria-label="Project request form" noValidate onSubmit={submitFooterForm}>
+        <form data-gl-ignore-fluid action={briefHref} className="order-1 flex min-w-0 flex-col gap-[24px] max-md:gap-[32px] md:order-2 md:max-lg:!order-1 md:max-lg:!h-[412px] md:max-lg:!w-full md:max-lg:!gap-[32px] lg:gap-[32px]" aria-label="Project request form" noValidate onSubmit={submitFooterForm}>
           <div className="flex w-full flex-col gap-[24px]">
             <FooterField
               error={getFieldError("email")}
@@ -833,6 +949,7 @@ function LoopStart() {
 
 export default function App() {
   const reduced = useReducedMotion();
+  const desktopEffects = useDesktopEffects();
   const page = useMemo(
     () => (
       <>
@@ -842,7 +959,6 @@ export default function App() {
         <SectionShell
           decor={
             <>
-              <FirstViewportGuide />
               <ResponsiveViewportGuide />
               <HeroTopBrief />
             </>
@@ -877,7 +993,9 @@ export default function App() {
   return (
     <>
       <Preloader reduced={reduced} />
-      <main className="relative z-10 flex min-h-screen flex-col gap-0 overflow-hidden pb-5 pt-[49px] lg:gap-0 lg:pb-[40px] lg:pt-[32px]" aria-label="Anna Loban portfolio">
+      <CanvasLayer enabled={desktopEffects && !reduced} />
+      <StableHeroGridOverlay />
+      <main className="relative z-10 flex min-h-screen flex-col gap-0 overflow-x-hidden pb-5 pt-[49px] lg:gap-0 lg:pb-[40px] lg:pt-[32px]" aria-label="Anna Loban portfolio">
         <div className="relative z-10 flex flex-col gap-0">
           {page}
         </div>

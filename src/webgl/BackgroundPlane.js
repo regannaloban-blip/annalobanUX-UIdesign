@@ -20,9 +20,25 @@ export class BackgroundPlane {
     const style = getComputedStyle(this.element);
     const topWidth = parseFloat(style.borderTopWidth) || 0;
     const bottomWidth = parseFloat(style.borderBottomWidth) || 0;
+    const leftWidth = parseFloat(style.borderLeftWidth) || 0;
+    const rightWidth = parseFloat(style.borderRightWidth) || 0;
+    const opacity = parseFloat(style.opacity);
 
     ctx.clearRect(0, 0, width, height);
-    ctx.strokeStyle = "#fff";
+    ctx.globalAlpha = Number.isFinite(opacity) ? opacity : 1;
+    if (style.backgroundImage && style.backgroundImage !== "none") {
+      const gradient = ctx.createLinearGradient(0, 0, 0, height);
+      gradient.addColorStop(0, "rgba(255,255,255,0.2)");
+      gradient.addColorStop(0.72, "rgba(255,255,255,0.2)");
+      gradient.addColorStop(1, "rgba(255,255,255,0)");
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, width, height);
+    } else if (style.backgroundColor && style.backgroundColor !== "rgba(0, 0, 0, 0)") {
+      ctx.fillStyle = style.backgroundColor;
+      ctx.fillRect(0, 0, width, height);
+    }
+
+    ctx.strokeStyle = style.borderTopColor || "#fff";
     if (topWidth > 0) {
       ctx.lineWidth = Math.max(1, topWidth);
       ctx.beginPath();
@@ -37,6 +53,21 @@ export class BackgroundPlane {
       ctx.lineTo(width, height - bottomWidth / 2);
       ctx.stroke();
     }
+    if (leftWidth > 0) {
+      ctx.lineWidth = Math.max(1, leftWidth);
+      ctx.beginPath();
+      ctx.moveTo(leftWidth / 2, 0);
+      ctx.lineTo(leftWidth / 2, height);
+      ctx.stroke();
+    }
+    if (rightWidth > 0) {
+      ctx.lineWidth = Math.max(1, rightWidth);
+      ctx.beginPath();
+      ctx.moveTo(width - rightWidth / 2, 0);
+      ctx.lineTo(width - rightWidth / 2, height);
+      ctx.stroke();
+    }
+    ctx.globalAlpha = 1;
 
     this.texture = new Texture(this.gl, {
       image: canvas,

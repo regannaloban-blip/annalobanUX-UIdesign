@@ -4,8 +4,10 @@ import { BackgroundPlane } from "./BackgroundPlane.js";
 import { FluidSimulation } from "./FluidSimulation.js";
 import { MediaPlane } from "./MediaPlane.js";
 import { compositeFragment } from "./shaders.js";
+import { TextPlane } from "./TextPlane.js";
 
 const KONAMI = ["up", "up", "down", "down", "left", "right", "left", "right", "b", "a"];
+const activeScenes = new Set();
 const KEY_MAP = {
   ArrowUp: "up",
   ArrowDown: "down",
@@ -23,6 +25,14 @@ function isDesktop() {
   return !mobile;
 }
 
+function getRenderableElements(selector) {
+  return [...document.querySelectorAll(selector)].filter((element) => {
+    const bounds = element.getBoundingClientRect();
+    const style = getComputedStyle(element);
+    return bounds.width > 0 && bounds.height > 0 && style.display !== "none" && style.visibility !== "hidden";
+  });
+}
+
 export class CanvasScene {
   constructor({ canvas, onReady, onFallback, enableSmoothScroll = false }) {
     this.canvas = canvas;
@@ -36,6 +46,8 @@ export class CanvasScene {
     this.konamiIndex = 0;
     this.isKonami = false;
     this.running = false;
+    this.destroyed = false;
+    activeScenes.add(this);
 
     if (!isDesktop()) {
       this.onFallback?.("desktop-only");
@@ -52,6 +64,7 @@ export class CanvasScene {
   async init() {
     await document.fonts.ready;
     await this.waitForImages();
+    if (this.destroyed) return;
 
     this.renderer = new Renderer({
       canvas: this.canvas,
@@ -72,6 +85,7 @@ export class CanvasScene {
       fragment: compositeFragment,
       uniforms: {
         tFluid: { value: this.fluid.texture },
+        tVelocity: { value: this.fluid.velocityTexture },
         uTime: { value: 0 },
       },
     });
@@ -110,13 +124,15 @@ export class CanvasScene {
 
   createPlanes() {
     this.destroyPlanes();
-    const mediaPlanes = [...document.querySelectorAll("main [data-gl-media]")].map(
+    const mediaPlanes = getRenderableElements("main [data-gl-hero-media]").map(
       (element) => new MediaPlane({ gl: this.gl, scene: this.scene, element, canvas: this }),
     );
-    const backgroundPlanes = [...document.querySelectorAll("main [data-gl-background]")].map(
+    const backgroundPlanes = getRenderableElements("main [data-gl-hero-background]").map(
       (element) => new BackgroundPlane({ gl: this.gl, scene: this.scene, element, canvas: this }),
     );
-    this.planes = [...backgroundPlanes, ...mediaPlanes];
+    const textPlanes = getRenderableElements("main [data-gl-hero-text]:not([data-gl-text-no-fluid])")
+      .map((element) => new TextPlane({ gl: this.gl, scene: this.scene, element, canvas: this }));
+    this.planes = [...mediaPlanes, ...backgroundPlanes, ...textPlanes];
   }
 
   destroyPlanes() {
@@ -125,7 +141,11 @@ export class CanvasScene {
   }
 
   bindEvents() {
-    this.resizeHandler = this.debounce(() => this.resize(), 200);
+    this.resizeHandler = this.debounce(() => {
+      if (this.destroyed) return;
+      this.createPlanes();
+      this.resize();
+    }, 200);
     this.moveHandler = (event) => this.updateMouse(event);
     this.keyHandler = (event) => this.updateKonami(event);
     window.addEventListener("resize", this.resizeHandler);
@@ -137,10 +157,12 @@ export class CanvasScene {
 
   debounce(fn, wait) {
     let timeout;
-    return (...args) => {
+    const debounced = (...args) => {
       clearTimeout(timeout);
       timeout = setTimeout(() => fn(...args), wait);
     };
+    debounced.cancel = () => clearTimeout(timeout);
+    return debounced;
   }
 
   updateMouse(event) {
@@ -148,6 +170,14 @@ export class CanvasScene {
     const x = point.clientX ?? point.pageX;
     const y = point.clientY ?? point.pageY;
     if (x === undefined || y === undefined) return;
+
+    if (this.shouldIgnoreFluidAt(x, y)) {
+      this.pointer.x = x;
+      this.pointer.y = y;
+      this.pointer.px = x;
+      this.pointer.py = y;
+      return;
+    }
 
     if (this.pointer.px < -1000) {
       this.pointer.px = x;
@@ -170,6 +200,11 @@ export class CanvasScene {
         dy * -5,
       );
     }
+  }
+
+  shouldIgnoreFluidAt(x, y) {
+    const target = document.elementFromPoint(x, y);
+    return Boolean(target?.closest?.("[data-gl-ignore-fluid], input, textarea, select, option"));
   }
 
   updateKonami(event) {
@@ -206,15 +241,27 @@ export class CanvasScene {
     this.fluid?.step(time);
     this.planes.forEach((plane) => plane.update());
     this.compositePass.uniforms.tFluid.value = this.fluid.texture;
+    this.compositePass.uniforms.tVelocity.value = this.fluid.velocityTexture;
     this.compositePass.uniforms.uTime.value = time * 0.001;
-    this.post.render({ scene: this.scene, camera: this.camera, sort: true, frustumCull: false });
+    this.post.render({ scene: this.scene, camera: this.camera, sort: false, frustumCull: false });
     this.rafId = requestAnimationFrame(this.loop);
   };
 
   destroy() {
+    if (this.destroyed) return;
+    this.destroyed = true;
+    activeScenes.delete(this);
     this.running = false;
     if (this.rafId) cancelAnimationFrame(this.rafId);
+    this.resizeHandler?.cancel?.();
     this.destroyPlanes();
+    document
+      .querySelectorAll("[data-gl-text-active], [data-gl-media-active], [data-gl-background-active]")
+      .forEach((element) => {
+        element.removeAttribute("data-gl-text-active");
+        element.removeAttribute("data-gl-media-active");
+        element.removeAttribute("data-gl-background-active");
+      });
     this.lenis?.destroy();
     window.removeEventListener("resize", this.resizeHandler);
     window.removeEventListener("mousemove", this.moveHandler);
@@ -223,4 +270,10 @@ export class CanvasScene {
     document.removeEventListener("keydown", this.keyHandler);
     this.gl?.getExtension("WEBGL_lose_context")?.loseContext();
   }
+}
+
+if (import.meta.hot) {
+  import.meta.hot.dispose(() => {
+    activeScenes.forEach((scene) => scene.destroy());
+  });
 }
