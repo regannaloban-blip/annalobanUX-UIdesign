@@ -858,10 +858,10 @@ function Footer() {
   return (
     <section className="relative mt-0 flex w-full flex-col pt-[40px] md:max-lg:w-[775px] lg:mt-0 lg:h-[874px] lg:pt-[72px]">
       <div className="flex w-full items-start justify-between">
-        <p data-gl-text className="font-jakarta text-[13px] font-normal uppercase leading-[25px] text-white/40">
+        <p data-gl-text data-gl-hero-text className="font-jakarta text-[13px] font-normal uppercase leading-[25px] text-white/40">
           Start a project
         </p>
-        <p data-gl-text className="w-[288px] font-jakarta text-base font-normal uppercase leading-[25px] text-right text-white lg:w-[180px] lg:font-mono">
+        <p data-gl-text data-gl-hero-text className="w-[288px] font-jakarta text-base font-normal uppercase leading-[25px] text-right text-white lg:w-[180px] lg:font-mono">
           Open for a few
           <br />
           selected projects
@@ -869,14 +869,14 @@ function Footer() {
       </div>
 
       <h2 className="mt-[32px] font-display text-[32px] font-light uppercase leading-[48px] tracking-[-2.24px] text-white md:text-[54px] md:leading-[62px] md:tracking-[-0.5px] md:max-lg:!mt-[40px] md:max-lg:!text-[56px] md:max-lg:!leading-[74px] md:max-lg:!tracking-[-3.92px] lg:mt-[40px] lg:text-[96px] lg:leading-[106px] lg:tracking-[-6.72px]">
-        <span data-gl-text>Let`s create something</span>
+        <span data-gl-text data-gl-hero-text>Let`s create something</span>
         <br />
-        <span data-gl-text className="text-white/35">amazing</span>{" "}
-        <span data-gl-text>together</span>
+        <span data-gl-text data-gl-hero-text className="text-white/35">amazing</span>{" "}
+        <span data-gl-text data-gl-hero-text>together</span>
       </h2>
 
       <div className="mt-[32px] grid w-full grid-cols-1 py-6 md:max-lg:!mt-[40px] md:max-lg:h-[460px] lg:mt-[40px] lg:h-[460px] lg:grid-cols-[3fr_9fr] lg:gap-[40px] lg:p-6 min-[1440px]:grid-cols-[496px_minmax(0,1fr)]">
-        <div data-gl-media className="relative order-2 hidden h-[412px] w-[496px] max-w-full overflow-hidden lg:order-1 lg:block lg:w-full min-[1440px]:w-[496px]">
+        <div data-gl-media data-gl-hero-media className="relative order-2 hidden h-[412px] w-[496px] max-w-full overflow-hidden lg:order-1 lg:block lg:w-full min-[1440px]:w-[496px]">
           <img
             src={footerFormImage}
             alt=""
