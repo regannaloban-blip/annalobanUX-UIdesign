@@ -9,7 +9,7 @@ import project2 from "../assets/ai-portfolio/figma/anna-redesign/project-2.png";
 import project3 from "../assets/ai-portfolio/figma/anna-redesign/project-3.png";
 import project4 from "../assets/ai-portfolio/figma/anna-redesign/project-4.png";
 import quoteIcon from "../assets/ai-portfolio/figma/anna-redesign/quote-icon.svg";
-import heroBackground from "../assets/ai-portfolio/figma/anna-redesign/hero-background-var2.png";
+import heroBackground from "../assets/ai-portfolio/image 16.png";
 import footerFormImage from "../assets/ai-portfolio/figma/anna-redesign/footer-form-image.png";
 
 const briefHref = "mailto:ann.loban@gmail.com?subject=Website%20or%20visual%20system%20brief";
