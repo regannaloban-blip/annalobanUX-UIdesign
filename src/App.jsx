@@ -593,10 +593,11 @@ function About() {
           <img src={quoteIcon} alt="" className="absolute top-[6px] h-[25px] w-[28px]" />
         </div>
         <div className="flex min-w-0 flex-1 flex-col gap-[91px]">
-          <div className="about-copy flow-root font-jakarta text-[20px] font-normal uppercase leading-[32px] text-white md:text-[26px] md:leading-[41px]">
+          <div data-gl-flow-text className="about-copy flow-root font-jakarta text-[20px] font-normal uppercase leading-[32px] text-white md:text-[26px] md:leading-[41px]">
             <div
               data-gl-media
               data-gl-hero-media
+              data-gl-flow-exclude
               className="about-photo float-right ml-5 h-[200px] w-[200px] overflow-hidden bg-white md:ml-7 md:h-[239px] md:w-[239px] lg:ml-6"
             >
               <img src={aboutPortrait} alt="Anna Loban portrait" className="h-full w-full object-cover" />

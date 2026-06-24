@@ -2,6 +2,7 @@ import Lenis from "lenis";
 import { Camera, Post, Renderer, Transform } from "ogl";
 import { BackgroundPlane } from "./BackgroundPlane.js";
 import { FluidSimulation } from "./FluidSimulation.js";
+import { FlowTextPlane } from "./FlowTextPlane.js";
 import { MediaPlane } from "./MediaPlane.js";
 import { compositeFragment } from "./shaders.js";
 import { TextPlane } from "./TextPlane.js";
@@ -132,7 +133,9 @@ export class CanvasScene {
     );
     const textPlanes = getRenderableElements("main [data-gl-hero-text]:not([data-gl-text-no-fluid])")
       .map((element) => new TextPlane({ gl: this.gl, scene: this.scene, element, canvas: this }));
-    this.planes = [...mediaPlanes, ...backgroundPlanes, ...textPlanes];
+    const flowTextPlanes = getRenderableElements("main [data-gl-flow-text]")
+      .map((element) => new FlowTextPlane({ gl: this.gl, scene: this.scene, element, canvas: this }));
+    this.planes = [...mediaPlanes, ...backgroundPlanes, ...textPlanes, ...flowTextPlanes];
   }
 
   destroyPlanes() {
@@ -256,11 +259,12 @@ export class CanvasScene {
     this.resizeHandler?.cancel?.();
     this.destroyPlanes();
     document
-      .querySelectorAll("[data-gl-text-active], [data-gl-media-active], [data-gl-background-active]")
+      .querySelectorAll("[data-gl-text-active], [data-gl-media-active], [data-gl-background-active], [data-gl-flow-text-active]")
       .forEach((element) => {
         element.removeAttribute("data-gl-text-active");
         element.removeAttribute("data-gl-media-active");
         element.removeAttribute("data-gl-background-active");
+        element.removeAttribute("data-gl-flow-text-active");
       });
     this.lenis?.destroy();
     window.removeEventListener("resize", this.resizeHandler);

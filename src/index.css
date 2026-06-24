@@ -309,7 +309,8 @@ img {
 @media (min-width: 1024px) {
   body.gl-ready [data-gl-hero-text],
   body.gl-ready [data-gl-hero-media],
-  body.gl-ready [data-gl-hero-background] {
+  body.gl-ready [data-gl-hero-background],
+  body.gl-ready [data-gl-flow-text] {
     opacity: 0;
   }
 }
