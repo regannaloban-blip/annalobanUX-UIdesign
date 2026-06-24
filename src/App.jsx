@@ -885,8 +885,8 @@ function Footer() {
           />
         </div>
 
-        <form data-gl-ignore-fluid action={briefHref} className="order-1 flex min-w-0 flex-col gap-[24px] max-md:gap-[32px] md:order-2 md:max-lg:!order-1 md:max-lg:!h-[412px] md:max-lg:!w-full md:max-lg:!gap-[32px] lg:gap-[32px]" aria-label="Project request form" noValidate onSubmit={submitFooterForm}>
-          <div className="flex w-full flex-col gap-[24px]">
+        <form action={briefHref} className="order-1 flex min-w-0 flex-col gap-[24px] max-md:gap-[32px] md:order-2 md:max-lg:!order-1 md:max-lg:!h-[412px] md:max-lg:!w-full md:max-lg:!gap-[32px] lg:gap-[32px]" aria-label="Project request form" noValidate onSubmit={submitFooterForm}>
+          <div data-gl-ignore-fluid className="flex w-full flex-col gap-[24px]">
             <FooterField
               error={getFieldError("email")}
               label="Email*"
@@ -929,10 +929,11 @@ function Footer() {
             />
           </div>
           <button
+            data-gl-hero-background
             className="flex h-12 w-full items-center justify-center border-b border-black bg-white px-10 font-jakarta text-base font-bold uppercase leading-[25px] text-black"
             type="submit"
           >
-            <span className="block whitespace-nowrap leading-[25px]">Start a project</span>
+            <span data-gl-text data-gl-hero-text data-color="black" className="block whitespace-nowrap leading-[25px]">Start a project</span>
           </button>
         </form>
       </div>
