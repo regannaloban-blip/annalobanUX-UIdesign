@@ -71,6 +71,7 @@ export class CanvasScene {
       canvas: this.canvas,
       alpha: true,
       antialias: true,
+      premultipliedAlpha: false,
       dpr: Math.min(window.devicePixelRatio || 1, 2),
     });
     this.gl = this.renderer.gl;

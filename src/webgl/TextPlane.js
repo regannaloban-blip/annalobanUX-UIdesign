@@ -70,7 +70,7 @@ export class TextPlane {
 
     this.texture = new Texture(this.gl, {
       image: canvas,
-      premultiplyAlpha: true,
+      premultiplyAlpha: false,
       generateMipmaps: false,
       minFilter: this.gl.LINEAR,
       magFilter: this.gl.LINEAR,

@@ -1,5 +1,5 @@
 import { Mesh, Plane, Program, Texture } from "ogl";
-import { planeVertex, textureFragment } from "./shaders.js";
+import { fluidTextFragment, planeVertex, textureFragment } from "./shaders.js";
 import { createCanvas, getBounds, isInView, updateMeshFromBounds } from "./utils.js";
 
 export class FlowTextPlane {
@@ -9,6 +9,7 @@ export class FlowTextPlane {
     this.element = element;
     this.canvas = canvas;
     this.bounds = getBounds(element);
+    this.fluidBoost = element.hasAttribute("data-gl-fluid-boost");
     this.texturePadding = this.getTexturePadding();
     this.createTexture();
     this.createMesh();
@@ -26,7 +27,7 @@ export class FlowTextPlane {
 
     this.texture = new Texture(this.gl, {
       image: canvas,
-      premultiplyAlpha: true,
+      premultiplyAlpha: false,
       generateMipmaps: false,
       minFilter: this.gl.LINEAR,
       magFilter: this.gl.LINEAR,
@@ -78,7 +79,7 @@ export class FlowTextPlane {
         range.setEnd(node, match.index + word.length);
         const rects = [...range.getClientRects()].filter((rect) => rect.width > 0 && rect.height > 0);
         rects.forEach((rect) => {
-          runs.push({ rect, style, text: this.transformText(word, style) });
+          runs.push({ rect, style, text: this.transformText(word, style), baselineOffset: range.getBoundingClientRect().height });
         });
       }
       range.detach();
@@ -105,15 +106,14 @@ export class FlowTextPlane {
     const letterSpacing = run.style.letterSpacing !== "normal" ? parseFloat(run.style.letterSpacing) || 0 : 0;
     const metricsFont = `${fontStyle} ${fontWeight} ${size}px ${fontFamily}`;
 
-    ctx.fillStyle = run.style.color;
+    ctx.fillStyle = this.flattenColor(run.style.color);
     ctx.font = metricsFont;
     ctx.textAlign = "left";
     ctx.textBaseline = "alphabetic";
 
-    const metrics = ctx.measureText(run.text);
-    const ascent = metrics.actualBoundingBoxAscent || size * 0.8;
     const x = run.rect.left - textureBounds.left;
-    const y = run.rect.top - textureBounds.top + Math.max(0, (lineHeight - size) * 0.5) + ascent;
+    const baselineOffset = Number.isFinite(run.baselineOffset) ? run.baselineOffset : lineHeight;
+    const y = run.rect.top - textureBounds.top + Math.min(lineHeight, baselineOffset);
 
     if (!letterSpacing) {
       ctx.fillText(run.text, x, y);
@@ -127,15 +127,36 @@ export class FlowTextPlane {
     });
   }
 
+  flattenColor(color) {
+    const match = color.match(/rgba?\(([^)]+)\)/);
+    if (!match) return color;
+
+    const [r = 255, g = 255, b = 255, a = 1] = match[1]
+      .split(",")
+      .map((part) => parseFloat(part.trim()));
+    if (!Number.isFinite(a) || a >= 1) return color;
+
+    return `rgb(${Math.round(r * a)}, ${Math.round(g * a)}, ${Math.round(b * a)})`;
+  }
+
   createMesh() {
     const geometry = new Plane(this.gl);
     const program = new Program(this.gl, {
       vertex: planeVertex,
-      fragment: textureFragment,
-      uniforms: {
-        tMap: { value: this.texture },
-        uAlpha: { value: 1 },
-      },
+      fragment: this.fluidBoost ? fluidTextFragment : textureFragment,
+      uniforms: this.fluidBoost
+        ? {
+            tMap: { value: this.texture },
+            tFluid: { value: this.canvas.fluid?.texture },
+            uScreenRect: { value: [0, 0, 1, 1] },
+            uAlpha: { value: 1 },
+            uDistortion: { value: 0.006 },
+            uTime: { value: 0 },
+          }
+        : {
+            tMap: { value: this.texture },
+            uAlpha: { value: 1 },
+          },
       transparent: true,
       depthTest: false,
       depthWrite: false,
@@ -163,6 +184,17 @@ export class FlowTextPlane {
     if (!visible) return;
 
     updateMeshFromBounds(this.mesh, textureBounds, this.canvas);
+
+    if (this.fluidBoost && this.mesh.program.uniforms.uScreenRect) {
+      this.mesh.program.uniforms.tFluid.value = this.canvas.fluid?.texture;
+      this.mesh.program.uniforms.uTime.value = performance.now() * 0.001;
+      this.mesh.program.uniforms.uScreenRect.value = [
+        textureBounds.left / Math.max(this.canvas.viewport.x, 1),
+        1 - textureBounds.bottom / Math.max(this.canvas.viewport.y, 1),
+        textureBounds.width / Math.max(this.canvas.viewport.x, 1),
+        textureBounds.height / Math.max(this.canvas.viewport.y, 1),
+      ];
+    }
   }
 
   destroy() {

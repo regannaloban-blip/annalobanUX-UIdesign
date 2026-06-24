@@ -589,11 +589,11 @@ function About() {
   return (
     <section className="about-section relative ml-auto w-full max-w-[1202px]">
       <div className="about-layout ml-auto flex w-full max-w-[1020px] items-start gap-4">
-        <div className="about-icon relative h-[31px] shrink-0">
-          <img src={quoteIcon} alt="" className="absolute top-[6px] h-[25px] w-[28px]" />
+        <div className="about-icon relative h-[31px] shrink-0" data-gl-fluid-boost>
+          <img data-gl-media data-gl-hero-media data-gl-fluid-boost src={quoteIcon} alt="" className="absolute top-[6px] h-[25px] w-[28px]" />
         </div>
         <div className="flex min-w-0 flex-1 flex-col gap-[91px]">
-          <div data-gl-flow-text className="about-copy flow-root font-jakarta text-[20px] font-normal uppercase leading-[32px] text-white md:text-[26px] md:leading-[41px]">
+          <div data-gl-flow-text data-gl-fluid-boost className="about-copy flow-root font-jakarta text-[20px] font-normal uppercase leading-[32px] text-white md:text-[26px] md:leading-[41px]">
             <div
               data-gl-media
               data-gl-hero-media
@@ -602,7 +602,7 @@ function About() {
             >
               <img src={aboutPortrait} alt="Anna Loban portrait" className="h-full w-full object-cover" />
             </div>
-            <span data-gl-text data-gl-text-no-fluid>About . </span>
+            <span data-gl-text data-gl-text-no-fluid>About. </span>
             <span data-gl-text data-gl-text-no-fluid className="text-white/60">
               I am a senior UX/UI designer. Strong product structure and refined visuals go hand in hand. Working independently, I create design systems that move business forward and save development time.{" "}
             </span>
@@ -858,7 +858,7 @@ function Footer() {
   return (
     <section className="relative mt-0 flex w-full flex-col pt-[40px] md:max-lg:w-[775px] lg:mt-0 lg:h-[874px] lg:pt-[72px]">
       <div className="flex w-full items-start justify-between">
-        <p data-gl-text data-gl-hero-text className="font-jakarta text-[13px] font-normal uppercase leading-[25px] text-white/40">
+        <p data-gl-flow-text data-gl-fluid-boost className="font-jakarta text-[13px] font-normal uppercase leading-[25px] text-white/40">
           Start a project
         </p>
         <p data-gl-text data-gl-hero-text className="w-[288px] font-jakarta text-base font-normal uppercase leading-[25px] text-right text-white lg:w-[180px] lg:font-mono">
@@ -868,7 +868,7 @@ function Footer() {
         </p>
       </div>
 
-      <h2 data-gl-flow-text className="mt-[32px] font-display text-[32px] font-light uppercase leading-[48px] tracking-[-2.24px] text-white md:text-[54px] md:leading-[62px] md:tracking-[-0.5px] md:max-lg:!mt-[40px] md:max-lg:!text-[56px] md:max-lg:!leading-[74px] md:max-lg:!tracking-[-3.92px] lg:mt-[40px] lg:text-[96px] lg:leading-[106px] lg:tracking-[-6.72px]">
+      <h2 data-gl-flow-text data-gl-fluid-boost className="mt-[32px] font-display text-[32px] font-light uppercase leading-[48px] tracking-[-2.24px] text-white md:text-[54px] md:leading-[62px] md:tracking-[-0.5px] md:max-lg:!mt-[40px] md:max-lg:!text-[56px] md:max-lg:!leading-[74px] md:max-lg:!tracking-[-3.92px] lg:mt-[40px] lg:text-[96px] lg:leading-[106px] lg:tracking-[-6.72px]">
         <span>Let`s create something</span>
         <br />
         <span className="text-white/35">amazing</span>{" "}

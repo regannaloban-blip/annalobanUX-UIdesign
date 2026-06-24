@@ -1,5 +1,5 @@
 import { Mesh, Plane, Program, Texture } from "ogl";
-import { mediaFragment, planeVertex, textureFragment } from "./shaders.js";
+import { boostedMediaFragment, mediaFragment, planeVertex, textureFragment } from "./shaders.js";
 import { createCanvas, getBounds, isInView, updateMeshFromBounds } from "./utils.js";
 
 export class MediaPlane {
@@ -10,6 +10,7 @@ export class MediaPlane {
     this.canvas = canvas;
     this.bounds = getBounds(element);
     this.image = element.matches("img") ? element : element.querySelector("img");
+    this.fluidBoost = element.hasAttribute("data-gl-fluid-boost");
     this.createTexture();
     this.createMesh();
     this.element.setAttribute("data-gl-media-active", "");
@@ -61,7 +62,7 @@ export class MediaPlane {
     const geometry = new Plane(this.gl);
     const program = new Program(this.gl, {
       vertex: planeVertex,
-      fragment: hasImage ? mediaFragment : textureFragment,
+      fragment: hasImage ? (this.fluidBoost ? boostedMediaFragment : mediaFragment) : textureFragment,
       uniforms: hasImage
         ? {
             tMap: { value: this.texture },

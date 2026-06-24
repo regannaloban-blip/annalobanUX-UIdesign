@@ -27,6 +27,56 @@ export const textureFragment = /* glsl */ `
   }
 `;
 
+export const fluidTextFragment = /* glsl */ `
+  precision highp float;
+
+  uniform sampler2D tMap;
+  uniform sampler2D tFluid;
+  uniform vec4 uScreenRect;
+  uniform float uAlpha;
+  uniform float uDistortion;
+  uniform float uTime;
+
+  varying vec2 vUv;
+
+  void main() {
+    vec2 screenUv = vec2(
+      uScreenRect.x + vUv.x * uScreenRect.z,
+      uScreenRect.y + vUv.y * uScreenRect.w
+    );
+    vec3 fluid = texture2D(tFluid, screenUv).rgb;
+    vec2 offset = fluid.rg * uDistortion;
+    vec4 color = texture2D(tMap, vUv - offset);
+
+    gl_FragColor = vec4(color.rgb, color.a * uAlpha);
+  }
+`;
+
+export const boostedMediaFragment = /* glsl */ `
+  precision highp float;
+
+  uniform sampler2D tMap;
+  uniform vec2 uPlaneSize;
+  uniform vec2 uImageSize;
+  uniform float uAlpha;
+
+  varying vec2 vUv;
+
+  vec2 coverUv(vec2 uv, vec2 plane, vec2 image) {
+    vec2 ratio = vec2(
+      min((plane.x / plane.y) / (image.x / image.y), 1.0),
+      min((plane.y / plane.x) / (image.y / image.x), 1.0)
+    );
+    return uv * ratio + (1.0 - ratio) * 0.5;
+  }
+
+  void main() {
+    vec2 uv = coverUv(vUv, max(uPlaneSize, vec2(1.0)), max(uImageSize, vec2(1.0)));
+    vec4 color = texture2D(tMap, uv);
+    gl_FragColor = vec4(color.rgb, color.a * uAlpha);
+  }
+`;
+
 export const mediaFragment = /* glsl */ `
   precision highp float;
 
