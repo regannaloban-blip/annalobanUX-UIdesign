@@ -741,11 +741,11 @@ function WorksHeading() {
   return (
     <section className="mt-0 flex w-full flex-col gap-2 py-[40px] min-[1440px]:py-[72px]">
       <div className="flex w-full flex-wrap items-end justify-between gap-y-[12px]">
-        <Display className="shrink-0 !text-[78px] !leading-[84px] !tracking-[-3.12px] min-[873px]:max-[1439px]:!text-[126px] min-[873px]:max-[1439px]:!leading-[136px] min-[873px]:max-[1439px]:!tracking-[-5.04px] min-[1440px]:!text-[168px] min-[1440px]:!leading-[154px] min-[1440px]:!tracking-[-6.72px]">some</Display>
-        <Display className="ml-auto shrink-0 !text-[78px] !leading-[84px] !tracking-[-3.12px] min-[873px]:max-[1439px]:!text-[126px] min-[873px]:max-[1439px]:!leading-[136px] min-[873px]:max-[1439px]:!tracking-[-5.04px] min-[1440px]:!text-[168px] min-[1440px]:!leading-[154px] min-[1440px]:!tracking-[-6.72px]">of my</Display>
+        <Display webglHero className="shrink-0 !text-[78px] !leading-[84px] !tracking-[-3.12px] min-[873px]:max-[1439px]:!text-[126px] min-[873px]:max-[1439px]:!leading-[136px] min-[873px]:max-[1439px]:!tracking-[-5.04px] min-[1440px]:!text-[168px] min-[1440px]:!leading-[154px] min-[1440px]:!tracking-[-6.72px]">some</Display>
+        <Display webglHero className="ml-auto shrink-0 !text-[78px] !leading-[84px] !tracking-[-3.12px] min-[873px]:max-[1439px]:!text-[126px] min-[873px]:max-[1439px]:!leading-[136px] min-[873px]:max-[1439px]:!tracking-[-5.04px] min-[1440px]:!text-[168px] min-[1440px]:!leading-[154px] min-[1440px]:!tracking-[-6.72px]">of my</Display>
       </div>
       <div className="flex w-full items-center pl-0 min-[600px]:pl-[140px] min-[1440px]:pl-[188px]">
-        <Display buffon className="w-full !text-[84px] !leading-[85px] min-[873px]:max-[1439px]:!text-[132px] min-[873px]:max-[1439px]:!leading-[122px] min-[1440px]:!text-[175px] min-[1440px]:!leading-[180.7px] min-[1440px]:tracking-[1.75px]">
+        <Display webglHero buffon className="w-full !text-[84px] !leading-[85px] min-[873px]:max-[1439px]:!text-[132px] min-[873px]:max-[1439px]:!leading-[122px] min-[1440px]:!text-[175px] min-[1440px]:!leading-[180.7px] min-[1440px]:tracking-[1.75px]">
           works
         </Display>
       </div>
@@ -756,20 +756,21 @@ function WorksHeading() {
 function ProjectCard({ work, className = "" }) {
   return (
     <article className={`flex w-[368px] max-w-full flex-col gap-3 ${className}`}>
-      <p data-gl-text className="font-jakarta text-[13px] font-normal uppercase leading-[25px] text-white/40">
+      <p data-gl-text data-gl-hero-text className="font-jakarta text-[13px] font-normal uppercase leading-[25px] text-white/40">
         {work.kind}
       </p>
-      <div data-gl-media className="relative h-[480px] w-full overflow-hidden bg-white lg:h-[480px]">
+      <div data-gl-media data-gl-hero-media className="relative h-[480px] w-full overflow-hidden bg-white lg:h-[480px]">
         <img src={work.image} alt="" className="h-full w-full object-cover" />
       </div>
       <div
         data-gl-background
+        data-gl-hero-background
         className="flex w-full items-start justify-between gap-4 border-b border-white pb-3 font-mono text-base uppercase leading-[25px] text-white md:max-lg:pb-[11px]"
       >
-        <span data-gl-text className="min-w-0 whitespace-nowrap">
+        <span data-gl-text data-gl-hero-text className="min-w-0 whitespace-nowrap">
           {work.name}
         </span>
-        <a data-gl-text href={work.href} target="_blank" rel="noreferrer" className="shrink-0 underline">
+        <a data-gl-text data-gl-hero-text href={work.href} target="_blank" rel="noreferrer" className="shrink-0 underline">
           Live
         </a>
       </div>
@@ -795,10 +796,10 @@ function Works() {
             <ProjectCard work={works[0]} />
             <ProjectCard work={works[1]} />
           </div>
-          <MonoText className="w-[257px] font-normal">Users always compare options.</MonoText>
+          <MonoText webglHero className="w-[257px] font-normal">Users always compare options.</MonoText>
         </div>
         <div className="flex h-[710px] w-full items-start justify-between py-[72px]">
-          <MonoText className="w-[271px] font-normal">The context changes with the audience.</MonoText>
+          <MonoText webglHero className="w-[271px] font-normal">The context changes with the audience.</MonoText>
           <div className="flex items-center gap-[112px]">
             <ProjectCard work={works[2]} />
             <ProjectCard work={works[3]} />
