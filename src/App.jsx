@@ -618,10 +618,10 @@ function About() {
   );
 }
 
-function PurposeMiniText() {
+function PurposeMiniText({ webglHero = false }) {
   return (
     <div className="shrink-0 pt-1">
-      <MonoText className="h-[75px] w-[264px] font-normal !text-base !leading-[25px]">
+      <MonoText webglHero={webglHero} className="h-[75px] w-[264px] font-normal !text-base !leading-[25px]">
         A web/UI designer crafting intuitive and engaging digital experiences
       </MonoText>
     </div>
@@ -634,61 +634,61 @@ function PurposeTitle() {
       <div className="flex w-full flex-col min-[600px]:hidden">
         <div className="flex w-full flex-col items-end gap-6">
           <PurposeMiniText />
-          <h2 className="w-full font-display text-[78px] font-light uppercase leading-[84px] tracking-[-3.12px] text-white">
+          <h2 data-gl-text data-gl-hero-text className="w-full font-display text-[78px] font-light uppercase leading-[84px] tracking-[-3.12px] text-white">
             design
             <br />
             with
           </h2>
         </div>
-        <h2 className="h-[85px] whitespace-nowrap font-buffon text-[84px] font-normal uppercase leading-[85px] text-white">
+        <h2 data-gl-text data-gl-hero-text className="h-[85px] whitespace-nowrap font-buffon text-[84px] font-normal uppercase leading-[85px] text-white">
           purpose
         </h2>
       </div>
 
       <div className="hidden w-full flex-col min-[600px]:max-[872px]:flex">
         <div className="flex h-[84px] w-full items-start justify-between">
-          <h2 data-gl-text className="whitespace-nowrap font-display text-[78px] font-light uppercase leading-[84px] tracking-[-3.12px] text-white">
+          <h2 data-gl-text data-gl-hero-text className="whitespace-nowrap font-display text-[78px] font-light uppercase leading-[84px] tracking-[-3.12px] text-white">
             digital
           </h2>
-          <PurposeMiniText />
+          <PurposeMiniText webglHero />
         </div>
-        <h2 data-gl-text className="h-[84px] w-full whitespace-nowrap font-display text-[78px] font-light uppercase leading-[84px] tracking-[-3.12px] text-white">
+        <h2 data-gl-text data-gl-hero-text className="h-[84px] w-full whitespace-nowrap font-display text-[78px] font-light uppercase leading-[84px] tracking-[-3.12px] text-white">
           design with
         </h2>
-        <h2 className="h-[85px] whitespace-nowrap font-buffon text-[84px] font-normal uppercase leading-[85px] text-white">
+        <h2 data-gl-text data-gl-hero-text className="h-[85px] whitespace-nowrap font-buffon text-[84px] font-normal uppercase leading-[85px] text-white">
           purpose
         </h2>
       </div>
 
       <div className="hidden w-full flex-col min-[873px]:max-[1439px]:flex">
         <div className="flex h-[136px] w-full items-start justify-between">
-          <h2 data-gl-text className="w-[437px] whitespace-nowrap text-right font-display text-[126px] font-light uppercase leading-[136px] tracking-[-5.04px] text-white">
+          <h2 data-gl-text data-gl-hero-text className="w-[437px] whitespace-nowrap text-right font-display text-[126px] font-light uppercase leading-[136px] tracking-[-5.04px] text-white">
             digital
           </h2>
-          <PurposeMiniText />
+          <PurposeMiniText webglHero />
         </div>
-        <h2 data-gl-text className="h-[136px] w-full whitespace-nowrap text-center font-display text-[126px] font-light uppercase leading-[136px] tracking-[-5.04px] text-white">
+        <h2 data-gl-text data-gl-hero-text className="h-[136px] w-full whitespace-nowrap text-center font-display text-[126px] font-light uppercase leading-[136px] tracking-[-5.04px] text-white">
           design with
         </h2>
-        <h2 data-gl-text className="mt-[11px] h-[122px] w-[544px] whitespace-nowrap font-buffon text-[132px] font-normal uppercase leading-[122px] text-white">
+        <h2 data-gl-text data-gl-hero-text className="mt-[11px] h-[122px] w-[544px] whitespace-nowrap font-buffon text-[132px] font-normal uppercase leading-[122px] text-white">
           purpose
         </h2>
       </div>
 
       <div className="hidden w-full min-[1440px]:block">
         <div className="flex h-[154px] w-full items-start gap-28">
-          <Display className="!text-[168px] !leading-[154px] !tracking-[-6.72px]">digital</Display>
+          <Display webglHero className="!text-[168px] !leading-[154px] !tracking-[-6.72px]">digital</Display>
           <div className="pt-2">
-            <MonoText className="h-[75px] w-[264px] font-normal !text-base !leading-[25px]">
+            <MonoText webglHero className="h-[75px] w-[264px] font-normal !text-base !leading-[25px]">
               A web/UI designer crafting intuitive and engaging digital experiences
             </MonoText>
           </div>
         </div>
         <div className="flex h-[154px] w-full items-center pl-[270px]">
-          <Display className="!text-[168px] !leading-[154px] !tracking-[-6.72px]">design with</Display>
+          <Display webglHero className="!text-[168px] !leading-[154px] !tracking-[-6.72px]">design with</Display>
         </div>
         <div className="flex h-[181px] w-full items-end pl-[178px]">
-          <Display buffon className="!text-[175px] !leading-[180.7px] tracking-[3.5px]">
+          <Display webglHero buffon className="!text-[175px] !leading-[180.7px] tracking-[3.5px]">
             purpose
           </Display>
         </div>
@@ -706,30 +706,30 @@ function Purpose() {
         <div className="flex w-full flex-col gap-[24px] min-[873px]:w-[362px] min-[873px]:gap-10 min-[873px]:max-[1439px]:pt-[344px] min-[1440px]:pt-[280px]">
           {advantageCards.map((card) => (
             <div className="flex w-full items-start gap-[32px]" key={card.number}>
-              <MonoText bold className="h-[25px] shrink-0 whitespace-nowrap">
+              <MonoText webglHero bold className="h-[25px] shrink-0 whitespace-nowrap">
                 {card.number}
               </MonoText>
               <div className="flex min-w-0 flex-1 flex-col gap-5">
-                <MonoText bold>{card.title}</MonoText>
-                <MonoText className="font-normal">{card.text}</MonoText>
+                <MonoText webglHero bold>{card.title}</MonoText>
+                <MonoText webglHero className="font-normal">{card.text}</MonoText>
               </div>
             </div>
           ))}
         </div>
 
         <div className="flex w-full flex-col gap-4 min-[873px]:max-[1439px]:w-[251px] min-[873px]:max-[1439px]:pt-16 min-[1440px]:h-[361px] min-[1440px]:w-[359px] min-[1440px]:pr-[108px]">
-          <MonoText className="w-full max-w-full font-normal min-[873px]:w-[251px]">
+          <MonoText webglHero className="w-full max-w-full font-normal min-[873px]:w-[251px]">
             Delivering tailored solutions for my <br className="hidden max-md:block" /> clients
           </MonoText>
           <div className="flex w-full flex-col gap-[42px] min-[873px]:w-[251px] min-[873px]:max-w-full">
-            <div data-gl-background className="flex w-full flex-col overflow-hidden border-y border-white">
+            <div data-gl-background data-gl-hero-background className="flex w-full flex-col overflow-hidden border-y border-white">
               {services.map((service, index) => (
-                <div data-gl-background className={`flex h-[41px] items-center min-[1440px]:h-[42px] ${index === 0 ? "" : "border-t border-white"}`} key={service}>
-                  <MonoText className="whitespace-nowrap font-normal">{service}</MonoText>
+                <div data-gl-background data-gl-hero-background className={`flex h-[41px] items-center min-[1440px]:h-[42px] ${index === 0 ? "" : "border-t border-white"}`} key={service}>
+                  <MonoText webglHero className="whitespace-nowrap font-normal">{service}</MonoText>
                 </div>
               ))}
             </div>
-            <Button />
+            <Button webglHero />
           </div>
         </div>
       </div>
