@@ -596,6 +596,7 @@ function About() {
           <div className="about-copy flow-root font-jakarta text-[20px] font-normal uppercase leading-[32px] text-white md:text-[26px] md:leading-[41px]">
             <div
               data-gl-media
+              data-gl-hero-media
               className="about-photo float-right ml-5 h-[200px] w-[200px] overflow-hidden bg-white md:ml-7 md:h-[239px] md:w-[239px] lg:ml-6"
             >
               <img src={aboutPortrait} alt="Anna Loban portrait" className="h-full w-full object-cover" />
@@ -607,8 +608,8 @@ function About() {
             <span data-gl-text data-gl-text-no-fluid>The result: no chaotic iterations — just constructive decisions that make sense.</span>
           </div>
           <div className="flex h-[165px] w-[353px] max-w-full flex-col gap-[42px] pr-6">
-            <MonoText className="font-normal">Combining real human behavior, clear product logic, and strong visual appeal.</MonoText>
-            <Button />
+            <MonoText webglHero className="font-normal">Combining real human behavior, clear product logic, and strong visual appeal.</MonoText>
+            <Button webglHero />
           </div>
         </div>
       </div>
