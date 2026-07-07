@@ -4,15 +4,16 @@ import SplitType from "split-type";
 import { CanvasScene } from "./webgl/CanvasScene.js";
 
 import aboutPortrait from "../assets/ai-portfolio/figma/anna-redesign/about.png";
-import project1 from "../assets/ai-portfolio/figma/anna-redesign/project-1.png";
-import project2 from "../assets/ai-portfolio/figma/anna-redesign/project-2.png";
-import project3 from "../assets/ai-portfolio/figma/anna-redesign/project-3.png";
-import project4 from "../assets/ai-portfolio/figma/anna-redesign/project-4.png";
+import project1 from "../Case/Compressed/24 colab.jpg";
+import project2 from "../Case/Compressed/smart business intelligence.jpg";
+import project3 from "../Case/Compressed/Skyliner.jpg";
+import project4 from "../Case/Compressed/your dissertation.jpg";
 import quoteIcon from "../assets/ai-portfolio/figma/anna-redesign/quote-icon.svg";
 import heroBackground from "../assets/ai-portfolio/image 16.png";
-import footerFormImage from "../assets/ai-portfolio/figma/anna-redesign/footer-form-image.png";
+import footerFormImage from "../Case/Compressed/contact.jpg";
 
 const briefHref = "mailto:ann.loban@gmail.com?subject=Website%20or%20visual%20system%20brief";
+const formSubmitHref = "https://formsubmit.co/ann.loban@gmail.com";
 const canvasSceneKey = "__annaPortfolioCanvasScene";
 const footerLinks = [
   { label: "Linkedin", href: "https://www.linkedin.com/in/annloban/" },
@@ -30,20 +31,22 @@ const works = [
   },
   {
     kind: "site/",
-    name: "your dissertation",
-    href: "https://yourdissertation.com",
-    image: project2,
-  },
-  {
-    kind: "site/",
     name: "smart business intelligence",
     href: "https://smartbusinessintelligence.co.uk",
-    image: project3,
+    image: project2,
+    imageClass: "scale-[1.02]",
+    maskBottomEdge: true,
   },
   {
     kind: "brand identity/",
-    name: "Vegas Expert",
-    href: "https://www.behance.net/gallery/55414069/Vegas-Expert-Package",
+    name: "Skyliner",
+    href: "https://skyliner.rv.ua/",
+    image: project3,
+  },
+  {
+    kind: "site/",
+    name: "your dissertation",
+    href: "https://yourdissertation.com",
     image: project4,
   },
 ];
@@ -706,12 +709,12 @@ function Purpose() {
         <div className="flex w-full flex-col gap-[24px] min-[873px]:w-[362px] min-[873px]:gap-10 min-[873px]:max-[1439px]:pt-[344px] min-[1440px]:pt-[280px]">
           {advantageCards.map((card) => (
             <div className="flex w-full items-start gap-[32px]" key={card.number}>
-              <MonoText webglHero bold className="h-[25px] shrink-0 whitespace-nowrap">
+              <MonoText bold className="h-[25px] shrink-0 whitespace-nowrap">
                 {card.number}
               </MonoText>
               <div className="flex min-w-0 flex-1 flex-col gap-5">
-                <MonoText webglHero bold>{card.title}</MonoText>
-                <MonoText webglHero className="font-normal">{card.text}</MonoText>
+                <MonoText bold>{card.title}</MonoText>
+                <MonoText className="font-normal">{card.text}</MonoText>
               </div>
             </div>
           ))}
@@ -760,7 +763,8 @@ function ProjectCard({ work, className = "" }) {
         {work.kind}
       </p>
       <div data-gl-media data-gl-hero-media className="relative h-[480px] w-full overflow-hidden bg-white lg:h-[480px]">
-        <img src={work.image} alt="" className="h-full w-full object-cover" />
+        <img src={work.image} alt="" className={`h-full w-full object-cover ${work.imageClass ?? ""}`} />
+        {work.maskBottomEdge ? <span aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-[6px] bg-[#062322]" /> : null}
       </div>
       <div
         data-gl-background
@@ -876,16 +880,31 @@ function Footer() {
       </h2>
 
       <div className="mt-[32px] grid w-full grid-cols-1 py-6 md:max-lg:!mt-[40px] md:max-lg:h-[460px] lg:mt-[40px] lg:h-[460px] lg:grid-cols-[3fr_9fr] lg:gap-[40px] lg:p-6 min-[1440px]:grid-cols-[496px_minmax(0,1fr)]">
-        <div data-gl-media data-gl-hero-media className="relative order-2 hidden h-[412px] w-[496px] max-w-full overflow-hidden lg:order-1 lg:block lg:w-full min-[1440px]:w-[496px]">
+        <div data-gl-media className="contact-image-frame relative order-2 hidden h-[412px] w-[496px] max-w-full overflow-hidden lg:order-1 lg:block lg:w-full min-[1440px]:w-[496px]">
           <img
             src={footerFormImage}
             alt=""
             aria-hidden="true"
-            className="h-full w-full object-cover md:max-lg:ml-[-11px] md:max-lg:mt-[-10px] md:max-lg:h-[432px] md:max-lg:w-[749px] md:max-lg:max-w-none"
+            className="contact-image h-full w-full object-cover md:max-lg:ml-[-11px] md:max-lg:mt-[-10px] md:max-lg:h-[432px] md:max-lg:w-[749px] md:max-lg:max-w-none"
+          />
+          <img
+            src={footerFormImage}
+            alt=""
+            aria-hidden="true"
+            className="contact-image-slice contact-image-slice--one"
+          />
+          <img
+            src={footerFormImage}
+            alt=""
+            aria-hidden="true"
+            className="contact-image-slice contact-image-slice--two"
           />
         </div>
 
-        <form action={briefHref} className="order-1 flex min-w-0 flex-col gap-[24px] max-md:gap-[32px] md:order-2 md:max-lg:!order-1 md:max-lg:!h-[412px] md:max-lg:!w-full md:max-lg:!gap-[32px] lg:gap-[32px]" aria-label="Project request form" noValidate onSubmit={submitFooterForm}>
+        <form action={formSubmitHref} method="POST" className="order-1 flex min-w-0 flex-col gap-[24px] max-md:gap-[32px] md:order-2 md:max-lg:!order-1 md:max-lg:!h-[412px] md:max-lg:!w-full md:max-lg:!gap-[32px] lg:gap-[32px]" aria-label="Project request form" noValidate onSubmit={submitFooterForm}>
+          <input type="hidden" name="_subject" value="New portfolio project request" />
+          <input type="hidden" name="_template" value="table" />
+          <input type="hidden" name="_replyto" value={formValues.email} />
           <div data-gl-ignore-fluid className="flex w-full flex-col gap-[24px]">
             <FooterField
               error={getFieldError("email")}
