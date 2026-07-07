@@ -12,8 +12,9 @@ import quoteIcon from "../assets/ai-portfolio/figma/anna-redesign/quote-icon.svg
 import heroBackground from "../assets/ai-portfolio/image 16.png";
 import footerFormImage from "../Case/Compressed/contact.jpg";
 
-const briefHref = "mailto:ann.loban@gmail.com?subject=Website%20or%20visual%20system%20brief";
-const formSubmitHref = "https://formsubmit.co/ann.loban@gmail.com";
+const contactEmail = "hello.anna.loban@proton.me";
+const briefHref = `mailto:${contactEmail}?subject=Website%20or%20visual%20system%20brief`;
+const formSubmitHref = `https://formsubmit.co/${contactEmail}`;
 const canvasSceneKey = "__annaPortfolioCanvasScene";
 const footerLinks = [
   { label: "Linkedin", href: "https://www.linkedin.com/in/annloban/" },
