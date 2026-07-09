@@ -11,6 +11,7 @@ import project4 from "../Case/Compressed/your dissertation.jpg";
 import quoteIcon from "../assets/ai-portfolio/figma/anna-redesign/quote-icon.svg";
 import heroBackground from "../assets/ai-portfolio/image 16.png";
 import footerFormImage from "../Case/Compressed/contact.jpg";
+import contactLiquidVideo from "../Case/Compressed/contact-smoke-red.mp4";
 
 const contactEmail = "hello.anna.loban@proton.me";
 const briefHref = `mailto:${contactEmail}?subject=Website%20or%20visual%20system%20brief`;
@@ -882,23 +883,16 @@ function Footer() {
 
       <div className="mt-[32px] grid w-full grid-cols-1 py-6 md:max-lg:!mt-[40px] md:max-lg:h-[460px] lg:mt-[40px] lg:h-[460px] lg:grid-cols-[3fr_9fr] lg:gap-[40px] lg:p-6 min-[1440px]:grid-cols-[496px_minmax(0,1fr)]">
         <div data-gl-media className="contact-image-frame relative order-2 hidden h-[412px] w-[496px] max-w-full overflow-hidden lg:order-1 lg:block lg:w-full min-[1440px]:w-[496px]">
-          <img
-            src={footerFormImage}
-            alt=""
+          <video
+            src={contactLiquidVideo}
+            poster={footerFormImage}
+            className="contact-video h-full w-full object-cover"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
             aria-hidden="true"
-            className="contact-image h-full w-full object-cover md:max-lg:ml-[-11px] md:max-lg:mt-[-10px] md:max-lg:h-[432px] md:max-lg:w-[749px] md:max-lg:max-w-none"
-          />
-          <img
-            src={footerFormImage}
-            alt=""
-            aria-hidden="true"
-            className="contact-image-slice contact-image-slice--one"
-          />
-          <img
-            src={footerFormImage}
-            alt=""
-            aria-hidden="true"
-            className="contact-image-slice contact-image-slice--two"
           />
         </div>
 
