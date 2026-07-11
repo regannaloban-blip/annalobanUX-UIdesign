@@ -1,6 +1,4 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import gsap from "gsap";
-import SplitType from "split-type";
 import { CanvasScene } from "./webgl/CanvasScene.js";
 
 import aboutPortrait from "../assets/ai-portfolio/figma/anna-redesign/about.png";
@@ -15,7 +13,8 @@ import contactLiquidVideo from "../Case/Compressed/contact-smoke-red.mp4";
 
 const contactEmail = "hello.anna.loban@proton.me";
 const briefHref = `mailto:${contactEmail}?subject=Website%20or%20visual%20system%20brief`;
-const formSubmitHref = `https://formsubmit.co/${contactEmail}`;
+const formSubmitHref = "https://anna-contact-form-v2.ann-loban.workers.dev";
+const contactFormId = "contact-form";
 const canvasSceneKey = "__annaPortfolioCanvasScene";
 const footerLinks = [
   { label: "Linkedin", href: "https://www.linkedin.com/in/annloban/" },
@@ -108,72 +107,20 @@ function useDesktopEffects() {
 
 function Preloader({ reduced }) {
   const rootRef = useRef(null);
-  const titleRef = useRef(null);
 
   useEffect(() => {
-    if (!rootRef.current || !titleRef.current) return;
-    if (reduced) {
-      gsap.to(rootRef.current, {
-        autoAlpha: 0,
-        duration: 0.2,
-        delay: 0.2,
-        onComplete: () => rootRef.current?.remove(),
-      });
-      return;
-    }
-
-    const split = new SplitType(titleRef.current, {
-      types: "chars,words",
-      charClass: "preloader-char",
-      wordClass: "preloader-word",
-    });
-    const tl = gsap.timeline({
-      defaults: { ease: "power2.inOut" },
-      onComplete: () => {
-        split.revert();
-        rootRef.current?.remove();
-      },
-    });
-
-    tl.to(split.chars, {
-      color: "#e60006",
-      textShadow: "0 0 10px rgba(255,0,0,.75), 0 0 24px rgba(255,0,0,.45)",
-      filter: "blur(5px)",
-      stagger: { each: 0.1, from: "start" },
-      duration: 0.55,
-    })
-      .to(
-        rootRef.current,
-        {
-          filter: "blur(500px)",
-          duration: 1,
-        },
-        "exit",
-      )
-      .to(
-        rootRef.current,
-        {
-          opacity: 0,
-          duration: 1,
-        },
-        "exit+=0.1",
-      );
-
-    return () => {
-      tl.kill();
-      split.revert();
-    };
+    const timer = window.setTimeout(() => rootRef.current?.remove(), reduced ? 220 : 1150);
+    return () => window.clearTimeout(timer);
   }, [reduced]);
 
   return (
     <section
       ref={rootRef}
-      className="fixed inset-0 z-[1000] flex h-screen w-full items-center justify-center bg-black pointer-events-none"
+      className={`preloader fixed inset-0 z-[1000] flex h-screen w-full items-center justify-center bg-black pointer-events-none ${
+        reduced ? "preloader-reduced" : ""
+      }`}
     >
-      <h1
-        ref={titleRef}
-        className="font-display text-4xl font-semibold uppercase text-white md:text-6xl"
-      >
+      <h1 className="preloader-title font-display text-4xl font-light uppercase text-white md:text-6xl">
         Initializing
       </h1>
     </section>
@@ -232,11 +179,42 @@ function CanvasLayer({ enabled }) {
   );
 }
 
+function scrollToContactForm(event) {
+  const form = document.getElementById(contactFormId);
+
+  if (!form) return;
+
+  event.preventDefault();
+
+  const targetY = form.getBoundingClientRect().top + window.scrollY - (window.innerHeight - form.offsetHeight) / 2;
+  const startY = window.scrollY;
+  const distance = targetY - startY;
+
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    window.scrollTo(0, targetY);
+    return;
+  }
+
+  const duration = window.matchMedia("(min-width: 1024px)").matches ? 1800 : 1200;
+  const start = performance.now();
+  const easeInOutCubic = (value) => (value < 0.5 ? 4 * value * value * value : 1 - ((-2 * value + 2) ** 3) / 2);
+
+  const animate = (time) => {
+    const progress = Math.min((time - start) / duration, 1);
+    window.scrollTo(0, startY + distance * easeInOutCubic(progress));
+
+    if (progress < 1) window.requestAnimationFrame(animate);
+  };
+
+  window.requestAnimationFrame(animate);
+}
+
 function Button({ className = "", webglHero = false }) {
   return (
     <a
       {...(webglHero ? { "data-gl-hero-background": true } : {})}
       href={briefHref}
+      onClick={scrollToContactForm}
       className={`inline-flex h-12 w-fit items-center justify-center border-b border-black bg-white px-10 text-black ${className}`}
     >
       <span
@@ -289,7 +267,7 @@ function FooterField({
       </span>
       <FieldTag
         aria-invalid={error ? "true" : "false"}
-        className={`footer-field-control min-w-0 w-full rounded-[1px] border border-[#94A3B8] bg-transparent px-[11px] font-jakarta text-base font-normal normal-case leading-6 text-white/60 outline-none placeholder:text-white/60 ${
+        className={`footer-field-control min-w-0 w-full rounded-[1px] border border-[#94A3B8] bg-transparent px-[11px] font-jakarta text-base font-normal normal-case leading-6 text-white outline-none placeholder:text-white/60 ${
           as === "textarea" ? "h-[100px] resize-none py-[15px]" : "h-14"
         }`}
         name={name}
@@ -574,7 +552,7 @@ function ProductIntro() {
         </div>
       </div>
       <div className="flex w-full flex-col items-start text-white">
-        <Display buffon webglHero className="lg:mb-[-24px]">
+        <Display buffon webglHero>
           Product
         </Display>
         <div className="flex w-full flex-col gap-5 lg:flex-row lg:items-start lg:gap-[194px]">
@@ -771,7 +749,7 @@ function ProjectCard({ work, className = "" }) {
       <div
         data-gl-background
         data-gl-hero-background
-        className="flex w-full items-start justify-between gap-4 border-b border-white pb-3 font-mono text-base uppercase leading-[25px] text-white md:max-lg:pb-[11px]"
+        className="flex w-full items-start justify-between gap-4 border-b border-white pb-3 font-jakarta text-base font-normal uppercase leading-[25px] text-white md:max-lg:pb-[11px]"
       >
         <span data-gl-text data-gl-hero-text className="min-w-0 whitespace-nowrap">
           {work.name}
@@ -825,6 +803,10 @@ function Footer() {
   });
   const [formTouched, setFormTouched] = useState({});
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState("idle");
+  const successTimerRef = useRef(null);
+
+  useEffect(() => () => window.clearTimeout(successTimerRef.current), []);
 
   const validateFooterForm = (values) => {
     const errors = {};
@@ -847,17 +829,42 @@ function Footer() {
   const updateField = (event) => {
     const { name, value } = event.target;
     setFormValues((current) => ({ ...current, [name]: value }));
+    setSubmitStatus("idle");
   };
   const markFieldTouched = (event) => {
     const { name, value } = event.target;
     setFormValues((current) => ({ ...current, [name]: value }));
     setFormTouched((current) => ({ ...current, [name]: true }));
+    setSubmitStatus("idle");
   };
-  const submitFooterForm = (event) => {
+  const submitFooterForm = async (event) => {
+    event.preventDefault();
     setFormSubmitted(true);
+    setSubmitStatus("idle");
+    window.clearTimeout(successTimerRef.current);
 
     if (Object.keys(formErrors).length > 0) {
-      event.preventDefault();
+      return;
+    }
+
+    setSubmitStatus("sending");
+
+    try {
+      const response = await fetch(event.currentTarget.action, {
+        method: "POST",
+        body: new FormData(event.currentTarget),
+        headers: { Accept: "application/json" },
+      });
+
+      if (!response.ok) throw new Error("Form submit failed");
+
+      setSubmitStatus("success");
+      setFormValues({ email: "", name: "", project: "", message: "" });
+      setFormTouched({});
+      setFormSubmitted(false);
+      successTimerRef.current = window.setTimeout(() => setSubmitStatus("idle"), 3000);
+    } catch {
+      setSubmitStatus("error");
     }
   };
 
@@ -867,7 +874,7 @@ function Footer() {
         <p data-gl-flow-text data-gl-fluid-boost className="font-jakarta text-[13px] font-normal uppercase leading-[25px] text-white/40">
           Start a project
         </p>
-        <p data-gl-text data-gl-hero-text className="w-[288px] font-jakarta text-base font-normal uppercase leading-[25px] text-right text-white lg:w-[180px] lg:font-mono">
+        <p data-gl-text data-gl-hero-text className="w-[288px] font-jakarta text-base font-normal uppercase leading-[25px] text-right text-white lg:w-[180px]">
           Open for a few
           <br />
           selected projects
@@ -896,7 +903,7 @@ function Footer() {
           />
         </div>
 
-        <form action={formSubmitHref} method="POST" className="order-1 flex min-w-0 flex-col gap-[24px] max-md:gap-[32px] md:order-2 md:max-lg:!order-1 md:max-lg:!h-[412px] md:max-lg:!w-full md:max-lg:!gap-[32px] lg:gap-[32px]" aria-label="Project request form" noValidate onSubmit={submitFooterForm}>
+        <form id={contactFormId} action={formSubmitHref} method="POST" className="order-1 flex min-w-0 flex-col gap-[24px] max-md:gap-[32px] md:order-2 md:max-lg:!order-1 md:max-lg:!h-[412px] md:max-lg:!w-full md:max-lg:!gap-[32px] lg:gap-[32px]" aria-label="Project request form" noValidate onSubmit={submitFooterForm}>
           <input type="hidden" name="_subject" value="New portfolio project request" />
           <input type="hidden" name="_template" value="table" />
           <input type="hidden" name="_replyto" value={formValues.email} />
@@ -907,7 +914,7 @@ function Footer() {
               name="email"
               onBlur={markFieldTouched}
               onChange={updateField}
-              placeholder="example@gmail.com"
+              placeholder="e.g. hello@company.com"
               type="email"
               value={formValues.email}
             />
@@ -918,7 +925,7 @@ function Footer() {
                 name="name"
                 onBlur={markFieldTouched}
                 onChange={updateField}
-                placeholder="Jane Smith"
+                placeholder="e.g. Jane Smith"
                 value={formValues.name}
               />
               <FooterField
@@ -926,7 +933,7 @@ function Footer() {
                 name="project"
                 onBlur={markFieldTouched}
                 onChange={updateField}
-                placeholder="Orange"
+                placeholder="e.g. Northstar Studio"
                 required={false}
                 value={formValues.project}
               />
@@ -937,18 +944,30 @@ function Footer() {
               name="message"
               onBlur={markFieldTouched}
               onChange={updateField}
-              placeholder="Type your message here..."
+              placeholder="e.g. I need a website for..."
               required={false}
               value={formValues.message}
             />
           </div>
-          <button
-            data-gl-hero-background
-            className="flex h-12 w-full items-center justify-center border-b border-black bg-white px-10 font-jakarta text-base font-bold uppercase leading-[25px] text-black"
-            type="submit"
-          >
-            <span data-gl-text data-gl-hero-text data-color="black" className="block whitespace-nowrap leading-[25px]">Start a project</span>
-          </button>
+          <div className="relative">
+            <button
+              className="flex h-12 w-full items-center justify-center border-b border-black bg-white px-10 font-jakarta text-base font-bold uppercase leading-[25px] text-black transition duration-200 lg:hover:bg-[#A40000] lg:hover:text-white/90 active:scale-[0.99] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white disabled:cursor-wait disabled:bg-white/65"
+              disabled={submitStatus === "sending"}
+              type="submit"
+            >
+              <span className="block whitespace-nowrap leading-[25px]">
+                {submitStatus === "sending" ? "Sending..." : "Start a project"}
+              </span>
+            </button>
+            <p
+              aria-live="polite"
+              className={`pointer-events-none absolute left-0 top-full mt-1 w-full text-center font-jakarta text-[14px] font-normal normal-case leading-5 transition-opacity duration-300 ease-out ${
+                submitStatus === "success" ? "text-white opacity-100" : submitStatus === "error" ? "text-red-400 opacity-100" : "opacity-0"
+              }`}
+            >
+              {submitStatus === "error" ? "Could not send your message. Please try again." : "Message sent successfully"}
+            </p>
+          </div>
         </form>
       </div>
     </section>
