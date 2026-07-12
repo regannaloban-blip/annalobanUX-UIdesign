@@ -178,6 +178,10 @@ img {
 }
 
 @media (min-width: 875px) and (max-width: 1439px) {
+  .purpose-section {
+    max-width: 775px;
+  }
+
   .ux-mini-text {
     flex-shrink: 0;
   }
