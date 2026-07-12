@@ -35,7 +35,8 @@ const works = [
     name: "smart business intelligence",
     href: "https://smartbusinessintelligence.co.uk",
     image: project2,
-    imageClass: "scale-[1.02]",
+    imageClass: "scale-[1.06]",
+    mediaZoom: 1.02,
     maskBottomEdge: true,
   },
   {
@@ -470,7 +471,7 @@ function ResponsiveIntro() {
           className="pointer-events-none absolute left-0 top-[104px] h-[407px] w-[750px] max-w-none object-cover opacity-100 blur-[6px] min-[600px]:max-md:left-0 min-[600px]:max-md:top-[104px] min-[600px]:max-md:h-[407px] min-[600px]:max-md:w-[750px] md:left-0 md:top-[-22px] md:h-[608px] md:w-[1120px]"
         />
         <div className="hero-title-block absolute left-0 top-[280px] z-10 w-full min-[600px]:max-md:top-[339px] md:top-[365px]">
-          <h1 data-gl-text className="mb-[-16px] w-fit whitespace-nowrap font-buffon text-[84px] font-normal uppercase leading-[85px] text-white md:leading-[122px] md:text-[132px]">
+          <h1 data-gl-text className="mb-[-8px] w-fit whitespace-nowrap font-buffon text-[84px] font-normal uppercase leading-[85px] text-white min-[600px]:mb-[-10px] md:leading-[122px] md:text-[132px]">
             Hello!
           </h1>
           <div className="hero-anna-row w-full">
@@ -500,7 +501,7 @@ function ResponsiveIntro() {
               <span data-gl-text className="inline-block whitespace-nowrap">/ Graphic</span>
               <span data-gl-text className="inline-block whitespace-nowrap">/ identity</span>
             </div>
-            <h2 data-gl-text className="order-1 font-display text-[78px] font-light uppercase leading-[84px] tracking-[-3.12px] text-white min-[600px]:order-2 min-[600px]:w-fit md:whitespace-nowrap md:text-[126px] md:leading-[136px] md:tracking-[-5.04px]">
+            <h2 data-gl-text className="order-1 mt-[8px] font-display text-[78px] font-light uppercase leading-[84px] tracking-[-3.12px] text-white min-[600px]:order-2 min-[600px]:w-fit md:whitespace-nowrap md:text-[126px] md:leading-[136px] md:tracking-[-5.04px]">
               Designer
             </h2>
           </div>
@@ -585,13 +586,15 @@ function About() {
             >
               <img src={aboutPortrait} alt="Anna Loban portrait" className="h-full w-full object-cover" />
             </div>
-            <span data-gl-text data-gl-text-no-fluid>About. </span>
+            <span data-gl-text data-gl-text-no-fluid>About.</span>
+            <br className="max-[599px]:block hidden" />
+            {" "}
             <span data-gl-text data-gl-text-no-fluid className="text-white/60">
               I am a senior UX/UI designer. Strong product structure and refined visuals go hand in hand. Working independently, I create design systems that move business forward and save development time.{" "}
             </span>
             <span data-gl-text data-gl-text-no-fluid>The result: no chaotic iterations — just constructive decisions that make sense.</span>
           </div>
-          <div className="flex h-[165px] w-[353px] max-w-full flex-col gap-[42px] pr-6">
+          <div className="flex h-auto w-[353px] max-w-full flex-col gap-[42px] pr-6 min-[387px]:h-[165px]">
             <MonoText webglHero className="font-normal">Combining real human behavior, clear product logic, and strong visual appeal.</MonoText>
             <Button webglHero />
           </div>
@@ -620,7 +623,7 @@ function PurposeTitle() {
           <h2 data-gl-text data-gl-hero-text className="w-full font-display text-[78px] font-light uppercase leading-[84px] tracking-[-3.12px] text-white">
             design
             <br />
-            with
+            <span className="relative top-[-2px]">with</span>
           </h2>
         </div>
         <h2 data-gl-text data-gl-hero-text className="h-[85px] whitespace-nowrap font-buffon text-[84px] font-normal uppercase leading-[85px] text-white">
@@ -638,7 +641,7 @@ function PurposeTitle() {
         <h2 data-gl-text data-gl-hero-text className="h-[84px] w-full whitespace-nowrap font-display text-[78px] font-light uppercase leading-[84px] tracking-[-3.12px] text-white">
           design with
         </h2>
-        <h2 data-gl-text data-gl-hero-text className="h-[85px] whitespace-nowrap font-buffon text-[84px] font-normal uppercase leading-[85px] text-white">
+        <h2 data-gl-text data-gl-hero-text className="mt-[2px] h-[85px] whitespace-nowrap font-buffon text-[84px] font-normal uppercase leading-[85px] text-white">
           purpose
         </h2>
       </div>
@@ -653,7 +656,7 @@ function PurposeTitle() {
         <h2 data-gl-text data-gl-hero-text className="h-[136px] w-full whitespace-nowrap text-center font-display text-[126px] font-light uppercase leading-[136px] tracking-[-5.04px] text-white">
           design with
         </h2>
-        <h2 data-gl-text data-gl-hero-text className="mt-[11px] h-[122px] w-[544px] whitespace-nowrap font-buffon text-[132px] font-normal uppercase leading-[122px] text-white">
+        <h2 data-gl-text data-gl-hero-text className="mt-[13px] h-[122px] w-[544px] whitespace-nowrap font-buffon text-[132px] font-normal uppercase leading-[122px] text-white">
           purpose
         </h2>
       </div>
@@ -688,7 +691,7 @@ function Purpose() {
       <div className="purpose-columns mt-16 flex w-full flex-col gap-[72px] min-[873px]:mt-0 min-[873px]:flex-row min-[873px]:items-start min-[873px]:justify-between min-[873px]:gap-20">
         <div className="flex w-full flex-col gap-[24px] min-[873px]:w-[362px] min-[873px]:gap-10 min-[873px]:max-[1439px]:pt-[344px] min-[1440px]:pt-[280px]">
           {advantageCards.map((card) => (
-            <div className="flex w-full items-start gap-[32px]" key={card.number}>
+            <div data-gl-flow-text data-gl-fluid-boost className="flex w-full items-start gap-[32px]" key={card.number}>
               <MonoText bold className="h-[25px] shrink-0 whitespace-nowrap">
                 {card.number}
               </MonoText>
@@ -725,9 +728,9 @@ function WorksHeading() {
     <section className="mt-0 flex w-full flex-col gap-2 py-[40px] min-[1440px]:py-[72px]">
       <div className="flex w-full flex-wrap items-end justify-between gap-y-[12px]">
         <Display webglHero className="shrink-0 !text-[78px] !leading-[84px] !tracking-[-3.12px] min-[873px]:max-[1439px]:!text-[126px] min-[873px]:max-[1439px]:!leading-[136px] min-[873px]:max-[1439px]:!tracking-[-5.04px] min-[1440px]:!text-[168px] min-[1440px]:!leading-[154px] min-[1440px]:!tracking-[-6.72px]">some</Display>
-        <Display webglHero className="ml-auto shrink-0 !text-[78px] !leading-[84px] !tracking-[-3.12px] min-[873px]:max-[1439px]:!text-[126px] min-[873px]:max-[1439px]:!leading-[136px] min-[873px]:max-[1439px]:!tracking-[-5.04px] min-[1440px]:!text-[168px] min-[1440px]:!leading-[154px] min-[1440px]:!tracking-[-6.72px]">of my</Display>
+        <Display webglHero className="relative top-[-14px] ml-auto basis-full shrink-0 !text-[78px] !leading-[84px] !tracking-[-3.12px] min-[506px]:top-0 min-[506px]:basis-auto min-[873px]:max-[1439px]:!text-[126px] min-[873px]:max-[1439px]:!leading-[136px] min-[873px]:max-[1439px]:!tracking-[-5.04px] min-[1440px]:!text-[168px] min-[1440px]:!leading-[154px] min-[1440px]:!tracking-[-6.72px]">of my</Display>
       </div>
-      <div className="flex w-full items-center pl-0 min-[600px]:pl-[140px] min-[1440px]:pl-[188px]">
+      <div className="relative top-[-18px] flex w-full items-center pl-0 min-[506px]:top-[-2px] min-[600px]:top-[-2px] min-[600px]:pl-[140px] min-[1440px]:top-0 min-[1440px]:pl-[188px]">
         <Display webglHero buffon className="w-full !text-[84px] !leading-[85px] min-[873px]:max-[1439px]:!text-[132px] min-[873px]:max-[1439px]:!leading-[122px] min-[1440px]:!text-[175px] min-[1440px]:!leading-[180.7px] min-[1440px]:tracking-[1.75px]">
           works
         </Display>
@@ -742,7 +745,12 @@ function ProjectCard({ work, className = "" }) {
       <p data-gl-text data-gl-hero-text className="font-jakarta text-[13px] font-normal uppercase leading-[25px] text-white/40">
         {work.kind}
       </p>
-      <div data-gl-media data-gl-hero-media className="relative h-[480px] w-full overflow-hidden bg-white lg:h-[480px]">
+      <div
+        data-gl-media
+        data-gl-hero-media
+        {...(work.mediaZoom ? { "data-gl-media-zoom": work.mediaZoom } : {})}
+        className="relative h-[480px] w-full overflow-hidden bg-white lg:h-[480px]"
+      >
         <img src={work.image} alt="" className={`h-full w-full object-cover ${work.imageClass ?? ""}`} />
         {work.maskBottomEdge ? <span aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-[6px] bg-[#062322]" /> : null}
       </div>
@@ -871,7 +879,7 @@ function Footer() {
   return (
     <section className="relative mt-0 flex w-full flex-col pt-[40px] md:max-lg:w-[775px] lg:mt-0 lg:h-[874px] lg:pt-[72px]">
       <div className="flex w-full items-start justify-between">
-        <p data-gl-flow-text data-gl-fluid-boost className="font-jakarta text-[13px] font-normal uppercase leading-[25px] text-white/40">
+        <p data-gl-flow-text data-gl-fluid-boost className="shrink-0 whitespace-nowrap font-jakarta text-[13px] font-normal uppercase leading-[25px] text-white/40">
           Start a project
         </p>
         <p data-gl-text data-gl-hero-text className="w-[288px] font-jakarta text-base font-normal uppercase leading-[25px] text-right text-white lg:w-[180px]">

@@ -11,6 +11,7 @@ export class MediaPlane {
     this.bounds = getBounds(element);
     this.image = element.matches("img") ? element : element.querySelector("img");
     this.fluidBoost = element.hasAttribute("data-gl-fluid-boost");
+    this.mediaZoom = Number(element.dataset.glMediaZoom) || 1;
     this.createTexture();
     this.createMesh();
     this.element.setAttribute("data-gl-media-active", "");
@@ -68,6 +69,7 @@ export class MediaPlane {
             tMap: { value: this.texture },
             uPlaneSize: { value: [this.bounds.width, this.bounds.height] },
             uImageSize: { value: this.imageSize },
+            uMediaZoom: { value: this.mediaZoom },
             uAlpha: { value: 1 },
           }
         : {

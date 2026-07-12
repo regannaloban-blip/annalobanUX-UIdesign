@@ -58,6 +58,7 @@ export const boostedMediaFragment = /* glsl */ `
   uniform sampler2D tMap;
   uniform vec2 uPlaneSize;
   uniform vec2 uImageSize;
+  uniform float uMediaZoom;
   uniform float uAlpha;
 
   varying vec2 vUv;
@@ -71,7 +72,8 @@ export const boostedMediaFragment = /* glsl */ `
   }
 
   void main() {
-    vec2 uv = coverUv(vUv, max(uPlaneSize, vec2(1.0)), max(uImageSize, vec2(1.0)));
+    vec2 zoomedUv = (vUv - 0.5) / uMediaZoom + 0.5;
+    vec2 uv = coverUv(zoomedUv, max(uPlaneSize, vec2(1.0)), max(uImageSize, vec2(1.0)));
     vec4 color = texture2D(tMap, uv);
     gl_FragColor = vec4(color.rgb, color.a * uAlpha);
   }
@@ -83,6 +85,7 @@ export const mediaFragment = /* glsl */ `
   uniform sampler2D tMap;
   uniform vec2 uPlaneSize;
   uniform vec2 uImageSize;
+  uniform float uMediaZoom;
   uniform float uAlpha;
 
   varying vec2 vUv;
@@ -96,7 +99,8 @@ export const mediaFragment = /* glsl */ `
   }
 
   void main() {
-    vec2 uv = coverUv(vUv, max(uPlaneSize, vec2(1.0)), max(uImageSize, vec2(1.0)));
+    vec2 zoomedUv = (vUv - 0.5) / uMediaZoom + 0.5;
+    vec2 uv = coverUv(zoomedUv, max(uPlaneSize, vec2(1.0)), max(uImageSize, vec2(1.0)));
     vec4 color = texture2D(tMap, uv);
     gl_FragColor = vec4(color.rgb, color.a * uAlpha);
   }
