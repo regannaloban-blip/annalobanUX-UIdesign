@@ -1027,7 +1027,7 @@ export default function App() {
         <SectionShell>
           <Works />
         </SectionShell>
-        <SectionShell>
+        <SectionShell shellClassName="footer-shell">
           <Footer />
         </SectionShell>
       </>

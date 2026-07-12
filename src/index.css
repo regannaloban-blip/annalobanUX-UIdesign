@@ -257,6 +257,12 @@ img {
   }
 }
 
+@media (min-width: 872px) and (max-width: 1023px) {
+  .section-shell.footer-shell {
+    width: calc(100vw - 98px);
+  }
+}
+
 @media (min-width: 1024px) {
   .section-shell {
     width: min(1488px, calc(100vw - 98px));
