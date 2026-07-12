@@ -384,7 +384,7 @@ function StableHeroGridOverlay() {
   ];
 
   return (
-    <div className="pointer-events-none absolute inset-x-0 top-[-2px] z-[950] hidden h-[calc(100dvh+2px)] min-[1440px]:block" aria-hidden="true">
+    <div className="pointer-events-none absolute inset-x-0 top-[-2px] z-[950] hidden h-[calc(100dvh+2px)] min-[1279px]:block" aria-hidden="true">
       <div className="section-shell relative h-full">
         <div className="desktop-hero-grid-rail absolute inset-y-0">
           {desktopGridStops.map((stop) => (
@@ -407,6 +407,32 @@ function StableHeroGridOverlay() {
               <span>{label.text}</span>
             </div>
           ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function StableHeroCtaOverlay() {
+  return (
+    <div className="pointer-events-none absolute inset-x-0 top-[-2px] z-[950] hidden h-[260px] min-[1279px]:block" aria-hidden="true">
+      <div className="section-shell relative h-full">
+        <div className="desktop-hero-grid-rail absolute inset-y-0">
+          <div
+            className="desktop-hero-grid-anchor pointer-events-auto absolute top-[182px] flex items-start gap-[11px]"
+            style={{ left: desktopGridStops[2] }}
+          >
+            <span className="relative block h-[20px] w-[20px] shrink-0" aria-hidden="true">
+              <span className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-white" />
+              <span className="absolute left-0 top-1/2 h-px w-full -translate-y-1/2 bg-white" />
+            </span>
+            <div className="mt-[-4px] flex min-w-0 flex-1 flex-col items-start gap-[26px] pr-8">
+              <MonoText italic className="w-full !text-[20px] font-normal !leading-[33px] md:!text-[20px] md:!leading-[33px]">
+                Digital design beyond trends — built to be clear, logical, and easy to launch.
+              </MonoText>
+              <Button />
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -443,7 +469,7 @@ function HeroTopBrief() {
 
 function ResponsiveViewportGuide() {
   return (
-    <div className="pointer-events-none absolute inset-x-0 top-[-220px] z-20 h-[1054px] min-[600px]:max-md:top-[-220px] min-[600px]:max-md:h-[1054px] md:top-[-140px] md:h-[1072px] min-[1440px]:hidden" aria-hidden="true">
+    <div className="pointer-events-none absolute inset-x-0 top-[-220px] z-20 h-[1054px] min-[600px]:max-md:top-[-220px] min-[600px]:max-md:h-[1054px] md:top-[-140px] md:h-[1072px] min-[1279px]:hidden" aria-hidden="true">
       <span className="absolute left-[10px] top-0 h-full w-px bg-gradient-to-b from-white/25 via-white/25 to-transparent" />
       <span className="absolute right-[10px] top-0 h-full w-px bg-gradient-to-b from-white/25 via-white/25 to-transparent" />
     </div>
@@ -452,7 +478,7 @@ function ResponsiveViewportGuide() {
 
 function ResponsiveIntro() {
   return (
-    <section className="responsive-intro relative mt-[59px] w-full min-[600px]:max-md:mx-auto min-[600px]:max-md:mt-0 min-[600px]:max-md:w-[598px] md:mt-0 md:w-[775px] min-[1024px]:w-full min-[1440px]:hidden">
+    <section className="responsive-intro relative mt-[59px] w-full min-[600px]:max-md:mx-auto min-[600px]:max-md:mt-0 min-[600px]:max-md:w-[598px] md:mt-0 md:w-[775px] min-[1024px]:w-full min-[1279px]:hidden">
       <div className="hero-cta-block absolute left-0 top-[7px] z-20 flex w-[390px] max-w-none items-start gap-[11px] min-[600px]:max-md:top-[66px] md:top-[112px]">
         <PlusMarker className="mt-2" />
         <div className="flex w-[359px] shrink-0 flex-col items-start gap-[26px] pr-8">
@@ -525,7 +551,7 @@ function BackgroundGlow() {
 
 function Hero() {
   return (
-    <header className="relative hidden h-[748px] w-full flex-col gap-2 overflow-visible pb-0 pt-[354px] min-[1440px]:flex">
+    <header className="relative hidden h-[748px] w-full flex-col gap-2 overflow-visible pb-0 pt-[354px] min-[1279px]:flex">
       <BackgroundGlow />
       <div className="relative z-10 flex w-full items-center">
         <Display as="h1" buffon webglHero>
@@ -543,7 +569,7 @@ function Hero() {
 
 function ProductIntro() {
   return (
-    <section className="hidden h-[592px] w-full flex-col items-start py-[72px] min-[1440px]:flex">
+    <section className="hidden h-[592px] w-full flex-col items-start py-[72px] min-[1279px]:flex">
       <div className="flex h-[158px] w-full flex-col gap-10 pb-1 lg:flex-row lg:items-center lg:justify-between lg:gap-8">
         <Display className="lg:tracking-[-6.72px]" webglHero>UX/UI</Display>
         <div className="flex w-[286px] max-w-full flex-col items-start gap-[42px] lg:h-[75px] lg:w-[359px] lg:gap-0 lg:pr-8">
@@ -1005,7 +1031,6 @@ export default function App() {
           decor={
             <>
               <ResponsiveViewportGuide />
-              <HeroTopBrief />
             </>
           }
         >
@@ -1040,6 +1065,7 @@ export default function App() {
       <Preloader reduced={reduced} />
       <CanvasLayer enabled={desktopEffects && !reduced} />
       <StableHeroGridOverlay />
+      <StableHeroCtaOverlay />
       <main className="relative z-10 flex min-h-screen flex-col gap-0 overflow-x-hidden pb-5 pt-[49px] lg:gap-0 lg:pb-[40px] lg:pt-[32px]" aria-label="Anna Loban portfolio">
         <div className="relative z-10 flex flex-col gap-0">
           {page}
