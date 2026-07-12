@@ -570,9 +570,9 @@ function Hero() {
 function ProductIntro() {
   return (
     <section className="hidden h-[592px] w-full flex-col items-start py-[72px] min-[1440px]:flex">
-      <div className="flex h-[158px] w-full flex-col gap-10 pb-1 lg:flex-row lg:items-center lg:justify-between lg:gap-8">
+      <div className="flex h-[158px] w-full flex-col gap-10 pb-1 lg:flex-row lg:items-start lg:justify-between lg:gap-8">
         <Display className="lg:tracking-[-6.72px]" webglHero>UX/UI</Display>
-        <div className="flex w-[286px] max-w-full flex-col items-start gap-[42px] lg:h-[75px] lg:w-[359px] lg:gap-0 lg:pr-8">
+        <div className="flex w-[286px] max-w-full flex-col items-start gap-[42px] lg:h-[75px] lg:w-[359px] lg:gap-0 lg:pr-8 lg:pt-1">
           <MonoText webglHero className="w-full max-w-[327px] font-normal">
             Shaping clear visual interfaces for thoughtful digital products and the people who use them.
           </MonoText>
@@ -664,7 +664,9 @@ function PurposeTitle() {
           <h2 className="w-[437px] whitespace-nowrap text-right font-display text-[126px] font-light uppercase leading-[136px] tracking-[-5.04px] text-white">
             digital
           </h2>
-          <PurposeMiniText webglHero />
+          <div className="pt-1">
+            <PurposeMiniText webglHero />
+          </div>
         </div>
         <h2 className="mt-[-14px] h-[136px] w-full whitespace-nowrap text-center font-display text-[126px] font-light uppercase leading-[136px] tracking-[-5.04px] text-white">
           design with
@@ -677,7 +679,7 @@ function PurposeTitle() {
       <div className="hidden w-full min-[1440px]:block">
         <div className="flex h-[154px] w-full items-start gap-28">
           <Display className="!text-[168px] !leading-[154px] !tracking-[-6.72px]">digital</Display>
-          <div className="pt-2">
+          <div className="pt-3">
             <MonoText webglHero className="h-[75px] w-[264px] font-normal !text-base !leading-[25px]">
               A web/UI designer crafting intuitive and engaging digital experiences
             </MonoText>
