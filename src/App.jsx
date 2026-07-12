@@ -877,7 +877,7 @@ function Footer() {
   };
 
   return (
-    <section className="relative mt-0 flex w-full flex-col pt-[40px] md:max-lg:w-[775px] lg:mt-0 lg:h-[874px] lg:pt-[72px]">
+    <section className="relative mt-0 flex w-full flex-col pt-[40px] lg:mt-0 lg:h-[874px] lg:pt-[72px]">
       <div className="flex w-full items-start justify-between">
         <p data-gl-flow-text data-gl-fluid-boost className="shrink-0 whitespace-nowrap font-jakarta text-[13px] font-normal uppercase leading-[25px] text-white/40">
           Start a project
@@ -889,7 +889,7 @@ function Footer() {
         </p>
       </div>
 
-      <h2 data-gl-flow-text data-gl-fluid-boost className="mt-[32px] font-display text-[32px] font-light uppercase leading-[48px] tracking-[-2.24px] text-white md:text-[54px] md:leading-[62px] md:tracking-[-0.5px] md:max-lg:!mt-[40px] md:max-lg:!text-[56px] md:max-lg:!leading-[74px] md:max-lg:!tracking-[-3.92px] lg:mt-[40px] lg:text-[96px] lg:leading-[106px] lg:tracking-[-6.72px]">
+      <h2 className="mt-[32px] font-display text-[32px] font-light uppercase leading-[48px] tracking-[-2.24px] text-white md:text-[54px] md:leading-[62px] md:tracking-[-0.5px] md:max-lg:!mt-[40px] md:max-lg:!text-[56px] md:max-lg:!leading-[74px] md:max-lg:!tracking-[-3.92px] lg:mt-[40px] lg:text-[96px] lg:leading-[106px] lg:tracking-[-6.72px]">
         <span>Let`s create something</span>
         <br />
         <span className="text-white/35">amazing</span>{" "}
