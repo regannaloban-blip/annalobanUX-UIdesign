@@ -384,7 +384,7 @@ function StableHeroGridOverlay() {
   ];
 
   return (
-    <div className="pointer-events-none absolute inset-x-0 top-[-2px] z-[950] hidden h-[calc(100dvh+2px)] min-[1279px]:block" aria-hidden="true">
+    <div className="pointer-events-none absolute inset-x-0 top-[-2px] z-[950] hidden h-[calc(100dvh+2px)] min-[1440px]:block" aria-hidden="true">
       <div className="section-shell relative h-full">
         <div className="desktop-hero-grid-rail absolute inset-y-0">
           {desktopGridStops.map((stop) => (
@@ -415,7 +415,7 @@ function StableHeroGridOverlay() {
 
 function StableHeroCtaOverlay() {
   return (
-    <div className="pointer-events-none absolute inset-x-0 top-[-2px] z-[950] hidden h-[260px] min-[1279px]:block" aria-hidden="true">
+    <div className="pointer-events-none absolute inset-x-0 top-[-2px] z-[950] hidden h-[260px] min-[1440px]:block" aria-hidden="true">
       <div className="section-shell relative h-full">
         <div className="desktop-hero-grid-rail absolute inset-y-0">
           <div
@@ -469,7 +469,7 @@ function HeroTopBrief() {
 
 function ResponsiveViewportGuide() {
   return (
-    <div className="pointer-events-none absolute inset-x-0 top-[-220px] z-20 h-[1054px] min-[600px]:max-md:top-[-220px] min-[600px]:max-md:h-[1054px] md:top-[-140px] md:h-[1072px] min-[1279px]:hidden" aria-hidden="true">
+    <div className="pointer-events-none absolute inset-x-0 top-[-220px] z-20 h-[1054px] min-[600px]:max-[874px]:top-[-140px] min-[600px]:max-[874px]:h-[1072px] md:top-[-140px] md:h-[1072px] min-[1440px]:hidden" aria-hidden="true">
       <span className="absolute left-[10px] top-0 h-full w-px bg-gradient-to-b from-white/25 via-white/25 to-transparent" />
       <span className="absolute right-[10px] top-0 h-full w-px bg-gradient-to-b from-white/25 via-white/25 to-transparent" />
     </div>
@@ -478,30 +478,30 @@ function ResponsiveViewportGuide() {
 
 function ResponsiveIntro() {
   return (
-    <section className="responsive-intro relative mt-[59px] w-full min-[600px]:max-md:mx-auto min-[600px]:max-md:mt-0 min-[600px]:max-md:w-[598px] md:mt-0 md:w-[775px] min-[1024px]:w-full min-[1279px]:hidden">
-      <div className="hero-cta-block absolute left-0 top-[7px] z-20 flex w-[390px] max-w-none items-start gap-[11px] min-[600px]:max-md:top-[66px] md:top-[112px]">
+    <section className="responsive-intro relative w-full min-[600px]:max-[874px]:mx-auto md:w-full min-[1440px]:hidden">
+      <div className="hero-cta-block absolute left-0 top-[112px] z-20 flex w-[390px] max-w-none items-start gap-[11px]">
         <PlusMarker className="mt-2" />
-        <div className="flex w-[359px] shrink-0 flex-col items-start gap-[26px] pr-8">
-          <MonoText italic className="w-full !text-[20px] font-normal !leading-[33px] md:!text-[20px] md:!leading-[33px]">
+        <div className="hero-cta-content flex w-[359px] shrink-0 flex-col items-start gap-[26px] pr-8">
+          <MonoText italic className="hero-cta-copy w-full !text-[20px] font-normal !leading-[33px] md:!text-[20px] md:!leading-[33px]">
             Digital design beyond trends — built to be clear, logical, and easy to launch.
           </MonoText>
-          <Button className="h-12" />
+          <Button className="hero-cta-button h-12" />
         </div>
       </div>
 
-      <div className="absolute left-0 top-0 h-[425px] w-full overflow-visible">
+      <div className="responsive-hero-block relative w-full overflow-visible">
         <img
           src={heroBackground}
           alt=""
           aria-hidden="true"
-          className="pointer-events-none absolute left-0 top-[104px] h-[407px] w-[750px] max-w-none object-cover opacity-100 blur-[6px] min-[600px]:max-md:left-0 min-[600px]:max-md:top-[104px] min-[600px]:max-md:h-[407px] min-[600px]:max-md:w-[750px] md:left-0 md:top-[-22px] md:h-[608px] md:w-[1120px]"
+          className="pointer-events-none absolute left-0 top-[104px] h-[407px] w-[750px] max-w-none object-cover opacity-100 blur-[6px] min-[600px]:max-[874px]:left-0 min-[600px]:max-[874px]:top-[-22px] min-[600px]:max-[874px]:h-[608px] min-[600px]:max-[874px]:w-[1120px] md:left-0 md:top-[-22px] md:h-[608px] md:w-[1120px]"
         />
-        <div className="hero-title-block absolute left-0 top-[280px] z-10 w-full min-[600px]:max-md:top-[339px] md:top-[365px]">
-          <h1 data-gl-text className="mb-[-8px] w-fit whitespace-nowrap font-buffon text-[84px] font-normal uppercase leading-[85px] text-white min-[600px]:mb-[-10px] md:leading-[122px] md:text-[132px]">
+        <div className="hero-title-block relative left-0 z-10 w-full">
+          <h1 data-gl-text className="mb-[-8px] w-fit whitespace-nowrap font-buffon text-[84px] font-normal uppercase leading-[85px] text-white">
             Hello!
           </h1>
           <div className="hero-anna-row w-full">
-            <h2 data-gl-text className="w-fit whitespace-nowrap font-display text-[78px] font-light uppercase leading-[84px] tracking-[-3.12px] text-white min-[600px]:shrink-0 min-[600px]:text-right md:text-[126px] md:leading-[136px] md:tracking-[-5.04px]">
+            <h2 data-gl-text className="w-fit whitespace-nowrap font-display text-[78px] font-light uppercase leading-[84px] tracking-[-3.12px] text-white">
               Iam ANNa
             </h2>
           </div>
@@ -517,17 +517,17 @@ function ResponsiveIntro() {
             UX/UI
           </h2>
         </div>
-        <div className="flex w-full flex-col items-start text-white min-[600px]:max-md:h-[160px] md:h-[242px]">
-          <h2 data-gl-text className="mb-[-16px] font-buffon text-[84px] font-normal uppercase leading-[85px] text-white md:h-[122px] md:w-full md:text-[132px] md:leading-[122px]">
+        <div className="flex w-full flex-col items-start text-white">
+          <h2 data-gl-text className="product-title mb-[-16px] w-full font-buffon text-[84px] font-normal uppercase leading-[85px] text-white">
             Product
           </h2>
-          <div className="flex w-full flex-col items-start whitespace-nowrap min-[600px]:h-[91px] min-[600px]:flex-row min-[600px]:justify-between md:h-[136px]">
-            <div className="order-2 flex flex-col pt-4 font-jakarta text-base font-normal uppercase leading-[25px] text-white min-[600px]:order-1">
+          <div className="product-service-row flex w-full flex-col items-start whitespace-nowrap min-[600px]:flex-row min-[600px]:justify-between">
+            <div className="product-service-list order-2 flex flex-col pt-4 font-jakarta text-base font-normal uppercase leading-[25px] text-white min-[600px]:order-1">
               <span data-gl-text className="inline-block whitespace-nowrap">/ Web</span>
               <span data-gl-text className="inline-block whitespace-nowrap">/ Graphic</span>
               <span data-gl-text className="inline-block whitespace-nowrap">/ identity</span>
             </div>
-            <h2 data-gl-text className="order-1 mt-[8px] font-display text-[78px] font-light uppercase leading-[84px] tracking-[-3.12px] text-white min-[600px]:order-2 min-[600px]:w-fit md:whitespace-nowrap md:text-[126px] md:leading-[136px] md:tracking-[-5.04px]">
+            <h2 data-gl-text className="designer-title order-1 mt-[8px] w-fit font-display text-[78px] font-light uppercase leading-[84px] tracking-[-3.12px] text-white">
               Designer
             </h2>
           </div>
@@ -551,7 +551,7 @@ function BackgroundGlow() {
 
 function Hero() {
   return (
-    <header className="relative hidden h-[748px] w-full flex-col gap-2 overflow-visible pb-0 pt-[354px] min-[1279px]:flex">
+    <header className="relative hidden h-[748px] w-full flex-col gap-2 overflow-visible pb-0 pt-[354px] min-[1440px]:flex">
       <BackgroundGlow />
       <div className="relative z-10 flex w-full items-center">
         <Display as="h1" buffon webglHero>
@@ -569,7 +569,7 @@ function Hero() {
 
 function ProductIntro() {
   return (
-    <section className="hidden h-[592px] w-full flex-col items-start py-[72px] min-[1279px]:flex">
+    <section className="hidden h-[592px] w-full flex-col items-start py-[72px] min-[1440px]:flex">
       <div className="flex h-[158px] w-full flex-col gap-10 pb-1 lg:flex-row lg:items-center lg:justify-between lg:gap-8">
         <Display className="lg:tracking-[-6.72px]" webglHero>UX/UI</Display>
         <div className="flex w-[286px] max-w-full flex-col items-start gap-[42px] lg:h-[75px] lg:w-[359px] lg:gap-0 lg:pr-8">
