@@ -419,7 +419,7 @@ function StableHeroCtaOverlay() {
       <div className="section-shell relative h-full">
         <div className="desktop-hero-grid-rail absolute inset-y-0">
           <div
-            className="desktop-hero-grid-anchor pointer-events-auto absolute top-[182px] flex items-start gap-[11px]"
+            className="desktop-hero-grid-anchor pointer-events-auto absolute top-[236px] flex items-start gap-[11px]"
             style={{ left: desktopGridStops[2] }}
           >
             <span className="relative block h-[20px] w-[20px] shrink-0" aria-hidden="true">
