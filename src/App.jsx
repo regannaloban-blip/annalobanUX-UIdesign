@@ -352,7 +352,7 @@ function FirstViewportGuide() {
   ];
 
   return (
-    <div className="desktop-hero-grid-rail pointer-events-none absolute top-[-59px] z-20 hidden h-[calc(100dvh+2px)] min-[1440px]:block" aria-hidden="true">
+    <div className="desktop-hero-grid-rail pointer-events-none absolute top-[-59px] z-20 hidden h-[calc(100dvh+2px)] min-[1200px]:block" aria-hidden="true">
       {desktopGridStops.map((stop) => (
         <span
           key={stop}
@@ -384,7 +384,7 @@ function StableHeroGridOverlay() {
   ];
 
   return (
-    <div className="pointer-events-none absolute inset-x-0 top-[-2px] z-[950] hidden h-[calc(100dvh+2px)] min-[1440px]:block" aria-hidden="true">
+    <div className="pointer-events-none absolute inset-x-0 top-[-2px] z-[950] hidden h-[calc(100dvh+2px)] min-[1200px]:block" aria-hidden="true">
       <div className="section-shell relative h-full">
         <div className="desktop-hero-grid-rail absolute inset-y-0">
           {desktopGridStops.map((stop) => (
@@ -401,10 +401,10 @@ function StableHeroGridOverlay() {
               style={{ left: label.stop }}
             >
               <span className="relative block h-[20px] w-[20px] shrink-0">
-                <span className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-white" />
-                <span className="absolute left-0 top-1/2 h-px w-full -translate-y-1/2 bg-white" />
+                <span data-gl-hero-background className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-white" />
+                <span data-gl-hero-background className="absolute left-0 top-1/2 h-px w-full -translate-y-1/2 bg-white" />
               </span>
-              <span>{label.text}</span>
+              <span data-gl-text data-gl-hero-text>{label.text}</span>
             </div>
           ))}
         </div>
@@ -415,22 +415,22 @@ function StableHeroGridOverlay() {
 
 function StableHeroCtaOverlay() {
   return (
-    <div className="pointer-events-none absolute inset-x-0 top-[-2px] z-[950] hidden h-[260px] min-[1440px]:block" aria-hidden="true">
+    <div className="pointer-events-none absolute inset-x-0 top-[-2px] z-[950] hidden h-[260px] min-[1200px]:block" aria-hidden="true">
       <div className="section-shell relative h-full">
         <div className="desktop-hero-grid-rail absolute inset-y-0">
           <div
-            className="desktop-hero-grid-anchor pointer-events-auto absolute top-[236px] flex items-start gap-[11px]"
+            className="desktop-hero-grid-anchor hero-top-brief-card pointer-events-auto absolute top-[180px] flex items-start gap-[11px] min-[1440px]:top-[236px]"
             style={{ left: desktopGridStops[2] }}
           >
             <span className="relative block h-[20px] w-[20px] shrink-0" aria-hidden="true">
-              <span className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-white" />
-              <span className="absolute left-0 top-1/2 h-px w-full -translate-y-1/2 bg-white" />
+              <span data-gl-hero-background className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-white" />
+              <span data-gl-hero-background className="absolute left-0 top-1/2 h-px w-full -translate-y-1/2 bg-white" />
             </span>
             <div className="mt-[-4px] flex min-w-0 flex-1 flex-col items-start gap-[26px] pr-8">
-              <MonoText italic className="w-full !text-[20px] font-normal !leading-[33px] md:!text-[20px] md:!leading-[33px]">
+              <MonoText webglHero italic className="w-full !text-[20px] font-normal !leading-[33px] md:!text-[20px] md:!leading-[33px]">
                 Digital design beyond trends — built to be clear, logical, and easy to launch.
               </MonoText>
-              <Button />
+              <Button webglHero />
             </div>
           </div>
         </div>
@@ -448,28 +448,9 @@ function PlusMarker({ className = "" }) {
   );
 }
 
-function HeroTopBrief() {
-  return (
-    <div className="desktop-hero-grid-rail pointer-events-none absolute top-0 z-30 hidden h-[260px] min-[1440px]:block">
-      <div
-        className="desktop-hero-grid-anchor hero-top-brief-card pointer-events-auto absolute top-[180px] flex items-start gap-[11px]"
-        style={{ left: desktopGridStops[2] }}
-      >
-        <PlusMarker />
-        <div className="mt-[-4px] flex min-w-0 flex-1 flex-col items-start gap-[26px] pr-8">
-          <MonoText webglHero italic className="w-full !text-[20px] font-normal !leading-[33px] md:!text-[20px] md:!leading-[33px]">
-            Digital design beyond trends — built to be clear, logical, and easy to launch.
-          </MonoText>
-          <Button webglHero />
-        </div>
-      </div>
-    </div>
-  );
-}
-
 function ResponsiveViewportGuide() {
   return (
-    <div className="pointer-events-none absolute inset-x-0 top-[-220px] z-20 h-[1054px] min-[600px]:max-[874px]:top-[-140px] min-[600px]:max-[874px]:h-[1072px] md:top-[-140px] md:h-[1072px] min-[1440px]:hidden" aria-hidden="true">
+    <div className="pointer-events-none absolute inset-x-0 top-[-220px] z-20 h-[1054px] min-[600px]:max-[874px]:top-[-140px] min-[600px]:max-[874px]:h-[1072px] md:top-[-140px] md:h-[1072px] min-[1200px]:hidden" aria-hidden="true">
       <span className="absolute left-[10px] top-0 h-full w-px bg-gradient-to-b from-white/25 via-white/25 to-transparent" />
       <span className="absolute right-[10px] top-0 h-full w-px bg-gradient-to-b from-white/25 via-white/25 to-transparent" />
     </div>
@@ -479,7 +460,7 @@ function ResponsiveViewportGuide() {
 function ResponsiveIntro() {
   return (
     <section className="responsive-intro relative w-full min-[600px]:max-[874px]:mx-auto md:w-full min-[1440px]:hidden">
-      <div className="hero-cta-block absolute left-0 top-[112px] z-20 flex w-[390px] max-w-none items-start gap-[11px]">
+      <div className="hero-cta-block absolute left-0 top-[112px] z-20 flex w-[390px] max-w-none items-start gap-[11px] min-[1200px]:hidden">
         <PlusMarker className="mt-2" />
         <div className="hero-cta-content flex w-[359px] shrink-0 flex-col items-start gap-[26px] pr-8">
           <MonoText italic className="hero-cta-copy w-full !text-[20px] font-normal !leading-[33px] md:!text-[20px] md:!leading-[33px]">
@@ -679,7 +660,7 @@ function PurposeTitle() {
 
       <div className="hidden w-full min-[1440px]:block">
         <div className="flex h-[154px] w-full items-start gap-28">
-          <Display className="!text-[168px] !leading-[154px] !tracking-[-6.72px]">digital</Display>
+          <Display webglHero className="!text-[168px] !leading-[154px] !tracking-[-6.72px]">digital</Display>
           <div className="pt-3">
             <MonoText webglHero className="h-[75px] w-[264px] font-normal !text-base !leading-[25px]">
               A web/UI designer crafting intuitive and engaging digital experiences
@@ -687,10 +668,10 @@ function PurposeTitle() {
           </div>
         </div>
         <div className="flex h-[154px] w-full items-center pl-[270px]">
-          <Display className="!text-[168px] !leading-[154px] !tracking-[-6.72px]">design with</Display>
+          <Display webglHero className="!text-[168px] !leading-[154px] !tracking-[-6.72px]">design with</Display>
         </div>
         <div className="flex h-[181px] w-full items-end pl-[178px]">
-          <Display buffon className="!text-[175px] !leading-[180.7px] tracking-[3.5px]">
+          <Display webglHero buffon className="!text-[175px] !leading-[180.7px] tracking-[3.5px]">
             purpose
           </Display>
         </div>
@@ -706,17 +687,20 @@ function Purpose() {
 
       <div className="purpose-columns mt-16 flex w-full flex-col gap-[72px] min-[875px]:mt-0 min-[875px]:flex-row min-[875px]:items-start min-[875px]:justify-between min-[875px]:gap-20">
         <div className="flex w-full flex-col gap-[24px] min-[875px]:w-[362px] min-[875px]:gap-10 min-[875px]:max-[1439px]:pt-[344px] min-[1440px]:pt-[280px]">
-          {advantageCards.map((card) => (
-            <div {...(card.number === "03/" ? {} : { "data-gl-flow-text": true, "data-gl-fluid-boost": true })} className="flex w-full items-start gap-[32px]" key={card.number}>
-              <MonoText bold className="h-[25px] shrink-0 whitespace-nowrap">
+          {advantageCards.map((card) => {
+            const isThirdCard = card.number === "03/";
+            return (
+            <div {...(isThirdCard ? {} : { "data-gl-flow-text": true, "data-gl-fluid-boost": true })} className="flex w-full items-start gap-[32px]" key={card.number}>
+              <MonoText webglHero={isThirdCard} bold className="h-[25px] shrink-0 whitespace-nowrap">
                 {card.number}
               </MonoText>
               <div className="flex min-w-0 flex-1 flex-col gap-5">
-                <MonoText bold>{card.title}</MonoText>
-                <MonoText className="font-bold min-[875px]:font-normal">{card.text}</MonoText>
+                <MonoText webglHero={isThirdCard} bold>{card.title}</MonoText>
+                <MonoText webglHero={isThirdCard} className="font-bold min-[875px]:font-normal">{card.text}</MonoText>
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
 
         <div className="flex w-full flex-col gap-4 min-[875px]:max-[1439px]:w-[251px] min-[875px]:max-[1439px]:pt-16 min-[1440px]:h-[361px] min-[1440px]:w-[359px] min-[1440px]:pr-[108px]">
@@ -743,11 +727,11 @@ function WorksHeading() {
   return (
     <section className="mt-0 flex w-full flex-col gap-2 py-[40px] min-[1440px]:py-[72px]">
       <div className="flex w-full flex-wrap items-end justify-between gap-y-[12px]">
-        <Display className="shrink-0 !text-[78px] !leading-[84px] !tracking-[-3.12px] min-[873px]:max-[1439px]:!text-[126px] min-[873px]:max-[1439px]:!leading-[136px] min-[873px]:max-[1439px]:!tracking-[-5.04px] min-[1440px]:!text-[168px] min-[1440px]:!leading-[154px] min-[1440px]:!tracking-[-6.72px]">some</Display>
-        <Display className="relative top-[-14px] ml-auto basis-full shrink-0 !text-[78px] !leading-[84px] !tracking-[-3.12px] min-[506px]:top-0 min-[506px]:basis-auto min-[873px]:max-[1439px]:!text-[126px] min-[873px]:max-[1439px]:!leading-[136px] min-[873px]:max-[1439px]:!tracking-[-5.04px] min-[1440px]:!text-[168px] min-[1440px]:!leading-[154px] min-[1440px]:!tracking-[-6.72px]">of my</Display>
+        <Display webglHero className="shrink-0 !text-[78px] !leading-[84px] !tracking-[-3.12px] min-[873px]:max-[1439px]:!text-[126px] min-[873px]:max-[1439px]:!leading-[136px] min-[873px]:max-[1439px]:!tracking-[-5.04px] min-[1440px]:!text-[168px] min-[1440px]:!leading-[154px] min-[1440px]:!tracking-[-6.72px]">some</Display>
+        <Display webglHero className="relative top-[-14px] ml-auto basis-full shrink-0 !text-[78px] !leading-[84px] !tracking-[-3.12px] min-[506px]:top-0 min-[506px]:basis-auto min-[873px]:max-[1439px]:!text-[126px] min-[873px]:max-[1439px]:!leading-[136px] min-[873px]:max-[1439px]:!tracking-[-5.04px] min-[1440px]:!text-[168px] min-[1440px]:!leading-[154px] min-[1440px]:!tracking-[-6.72px]">of my</Display>
       </div>
       <div className="relative top-[-18px] flex w-full items-center pl-0 min-[506px]:top-[-2px] min-[600px]:top-[-2px] min-[600px]:pl-[140px] min-[1440px]:top-0 min-[1440px]:pl-[188px]">
-        <Display buffon className="w-full !text-[84px] !leading-[85px] min-[873px]:max-[1439px]:!text-[132px] min-[873px]:max-[1439px]:!leading-[122px] min-[1440px]:!text-[175px] min-[1440px]:!leading-[180.7px] min-[1440px]:tracking-[1.75px]">
+        <Display webglHero buffon className="w-full !text-[84px] !leading-[85px] min-[873px]:max-[1439px]:!text-[132px] min-[873px]:max-[1439px]:!leading-[122px] min-[1440px]:!text-[175px] min-[1440px]:!leading-[180.7px] min-[1440px]:tracking-[1.75px]">
           works
         </Display>
       </div>
@@ -905,7 +889,7 @@ function Footer() {
         </p>
       </div>
 
-      <h2 className="mt-[32px] font-display text-[32px] font-light uppercase leading-[48px] tracking-[-2.24px] text-white md:text-[54px] md:leading-[62px] md:tracking-[-0.5px] md:max-lg:!mt-[40px] md:max-lg:!text-[56px] md:max-lg:!leading-[74px] md:max-lg:!tracking-[-3.92px] lg:mt-[40px] lg:text-[96px] lg:leading-[106px] lg:tracking-[-6.72px]">
+      <h2 data-gl-flow-text data-gl-fluid-boost className="mt-[32px] font-display text-[32px] font-light uppercase leading-[48px] tracking-[-2.24px] text-white md:text-[54px] md:leading-[62px] md:tracking-[-0.5px] md:max-lg:!mt-[40px] md:max-lg:!text-[56px] md:max-lg:!leading-[74px] md:max-lg:!tracking-[-3.92px] lg:mt-[40px] lg:text-[96px] lg:leading-[106px] lg:tracking-[-6.72px]">
         <span>Let`s create something</span>
         <br />
         <span className="text-white/35">amazing</span>{" "}

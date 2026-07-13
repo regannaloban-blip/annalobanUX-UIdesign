@@ -126,15 +126,15 @@ export class CanvasScene {
 
   createPlanes() {
     this.destroyPlanes();
-    const mediaPlanes = getRenderableElements("main [data-gl-hero-media]").map(
+    const mediaPlanes = getRenderableElements("[data-gl-hero-media]").map(
       (element) => new MediaPlane({ gl: this.gl, scene: this.scene, element, canvas: this }),
     );
-    const backgroundPlanes = getRenderableElements("main [data-gl-hero-background]").map(
+    const backgroundPlanes = getRenderableElements("[data-gl-hero-background]").map(
       (element) => new BackgroundPlane({ gl: this.gl, scene: this.scene, element, canvas: this }),
     );
-    const textPlanes = getRenderableElements("main [data-gl-hero-text]:not([data-gl-text-no-fluid])")
+    const textPlanes = getRenderableElements("[data-gl-hero-text]:not([data-gl-text-no-fluid])")
       .map((element) => new TextPlane({ gl: this.gl, scene: this.scene, element, canvas: this }));
-    const flowTextPlanes = getRenderableElements("main [data-gl-flow-text]")
+    const flowTextPlanes = getRenderableElements("[data-gl-flow-text]")
       .map((element) => new FlowTextPlane({ gl: this.gl, scene: this.scene, element, canvas: this }));
     this.planes = [...mediaPlanes, ...backgroundPlanes, ...textPlanes, ...flowTextPlanes];
   }
