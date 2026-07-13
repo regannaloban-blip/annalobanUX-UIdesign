@@ -640,6 +640,20 @@ img {
   }
 }
 
+@media (min-width: 1199px) and (max-width: 1399px) {
+  body.gl-ready .desktop-hero-labels-safe [data-gl-text-no-fluid],
+  body.gl-ready .desktop-hero-cta-safe [data-gl-text-no-fluid] {
+    opacity: 1;
+  }
+}
+
+@media (min-width: 1400px) {
+  body.gl-ready .desktop-hero-labels-safe [data-gl-text-no-fluid],
+  body.gl-ready .desktop-hero-cta-safe [data-gl-text-no-fluid] {
+    opacity: 1;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

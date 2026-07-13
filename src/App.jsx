@@ -210,7 +210,7 @@ function scrollToContactForm(event) {
   window.requestAnimationFrame(animate);
 }
 
-function Button({ className = "", webglHero = false }) {
+function Button({ className = "", webglHero = false, noFluid = false }) {
   return (
     <a
       {...(webglHero ? { "data-gl-hero-background": true } : {})}
@@ -220,7 +220,7 @@ function Button({ className = "", webglHero = false }) {
     >
       <span
         data-gl-text
-        data-gl-text-no-fluid={!webglHero ? true : undefined}
+        data-gl-text-no-fluid={!webglHero || noFluid ? true : undefined}
         {...(webglHero ? { "data-gl-hero-text": true } : {})}
         data-color="black"
         className="block whitespace-nowrap font-jakarta text-base font-bold uppercase leading-[25px]"
@@ -311,11 +311,12 @@ function Display({ as: Tag = "h2", children, className = "", buffon = false, web
   );
 }
 
-function MonoText({ children, className = "", as: Tag = "p", italic = false, bold = false, webglHero = false }) {
+function MonoText({ children, className = "", as: Tag = "p", italic = false, bold = false, webglHero = false, noFluid = false }) {
   return (
     <Tag
       data-gl-text
       {...(webglHero ? { "data-gl-hero-text": true } : {})}
+      {...(noFluid ? { "data-gl-text-no-fluid": true } : {})}
       className={`font-jakarta text-base uppercase leading-[25px] text-white ${italic ? "italic md:text-[22px] md:leading-[28px]" : ""} ${bold ? "font-bold" : "font-light"} ${className}`}
     >
       {children}
@@ -352,7 +353,7 @@ function FirstViewportGuide() {
   ];
 
   return (
-    <div className="desktop-hero-grid-rail pointer-events-none absolute top-[-59px] z-20 hidden h-[calc(100dvh+2px)] min-[1200px]:block" aria-hidden="true">
+    <div className="desktop-hero-grid-rail pointer-events-none absolute top-[-59px] z-20 hidden h-[calc(100dvh+2px)] min-[1199px]:block" aria-hidden="true">
       {desktopGridStops.map((stop) => (
         <span
           key={stop}
@@ -379,18 +380,18 @@ function FirstViewportGuide() {
 
 function StableHeroGridOverlay() {
   const labels = [
-    { stop: desktopGridStops[0], text: "Personal page" },
+    { stop: desktopGridStops[0], text: "Personal page", fluidBoost: true },
     { stop: desktopGridStops[1], text: "Poland, Poznan" },
   ];
 
   return (
-    <div className="pointer-events-none absolute inset-x-0 top-[-2px] z-[950] hidden h-[calc(100dvh+2px)] min-[1200px]:block" aria-hidden="true">
+    <div className="desktop-hero-overlay-safe desktop-hero-labels-safe pointer-events-none absolute inset-x-0 top-[-2px] z-[950] hidden h-[calc(100dvh+2px)] min-[1199px]:block" aria-hidden="true">
       <div className="section-shell relative h-full">
         <div className="desktop-hero-grid-rail absolute inset-y-0">
           {desktopGridStops.map((stop) => (
             <span
               key={stop}
-              className="absolute top-0 h-full w-px bg-gradient-to-b from-white/20 via-white/20 to-transparent"
+              className="absolute top-0 h-full w-px bg-[linear-gradient(to_bottom,rgba(255,255,255,0.2)_0%,rgba(255,255,255,0.2)_82%,rgba(255,255,255,0)_100%)]"
               style={{ left: stop }}
             />
           ))}
@@ -401,10 +402,21 @@ function StableHeroGridOverlay() {
               style={{ left: label.stop }}
             >
               <span className="relative block h-[20px] w-[20px] shrink-0">
-                <span data-gl-hero-background className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-white" />
-                <span data-gl-hero-background className="absolute left-0 top-1/2 h-px w-full -translate-y-1/2 bg-white" />
+                <span
+                  {...(label.fluidBoost ? { "data-gl-hero-background": true } : {})}
+                  className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-white"
+                />
+                <span
+                  {...(label.fluidBoost ? { "data-gl-hero-background": true } : {})}
+                  className="absolute left-0 top-1/2 h-px w-full -translate-y-1/2 bg-white"
+                />
               </span>
-              <span data-gl-text data-gl-hero-text>{label.text}</span>
+              <span
+                {...(label.fluidBoost ? { "data-gl-flow-text": true, "data-gl-fluid-boost": true } : { "data-gl-text": true, "data-gl-hero-text": true })}
+                className="whitespace-nowrap"
+              >
+                {label.text}
+              </span>
             </div>
           ))}
         </div>
@@ -415,16 +427,16 @@ function StableHeroGridOverlay() {
 
 function StableHeroCtaOverlay() {
   return (
-    <div className="pointer-events-none absolute inset-x-0 top-[-2px] z-[950] hidden h-[260px] min-[1200px]:block" aria-hidden="true">
+    <div className="desktop-hero-overlay-safe desktop-hero-cta-safe pointer-events-none absolute inset-x-0 top-[-2px] z-[960] hidden h-[calc(100dvh+2px)] min-[1199px]:block" aria-hidden="true">
       <div className="section-shell relative h-full">
         <div className="desktop-hero-grid-rail absolute inset-y-0">
           <div
-            className="desktop-hero-grid-anchor hero-top-brief-card pointer-events-auto absolute top-[180px] flex items-start gap-[11px] min-[1440px]:top-[236px]"
+            className="desktop-hero-grid-anchor hero-top-brief-card pointer-events-auto absolute top-[236px] flex items-start gap-[11px]"
             style={{ left: desktopGridStops[2] }}
           >
             <span className="relative block h-[20px] w-[20px] shrink-0" aria-hidden="true">
-              <span data-gl-hero-background className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-white" />
-              <span data-gl-hero-background className="absolute left-0 top-1/2 h-px w-full -translate-y-1/2 bg-white" />
+              <span className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-white" />
+              <span className="absolute left-0 top-1/2 h-px w-full -translate-y-1/2 bg-white" />
             </span>
             <div className="mt-[-4px] flex min-w-0 flex-1 flex-col items-start gap-[26px] pr-8">
               <MonoText webglHero italic className="w-full !text-[20px] font-normal !leading-[33px] md:!text-[20px] md:!leading-[33px]">
@@ -450,7 +462,7 @@ function PlusMarker({ className = "" }) {
 
 function ResponsiveViewportGuide() {
   return (
-    <div className="pointer-events-none absolute inset-x-0 top-[-220px] z-20 h-[1054px] min-[600px]:max-[874px]:top-[-140px] min-[600px]:max-[874px]:h-[1072px] md:top-[-140px] md:h-[1072px] min-[1200px]:hidden" aria-hidden="true">
+    <div className="pointer-events-none absolute inset-x-0 top-[-220px] z-20 h-[1054px] min-[600px]:max-[874px]:top-[-140px] min-[600px]:max-[874px]:h-[1072px] md:top-[-140px] md:h-[1072px] min-[1199px]:hidden" aria-hidden="true">
       <span className="absolute left-[10px] top-0 h-full w-px bg-gradient-to-b from-white/25 via-white/25 to-transparent" />
       <span className="absolute right-[10px] top-0 h-full w-px bg-gradient-to-b from-white/25 via-white/25 to-transparent" />
     </div>
@@ -459,8 +471,8 @@ function ResponsiveViewportGuide() {
 
 function ResponsiveIntro() {
   return (
-    <section className="responsive-intro relative w-full min-[600px]:max-[874px]:mx-auto md:w-full min-[1440px]:hidden">
-      <div className="hero-cta-block absolute left-0 top-[112px] z-20 flex w-[390px] max-w-none items-start gap-[11px] min-[1200px]:hidden">
+    <section className="responsive-intro relative w-full min-[600px]:max-[874px]:mx-auto md:w-full min-[1199px]:hidden">
+      <div className="hero-cta-block absolute left-0 top-[112px] z-20 flex w-[390px] max-w-none items-start gap-[11px] min-[1199px]:hidden">
         <PlusMarker className="mt-2" />
         <div className="hero-cta-content flex w-[359px] shrink-0 flex-col items-start gap-[26px] pr-8">
           <MonoText italic className="hero-cta-copy w-full !text-[20px] font-normal !leading-[33px] md:!text-[20px] md:!leading-[33px]">
@@ -532,7 +544,7 @@ function BackgroundGlow() {
 
 function Hero() {
   return (
-    <header className="relative hidden h-[748px] w-full flex-col gap-2 overflow-visible pb-0 pt-[354px] min-[1440px]:flex">
+    <header className="relative hidden h-[748px] w-full flex-col gap-2 overflow-visible pb-0 pt-[354px] min-[1199px]:flex">
       <BackgroundGlow />
       <div className="relative z-10 flex w-full items-center">
         <Display as="h1" buffon webglHero>
@@ -550,7 +562,7 @@ function Hero() {
 
 function ProductIntro() {
   return (
-    <section className="hidden h-[592px] w-full flex-col items-start py-[72px] min-[1440px]:flex">
+    <section className="hidden h-[592px] w-full flex-col items-start py-[72px] min-[1199px]:flex">
       <div className="flex h-[158px] w-full flex-col gap-10 pb-1 lg:flex-row lg:items-start lg:justify-between lg:gap-8">
         <Display className="lg:tracking-[-6.72px]" webglHero>UX/UI</Display>
         <div className="flex w-[286px] max-w-full flex-col items-start gap-[42px] lg:h-[75px] lg:w-[359px] lg:gap-0 lg:pr-8 lg:pt-1">
@@ -641,7 +653,7 @@ function PurposeTitle() {
         </div>
       </div>
 
-      <div className="hidden w-full flex-col min-[875px]:max-[1439px]:flex">
+      <div className="hidden w-full flex-col min-[875px]:max-[1198px]:flex">
         <div className="flex h-[136px] w-full items-start justify-between">
           <h2 className="w-[437px] whitespace-nowrap text-right font-display text-[126px] font-light uppercase leading-[136px] tracking-[-5.04px] text-white">
             digital
@@ -658,7 +670,7 @@ function PurposeTitle() {
         </h2>
       </div>
 
-      <div className="hidden w-full min-[1440px]:block">
+      <div className="hidden w-full min-[1199px]:block">
         <div className="flex h-[154px] w-full items-start gap-28">
           <Display webglHero className="!text-[168px] !leading-[154px] !tracking-[-6.72px]">digital</Display>
           <div className="pt-3">
@@ -667,7 +679,7 @@ function PurposeTitle() {
             </MonoText>
           </div>
         </div>
-        <div className="flex h-[154px] w-full items-center pl-[270px]">
+        <div className="flex h-[154px] w-full items-center pl-0 min-[1400px]:pl-[202px]">
           <Display webglHero className="!text-[168px] !leading-[154px] !tracking-[-6.72px]">design with</Display>
         </div>
         <div className="flex h-[181px] w-full items-end pl-[178px]">
@@ -682,11 +694,11 @@ function PurposeTitle() {
 
 function Purpose() {
   return (
-    <section className="purpose-section flex w-full flex-col py-[40px] min-[1440px]:py-[72px]">
+    <section className="purpose-section flex w-full flex-col py-[40px] min-[1199px]:py-[72px]">
       <PurposeTitle />
 
       <div className="purpose-columns mt-16 flex w-full flex-col gap-[72px] min-[875px]:mt-0 min-[875px]:flex-row min-[875px]:items-start min-[875px]:justify-between min-[875px]:gap-20">
-        <div className="flex w-full flex-col gap-[24px] min-[875px]:w-[362px] min-[875px]:gap-10 min-[875px]:max-[1439px]:pt-[344px] min-[1440px]:pt-[280px]">
+        <div className="flex w-full flex-col gap-[24px] min-[875px]:w-[362px] min-[875px]:gap-10 min-[875px]:max-[1198px]:pt-[344px] min-[1199px]:pt-[280px]">
           {advantageCards.map((card) => {
             const isThirdCard = card.number === "03/";
             return (
@@ -703,14 +715,14 @@ function Purpose() {
           })}
         </div>
 
-        <div className="flex w-full flex-col gap-4 min-[875px]:max-[1439px]:w-[251px] min-[875px]:max-[1439px]:pt-16 min-[1440px]:h-[361px] min-[1440px]:w-[359px] min-[1440px]:pr-[108px]">
+        <div className="flex w-full flex-col gap-4 min-[875px]:max-[1198px]:w-[251px] min-[875px]:max-[1198px]:pt-16 min-[1199px]:h-[361px] min-[1199px]:w-[359px] min-[1199px]:pr-[108px]">
           <MonoText webglHero className="w-full max-w-full font-bold min-[875px]:w-[251px] min-[875px]:font-normal">
             Delivering tailored solutions for my <br className="hidden max-md:block" /> clients
           </MonoText>
           <div className="flex w-full flex-col gap-[42px] min-[875px]:w-[251px] min-[875px]:max-w-full">
             <div data-gl-background data-gl-hero-background className="flex w-full flex-col overflow-hidden border-y border-white">
               {services.map((service, index) => (
-                <div data-gl-background data-gl-hero-background className={`flex h-[41px] items-center min-[1440px]:h-[42px] ${index === 0 ? "" : "border-t border-white"}`} key={service}>
+                <div data-gl-background data-gl-hero-background className={`flex h-[41px] items-center min-[1199px]:h-[42px] ${index === 0 ? "" : "border-t border-white"}`} key={service}>
                   <MonoText webglHero className="whitespace-nowrap font-bold min-[875px]:font-normal">{service}</MonoText>
                 </div>
               ))}
@@ -725,13 +737,13 @@ function Purpose() {
 
 function WorksHeading() {
   return (
-    <section className="mt-0 flex w-full flex-col gap-2 py-[40px] min-[1440px]:py-[72px]">
+    <section className="mt-0 flex w-full flex-col gap-2 py-[40px] min-[1199px]:py-[72px]">
       <div className="flex w-full flex-wrap items-end justify-between gap-y-[12px]">
-        <Display webglHero className="shrink-0 !text-[78px] !leading-[84px] !tracking-[-3.12px] min-[873px]:max-[1439px]:!text-[126px] min-[873px]:max-[1439px]:!leading-[136px] min-[873px]:max-[1439px]:!tracking-[-5.04px] min-[1440px]:!text-[168px] min-[1440px]:!leading-[154px] min-[1440px]:!tracking-[-6.72px]">some</Display>
-        <Display webglHero className="relative top-[-14px] ml-auto basis-full shrink-0 !text-[78px] !leading-[84px] !tracking-[-3.12px] min-[506px]:top-0 min-[506px]:basis-auto min-[873px]:max-[1439px]:!text-[126px] min-[873px]:max-[1439px]:!leading-[136px] min-[873px]:max-[1439px]:!tracking-[-5.04px] min-[1440px]:!text-[168px] min-[1440px]:!leading-[154px] min-[1440px]:!tracking-[-6.72px]">of my</Display>
+        <Display webglHero className="shrink-0 !text-[78px] !leading-[84px] !tracking-[-3.12px] min-[873px]:max-[1198px]:!text-[126px] min-[873px]:max-[1198px]:!leading-[136px] min-[873px]:max-[1198px]:!tracking-[-5.04px] min-[1199px]:!text-[168px] min-[1199px]:!leading-[154px] min-[1199px]:!tracking-[-6.72px]">some</Display>
+        <Display webglHero className="relative top-[-14px] ml-auto basis-full shrink-0 !text-[78px] !leading-[84px] !tracking-[-3.12px] min-[506px]:top-0 min-[506px]:basis-auto min-[873px]:max-[1198px]:!text-[126px] min-[873px]:max-[1198px]:!leading-[136px] min-[873px]:max-[1198px]:!tracking-[-5.04px] min-[1199px]:!text-[168px] min-[1199px]:!leading-[154px] min-[1199px]:!tracking-[-6.72px]">of my</Display>
       </div>
-      <div className="relative top-[-18px] flex w-full items-center pl-0 min-[506px]:top-[-2px] min-[600px]:top-[-2px] min-[600px]:pl-[140px] min-[1440px]:top-0 min-[1440px]:pl-[188px]">
-        <Display webglHero buffon className="w-full !text-[84px] !leading-[85px] min-[873px]:max-[1439px]:!text-[132px] min-[873px]:max-[1439px]:!leading-[122px] min-[1440px]:!text-[175px] min-[1440px]:!leading-[180.7px] min-[1440px]:tracking-[1.75px]">
+      <div className="relative top-[-18px] flex w-full items-center pl-0 min-[506px]:top-[-2px] min-[600px]:top-[-2px] min-[600px]:pl-[140px] min-[1199px]:top-0 min-[1199px]:pl-[188px]">
+        <Display webglHero buffon className="w-full !text-[84px] !leading-[85px] min-[873px]:max-[1198px]:!text-[132px] min-[873px]:max-[1198px]:!leading-[122px] min-[1199px]:!text-[175px] min-[1199px]:!leading-[180.7px] min-[1199px]:tracking-[1.75px]">
           works
         </Display>
       </div>
@@ -773,7 +785,7 @@ function ProjectCard({ work, className = "" }) {
 function Works() {
   return (
     <section className="mt-0 w-full">
-      <div className="flex w-full flex-col gap-[72px] py-[40px] min-[1440px]:hidden">
+      <div className="flex w-full flex-col gap-[72px] py-[40px] min-[1199px]:hidden">
         <div className="flex w-full justify-start min-[600px]:justify-end">
           <ProjectCard work={works[0]} />
         </div>
@@ -782,7 +794,7 @@ function Works() {
         </div>
       </div>
 
-      <div className="hidden w-full min-[1440px]:block">
+      <div className="hidden w-full min-[1199px]:block">
         <div className="flex h-[710px] w-full items-start justify-between py-[72px]">
           <div className="flex items-center gap-[113px]">
             <ProjectCard work={works[0]} />
@@ -1038,9 +1050,9 @@ export default function App() {
     <>
       <Preloader reduced={reduced} />
       <CanvasLayer enabled={desktopEffects && !reduced} />
-      <StableHeroGridOverlay />
-      <StableHeroCtaOverlay />
-      <main className="relative z-10 flex min-h-screen flex-col gap-0 overflow-x-hidden pb-5 pt-[49px] lg:gap-0 lg:pb-[40px] lg:pt-[32px]" aria-label="Anna Loban portfolio">
+      <main className="relative z-[910] flex min-h-screen flex-col gap-0 overflow-x-hidden pb-5 pt-[49px] lg:gap-0 lg:pb-[40px] lg:pt-[32px]" aria-label="Anna Loban portfolio">
+        <StableHeroGridOverlay />
+        <StableHeroCtaOverlay />
         <div className="relative z-10 flex flex-col gap-0">
           {page}
         </div>
