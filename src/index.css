@@ -117,7 +117,17 @@ img {
 }
 
 .purpose-columns {
-  padding-left: clamp(0px, calc(100% - 1112px), 376px);
+  padding-top: 64px;
+  padding-right: clamp(70px, calc(70px + (100% - 1102px) * 0.07), 97px);
+  padding-left: clamp(74px, calc(74px + (100% - 1102px) * 0.3057), 192px);
+}
+
+@media (max-width: 1198px) {
+  .purpose-columns {
+    padding-top: 0;
+    padding-right: 0;
+    padding-left: 0;
+  }
 }
 
 @media (min-width: 600px) and (max-width: 767px) {
@@ -177,11 +187,13 @@ img {
   }
 }
 
-@media (min-width: 875px) and (max-width: 1439px) {
+@media (min-width: 875px) and (max-width: 1198px) {
   .purpose-section {
     max-width: 775px;
   }
+}
 
+@media (min-width: 875px) and (max-width: 1439px) {
   .ux-title-row {
     align-items: flex-start;
     padding: 0 0 4px;

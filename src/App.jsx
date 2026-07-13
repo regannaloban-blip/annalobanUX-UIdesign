@@ -67,7 +67,7 @@ const advantageCards = [
   {
     number: "03/",
     title: "Modern & AI-powered workflows.",
-    text: "Solid infrastructure. Developer-ready Figma component sets built to stand out.",
+    text: "Solid infrastructure. Developer ready Figma component sets built to stand out.",
   },
 ];
 
@@ -673,7 +673,7 @@ function PurposeTitle() {
       <div className="hidden w-full min-[1199px]:block">
         <div className="flex h-[154px] w-full items-start gap-28">
           <Display webglHero className="!text-[168px] !leading-[154px] !tracking-[-6.72px]">digital</Display>
-          <div className="pt-3">
+          <div className="pt-2">
             <MonoText webglHero className="h-[75px] w-[264px] font-normal !text-base !leading-[25px]">
               A web/UI designer crafting intuitive and engaging digital experiences
             </MonoText>
@@ -703,23 +703,41 @@ function Purpose() {
             const isThirdCard = card.number === "03/";
             return (
             <div {...(isThirdCard ? {} : { "data-gl-flow-text": true, "data-gl-fluid-boost": true })} className="flex w-full items-start gap-[32px]" key={card.number}>
-              <MonoText webglHero={isThirdCard} bold className="h-[25px] shrink-0 whitespace-nowrap">
-                {card.number}
-              </MonoText>
+              {isThirdCard ? (
+                <div data-gl-flow-text data-gl-fluid-boost className="h-[25px] shrink-0 whitespace-nowrap">
+                  <MonoText bold>{card.number}</MonoText>
+                </div>
+              ) : (
+                <MonoText bold className="h-[25px] shrink-0 whitespace-nowrap">
+                  {card.number}
+                </MonoText>
+              )}
               <div className="flex min-w-0 flex-1 flex-col gap-5">
-                <MonoText webglHero={isThirdCard} bold>{card.title}</MonoText>
-                <MonoText webglHero={isThirdCard} className="font-bold min-[875px]:font-normal">{card.text}</MonoText>
+                {isThirdCard ? (
+                  <div data-gl-flow-text data-gl-fluid-boost>
+                    <MonoText bold>{card.title}</MonoText>
+                  </div>
+                ) : (
+                  <MonoText bold>{card.title}</MonoText>
+                )}
+                {isThirdCard ? (
+                  <div data-gl-flow-text data-gl-fluid-boost>
+                    <MonoText className="font-bold min-[875px]:font-normal">{card.text}</MonoText>
+                  </div>
+                ) : (
+                  <MonoText className="font-bold min-[875px]:font-normal">{card.text}</MonoText>
+                )}
               </div>
             </div>
             );
           })}
         </div>
 
-        <div className="flex w-full flex-col gap-4 min-[875px]:max-[1198px]:w-[251px] min-[875px]:max-[1198px]:pt-16 min-[1199px]:h-[361px] min-[1199px]:w-[359px] min-[1199px]:pr-[108px]">
+        <div className="flex w-full flex-col gap-4 min-[875px]:max-[1198px]:w-[251px] min-[875px]:max-[1198px]:pt-16 min-[1199px]:h-[361px] min-[1199px]:w-[334px] min-[1199px]:pr-[108px] min-[1400px]:w-[359px]">
           <MonoText webglHero className="w-full max-w-full font-bold min-[875px]:w-[251px] min-[875px]:font-normal">
             Delivering tailored solutions for my <br className="hidden max-md:block" /> clients
           </MonoText>
-          <div className="flex w-full flex-col gap-[42px] min-[875px]:w-[251px] min-[875px]:max-w-full">
+          <div className="flex w-full flex-col gap-[42px] min-[875px]:w-[251px] min-[875px]:max-w-full min-[1199px]:max-w-none">
             <div data-gl-background data-gl-hero-background className="flex w-full flex-col overflow-hidden border-y border-white">
               {services.map((service, index) => (
                 <div data-gl-background data-gl-hero-background className={`flex h-[41px] items-center min-[1199px]:h-[42px] ${index === 0 ? "" : "border-t border-white"}`} key={service}>
