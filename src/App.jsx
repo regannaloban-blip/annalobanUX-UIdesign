@@ -509,16 +509,16 @@ function ResponsiveIntro() {
       </div>
 
       <div className="ux-block relative flex flex-col items-start">
-        <div className="ux-title-row flex w-full flex-col gap-6 pb-1 pt-2">
+        <div className="ux-title-row flex w-full flex-col gap-6 pb-1 pt-2 max-[874px]:mb-[-6px]">
           <MonoText className="ux-mini-text ml-auto w-full max-w-[296px] font-normal">
             Shaping clear visual interfaces for thoughtful digital products and the people who use them.
           </MonoText>
-          <h2 data-gl-text className="ux-title font-display text-[78px] font-light uppercase leading-[84px] tracking-[-3.12px] text-white">
+          <h2 data-gl-text className="ux-title font-display text-[78px] font-light uppercase leading-[84px] tracking-[-3.12px] text-white max-[874px]:!leading-[75px]">
             UX/UI
           </h2>
         </div>
         <div className="flex w-full flex-col items-start text-white">
-          <h2 data-gl-text className="product-title mb-[-16px] w-full font-buffon text-[84px] font-normal uppercase leading-[85px] text-white">
+          <h2 data-gl-text className="product-title mb-[-16px] w-full font-buffon text-[84px] font-normal uppercase leading-[85px] text-white max-[874px]:!mb-[-10px]">
             Product
           </h2>
           <div className="product-service-row flex w-full flex-col items-start whitespace-nowrap min-[600px]:flex-row min-[600px]:justify-between">
@@ -527,7 +527,7 @@ function ResponsiveIntro() {
               <span data-gl-text className="inline-block whitespace-nowrap">/ Graphic</span>
               <span data-gl-text className="inline-block whitespace-nowrap">/ identity</span>
             </div>
-            <h2 data-gl-text className="designer-title order-1 mt-[8px] w-fit font-display text-[78px] font-light uppercase leading-[84px] tracking-[-3.12px] text-white">
+            <h2 data-gl-text className="designer-title order-1 mt-[8px] w-fit font-display text-[78px] font-light uppercase leading-[84px] tracking-[-3.12px] text-white max-[874px]:!mt-0 max-[874px]:!leading-[75px]">
               Designer
             </h2>
           </div>
@@ -646,9 +646,10 @@ function PurposeTitle() {
       <div className="flex w-full flex-col min-[875px]:hidden">
         <div className="flex h-[253px] w-full flex-col items-end gap-6 min-[600px]:max-[874px]:h-[178px]">
           <PurposeMiniText />
-          <h2 className="h-[150px] w-full whitespace-nowrap font-display text-[78px] font-light uppercase leading-[75px] tracking-[-3.12px] text-white min-[600px]:max-[874px]:h-[75px]">
+          <h2 className="h-[150px] w-full font-display text-[78px] font-light uppercase leading-[75px] tracking-[-3.12px] text-white min-[600px]:max-[874px]:h-[75px]">
             <span>design</span>
-            <br className="min-[600px]:max-[874px]:hidden" />
+            <br className="max-[599px]:block hidden" />
+            {" "}
             <span className="min-[600px]:max-[874px]:float-right">with</span>
           </h2>
         </div>
