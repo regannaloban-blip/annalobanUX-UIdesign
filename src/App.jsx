@@ -434,11 +434,11 @@ function WorksHeading() {
   return (
     <section className="mt-0 flex w-full flex-col gap-2 py-[40px] min-[1199px]:py-[72px]">
       <div className="flex w-full flex-wrap items-end justify-between gap-y-[12px]">
-        <Display webglHero className="shrink-0 !text-[78px] !leading-[84px] !tracking-[-3.12px] min-[873px]:max-[1198px]:!text-[126px] min-[873px]:max-[1198px]:!leading-[136px] min-[873px]:max-[1198px]:!tracking-[-5.04px] min-[1199px]:!text-[168px] min-[1199px]:!leading-[154px] min-[1199px]:!tracking-[-6.72px]">some</Display>
-        <Display webglHero className="relative top-[-14px] ml-auto basis-full shrink-0 !text-[78px] !leading-[84px] !tracking-[-3.12px] min-[506px]:top-0 min-[506px]:basis-auto min-[873px]:max-[1198px]:!text-[126px] min-[873px]:max-[1198px]:!leading-[136px] min-[873px]:max-[1198px]:!tracking-[-5.04px] min-[1199px]:!text-[168px] min-[1199px]:!leading-[154px] min-[1199px]:!tracking-[-6.72px]">of my</Display>
+        <Display webglHero className="shrink-0 !text-[78px] !leading-[84px] !tracking-[-3.12px] min-[875px]:max-[1198px]:!text-[126px] min-[875px]:max-[1198px]:!leading-[136px] min-[875px]:max-[1198px]:!tracking-[-5.04px] min-[1199px]:!text-[168px] min-[1199px]:!leading-[154px] min-[1199px]:!tracking-[-6.72px]">some</Display>
+        <Display webglHero className="relative top-[-14px] ml-auto basis-full shrink-0 !text-[78px] !leading-[84px] !tracking-[-3.12px] min-[506px]:top-0 min-[506px]:basis-auto min-[875px]:max-[1198px]:!text-[126px] min-[875px]:max-[1198px]:!leading-[136px] min-[875px]:max-[1198px]:!tracking-[-5.04px] min-[1199px]:!text-[168px] min-[1199px]:!leading-[154px] min-[1199px]:!tracking-[-6.72px]">of my</Display>
       </div>
       <div className="relative top-[-18px] flex w-full items-center pl-0 min-[506px]:top-[-2px] min-[600px]:top-[-2px] min-[600px]:pl-[140px] min-[1199px]:top-0 min-[1199px]:pl-[188px]">
-        <Display webglHero buffon className="w-full !text-[84px] !leading-[85px] min-[873px]:max-[1198px]:!text-[132px] min-[873px]:max-[1198px]:!leading-[122px] min-[1199px]:!text-[175px] min-[1199px]:!leading-[180.7px] min-[1199px]:tracking-[1.75px]">
+        <Display webglHero buffon className="w-full !text-[84px] !leading-[85px] min-[875px]:max-[1198px]:!text-[132px] min-[875px]:max-[1198px]:!leading-[122px] min-[1199px]:!text-[175px] min-[1199px]:!leading-[180.7px] min-[1199px]:tracking-[1.75px]">
           works
         </Display>
       </div>
