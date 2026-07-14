@@ -112,7 +112,7 @@
   }
 }
 
-@media (min-width: 875px) and (max-width: 1439px) {
+@media (min-width: 875px) and (max-width: 1198px) {
   .ux-title-row {
     align-items: flex-start;
     padding: 0 0 4px;
@@ -133,20 +133,20 @@
 
   .hero-title-block h1,
   .product-title {
-    font-size: 132px;
-    line-height: 122px;
+    font-size: 132px !important;
+    line-height: 122px !important;
   }
 
   .hero-anna-row h2,
   .ux-title,
   .designer-title {
-    font-size: 126px;
-    line-height: 136px;
-    letter-spacing: -5.04px;
+    font-size: 126px !important;
+    line-height: 136px !important;
+    letter-spacing: -5.04px !important;
   }
 }
 
-@media (min-width: 875px) and (max-width: 1439px) {
+@media (min-width: 875px) and (max-width: 1198px) {
   .product-service-row {
     flex-direction: column;
     align-items: flex-start;
