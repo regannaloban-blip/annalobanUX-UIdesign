@@ -131,18 +131,27 @@
     padding-right: 48px;
   }
 
-  .hero-title-block h1,
-  .product-title {
+  .hero-title-block h1 {
     font-size: 132px !important;
     line-height: 122px !important;
   }
 
+  .product-title {
+    font-size: 84px !important;
+    line-height: 85px !important;
+  }
+
   .hero-anna-row h2,
-  .ux-title,
-  .designer-title {
+  .ux-title {
     font-size: 126px !important;
     line-height: 136px !important;
     letter-spacing: -5.04px !important;
+  }
+
+  .designer-title {
+    font-size: 78px !important;
+    line-height: 84px !important;
+    letter-spacing: -3.12px !important;
   }
 }
 
