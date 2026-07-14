@@ -31,6 +31,10 @@
     top: 112px;
   }
 
+  .responsive-intro .hero-cta-content {
+    width: min(359px, calc(100vw - 19px));
+  }
+
   .responsive-hero-block {
     padding-top: 365px;
   }
@@ -41,6 +45,13 @@
 
   .hero-anna-row h2 {
     line-height: 75px;
+  }
+}
+
+@media (max-width: 389px) {
+  .hero-anna-row h2,
+  .responsive-intro .designer-title {
+    font-size: 76px;
   }
 }
 
