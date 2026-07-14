@@ -332,17 +332,17 @@ function PurposeTitle() {
 
       <div className="hidden w-full flex-col min-[875px]:max-[1198px]:flex">
         <div className="flex h-[136px] w-full items-start justify-between">
-          <h2 className="w-[437px] whitespace-nowrap text-right font-display text-[126px] font-light uppercase leading-[136px] tracking-[-5.04px] text-white">
+          <h2 className="purpose-tablet-display purpose-tablet-digital w-[437px] whitespace-nowrap text-right font-display text-[126px] font-light uppercase leading-[136px] tracking-[-5.04px] text-white">
             digital
           </h2>
           <div className="pt-1">
             <PurposeMiniText webglHero />
           </div>
         </div>
-        <h2 className="mt-[-14px] h-[136px] w-full whitespace-nowrap text-center font-display text-[126px] font-light uppercase leading-[136px] tracking-[-5.04px] text-white">
+        <h2 className="purpose-tablet-display mt-[-14px] h-[136px] w-full whitespace-nowrap text-center font-display text-[126px] font-light uppercase leading-[136px] tracking-[-5.04px] text-white">
           design with
         </h2>
-        <h2 className="h-[122px] w-[544px] whitespace-nowrap font-buffon text-[132px] font-normal uppercase leading-[122px] text-white">
+        <h2 className="purpose-tablet-buffon h-[122px] w-[544px] whitespace-nowrap font-buffon text-[132px] font-normal uppercase leading-[122px] text-white">
           purpose
         </h2>
       </div>
@@ -356,7 +356,7 @@ function PurposeTitle() {
             </MonoText>
           </div>
         </div>
-        <div className="flex h-[154px] w-full items-center pl-0 min-[1400px]:pl-[202px]">
+        <div className="flex h-[154px] w-full items-center justify-center">
           <Display webglHero className="!text-[168px] !leading-[154px] !tracking-[-6.72px]">design with</Display>
         </div>
         <div className="flex h-[181px] w-full items-end pl-[178px]">
@@ -723,7 +723,7 @@ export default function App() {
         <SectionShell>
           <About />
         </SectionShell>
-        <SectionShell>
+        <SectionShell shellClassName="purpose-shell">
           <Purpose />
         </SectionShell>
         <SectionShell>

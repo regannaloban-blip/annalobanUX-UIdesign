@@ -85,8 +85,28 @@ img {
 }
 
 @media (min-width: 875px) and (max-width: 1198px) {
+  .section-shell.purpose-shell {
+    width: min(1102px, calc(100vw - 98px));
+  }
+
   .purpose-section {
-    max-width: 775px;
+    max-width: 100%;
+  }
+
+  .purpose-tablet-display {
+    font-size: clamp(126px, calc(126px + (100vw - 875px) * 0.13), 168px) !important;
+    line-height: clamp(136px, calc(136px + (100vw - 875px) * 0.0557), 154px) !important;
+    letter-spacing: clamp(-6.72px, calc(-5.04px + (100vw - 875px) * -0.0052), -5.04px) !important;
+  }
+
+  .purpose-tablet-digital {
+    width: clamp(437px, calc(437px + (100vw - 875px) * 0.464), 587px);
+  }
+
+  .purpose-tablet-buffon {
+    width: clamp(544px, calc(544px + (100vw - 875px) * 0.548), 721px);
+    font-size: clamp(132px, calc(132px + (100vw - 875px) * 0.133), 175px) !important;
+    line-height: clamp(122px, calc(122px + (100vw - 875px) * 0.1817), 180.7px) !important;
   }
 }
 
