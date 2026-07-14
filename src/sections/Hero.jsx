@@ -1,6 +1,7 @@
 import React from "react";
 import heroBackground from "../../assets/ai-portfolio/image 16.png";
 import { Button, Display, MonoText } from "../components/PortfolioPrimitives.jsx";
+import { ResponsiveProductDesignerIntro, ResponsiveUxIntro } from "./ProductDesignerIntro.jsx";
 import "./Hero.css";
 
 const desktopGridStops = ["0%", "33.333333%", "66.666667%", "100%"];
@@ -160,39 +161,6 @@ function ResponsiveHeroIntro() {
         </div>
       </div>
     </>
-  );
-}
-
-function ResponsiveUxIntro() {
-  return (
-    <div className="ux-title-row flex w-full flex-col gap-6 pb-1 pt-2 max-[874px]:mb-[-6px]">
-      <MonoText className="ux-mini-text ml-auto w-full max-w-[296px] font-normal">
-        Shaping clear visual interfaces for thoughtful digital products and the people who use them.
-      </MonoText>
-      <h2 data-gl-text className="ux-title font-display text-[78px] font-light uppercase leading-[84px] tracking-[-3.12px] text-white max-[874px]:!leading-[75px]">
-        UX/UI
-      </h2>
-    </div>
-  );
-}
-
-function ResponsiveProductDesignerIntro() {
-  return (
-    <div className="flex w-full flex-col items-start text-white">
-      <h2 data-gl-text className="product-title mb-[-16px] w-full font-buffon text-[84px] font-normal uppercase leading-[85px] text-white max-[874px]:!mb-[-10px]">
-        Product
-      </h2>
-      <div className="product-service-row flex w-full flex-col items-start whitespace-nowrap min-[600px]:flex-row min-[600px]:justify-between">
-        <div className="product-service-list order-2 flex flex-col pt-4 font-jakarta text-base font-normal uppercase leading-[25px] text-white min-[600px]:order-1">
-          <span data-gl-text className="inline-block whitespace-nowrap">/ Web</span>
-          <span data-gl-text className="inline-block whitespace-nowrap">/ Graphic</span>
-          <span data-gl-text className="inline-block whitespace-nowrap">/ identity</span>
-        </div>
-        <h2 data-gl-text className="designer-title order-1 mt-[8px] w-fit font-display text-[78px] font-light uppercase leading-[84px] tracking-[-3.12px] text-white max-[874px]:!mt-0 max-[874px]:!leading-[75px]">
-          Designer
-        </h2>
-      </div>
-    </div>
   );
 }
 
