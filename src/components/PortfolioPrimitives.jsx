@@ -1,3 +1,5 @@
+import React from "react";
+
 const contactEmail = "hello.anna.loban@proton.me";
 export const briefHref = `mailto:${contactEmail}?subject=Website%20or%20visual%20system%20brief`;
 export const contactFormId = "contact-form";

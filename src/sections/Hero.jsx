@@ -1,3 +1,4 @@
+import React from "react";
 import heroBackground from "../../assets/ai-portfolio/image 16.png";
 import { Button, Display, MonoText } from "../components/PortfolioPrimitives.jsx";
 
