@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { CanvasScene } from "./webgl/CanvasScene.js";
 import { Button, Display, MonoText, briefHref, contactFormId } from "./components/PortfolioPrimitives.jsx";
+import { TopLinks } from "./components/TopLinks.jsx";
 import { Hero, HeroFirstScreen, ResponsiveViewportGuide, StableHeroCtaOverlay, StableHeroGridOverlay } from "./sections/Hero.jsx";
 
 import aboutPortrait from "../assets/ai-portfolio/figma/anna-redesign/about.png";
@@ -14,12 +15,6 @@ import contactLiquidVideo from "../Case/Compressed/contact-smoke-red.mp4";
 
 const formSubmitHref = "https://anna-contact-form-v2.ann-loban.workers.dev";
 const canvasSceneKey = "__annaPortfolioCanvasScene";
-const footerLinks = [
-  { label: "Linkedin", href: "https://www.linkedin.com/in/annloban/" },
-  { label: "Dribbble", href: "https://dribbble.com/azzaza" },
-  { label: "telegram", href: "https://t.me/anna_loban" },
-  { label: "mail", href: briefHref, external: false },
-];
 
 const works = [
   {
@@ -239,26 +234,6 @@ function FooterField({
         </span>
       )}
     </label>
-  );
-}
-
-function TopLinks() {
-  return (
-    <nav className="relative z-40 flex w-full flex-wrap items-start justify-between gap-x-6 gap-y-2 font-jakarta text-base uppercase leading-[25px] text-white lg:justify-end lg:gap-[40px]">
-      {footerLinks.map((link) => (
-        <a
-          data-gl-text
-          data-gl-hero-text
-          href={link.href}
-          target={link.external === false ? undefined : "_blank"}
-          rel={link.external === false ? undefined : "noreferrer"}
-          className="underline"
-          key={link.label}
-        >
-          {link.label}
-        </a>
-      ))}
-    </nav>
   );
 }
 
