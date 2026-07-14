@@ -128,9 +128,9 @@ export function ResponsiveViewportGuide() {
   );
 }
 
-function ResponsiveIntro() {
+function ResponsiveHeroIntro() {
   return (
-    <section className="responsive-intro relative w-full min-[600px]:max-[874px]:mx-auto md:w-full min-[1199px]:hidden">
+    <>
       <div className="hero-cta-block absolute left-0 top-[112px] z-20 flex w-[390px] max-w-none items-start gap-[11px] min-[1199px]:hidden">
         <PlusMarker className="mt-2" />
         <div className="hero-cta-content flex w-[359px] shrink-0 flex-col items-start gap-[26px] pr-8">
@@ -159,31 +159,50 @@ function ResponsiveIntro() {
           </div>
         </div>
       </div>
+    </>
+  );
+}
 
+function ResponsiveUxIntro() {
+  return (
+    <div className="ux-title-row flex w-full flex-col gap-6 pb-1 pt-2 max-[874px]:mb-[-6px]">
+      <MonoText className="ux-mini-text ml-auto w-full max-w-[296px] font-normal">
+        Shaping clear visual interfaces for thoughtful digital products and the people who use them.
+      </MonoText>
+      <h2 data-gl-text className="ux-title font-display text-[78px] font-light uppercase leading-[84px] tracking-[-3.12px] text-white max-[874px]:!leading-[75px]">
+        UX/UI
+      </h2>
+    </div>
+  );
+}
+
+function ResponsiveProductDesignerIntro() {
+  return (
+    <div className="flex w-full flex-col items-start text-white">
+      <h2 data-gl-text className="product-title mb-[-16px] w-full font-buffon text-[84px] font-normal uppercase leading-[85px] text-white max-[874px]:!mb-[-10px]">
+        Product
+      </h2>
+      <div className="product-service-row flex w-full flex-col items-start whitespace-nowrap min-[600px]:flex-row min-[600px]:justify-between">
+        <div className="product-service-list order-2 flex flex-col pt-4 font-jakarta text-base font-normal uppercase leading-[25px] text-white min-[600px]:order-1">
+          <span data-gl-text className="inline-block whitespace-nowrap">/ Web</span>
+          <span data-gl-text className="inline-block whitespace-nowrap">/ Graphic</span>
+          <span data-gl-text className="inline-block whitespace-nowrap">/ identity</span>
+        </div>
+        <h2 data-gl-text className="designer-title order-1 mt-[8px] w-fit font-display text-[78px] font-light uppercase leading-[84px] tracking-[-3.12px] text-white max-[874px]:!mt-0 max-[874px]:!leading-[75px]">
+          Designer
+        </h2>
+      </div>
+    </div>
+  );
+}
+
+function ResponsiveIntro() {
+  return (
+    <section className="responsive-intro relative w-full min-[600px]:max-[874px]:mx-auto md:w-full min-[1199px]:hidden">
+      <ResponsiveHeroIntro />
       <div className="ux-block relative flex flex-col items-start">
-        <div className="ux-title-row flex w-full flex-col gap-6 pb-1 pt-2 max-[874px]:mb-[-6px]">
-          <MonoText className="ux-mini-text ml-auto w-full max-w-[296px] font-normal">
-            Shaping clear visual interfaces for thoughtful digital products and the people who use them.
-          </MonoText>
-          <h2 data-gl-text className="ux-title font-display text-[78px] font-light uppercase leading-[84px] tracking-[-3.12px] text-white max-[874px]:!leading-[75px]">
-            UX/UI
-          </h2>
-        </div>
-        <div className="flex w-full flex-col items-start text-white">
-          <h2 data-gl-text className="product-title mb-[-16px] w-full font-buffon text-[84px] font-normal uppercase leading-[85px] text-white max-[874px]:!mb-[-10px]">
-            Product
-          </h2>
-          <div className="product-service-row flex w-full flex-col items-start whitespace-nowrap min-[600px]:flex-row min-[600px]:justify-between">
-            <div className="product-service-list order-2 flex flex-col pt-4 font-jakarta text-base font-normal uppercase leading-[25px] text-white min-[600px]:order-1">
-              <span data-gl-text className="inline-block whitespace-nowrap">/ Web</span>
-              <span data-gl-text className="inline-block whitespace-nowrap">/ Graphic</span>
-              <span data-gl-text className="inline-block whitespace-nowrap">/ identity</span>
-            </div>
-            <h2 data-gl-text className="designer-title order-1 mt-[8px] w-fit font-display text-[78px] font-light uppercase leading-[84px] tracking-[-3.12px] text-white max-[874px]:!mt-0 max-[874px]:!leading-[75px]">
-              Designer
-            </h2>
-          </div>
-        </div>
+        <ResponsiveUxIntro />
+        <ResponsiveProductDesignerIntro />
       </div>
     </section>
   );
