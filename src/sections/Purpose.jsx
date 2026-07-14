@@ -65,7 +65,7 @@ function PurposeTitle() {
             <PurposeMiniText webglHero />
           </div>
         </div>
-        <h2 className="purpose-tablet-display mt-[-14px] h-[136px] w-full whitespace-nowrap text-center font-display text-[126px] font-light uppercase leading-[136px] tracking-[-5.04px] text-white">
+        <h2 className="purpose-tablet-display purpose-tablet-design mt-[-14px] h-[136px] w-full whitespace-nowrap text-left font-display text-[126px] font-light uppercase leading-[136px] tracking-[-5.04px] text-white">
           design with
         </h2>
         <h2 className="purpose-tablet-buffon h-[122px] w-[544px] whitespace-nowrap font-buffon text-[132px] font-normal uppercase leading-[122px] text-white">

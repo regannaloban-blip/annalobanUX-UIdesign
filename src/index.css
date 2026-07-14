@@ -94,19 +94,23 @@ img {
   }
 
   .purpose-tablet-display {
-    font-size: clamp(126px, calc(126px + (100vw - 875px) * 0.13), 168px) !important;
-    line-height: clamp(136px, calc(136px + (100vw - 875px) * 0.0557), 154px) !important;
-    letter-spacing: clamp(-6.72px, calc(-5.04px + (100vw - 875px) * -0.0052), -5.04px) !important;
+    font-size: 126px !important;
+    line-height: 136px !important;
+    letter-spacing: -5.04px !important;
   }
 
   .purpose-tablet-digital {
-    width: clamp(437px, calc(437px + (100vw - 875px) * 0.464), 587px);
+    width: 437px;
+  }
+
+  .purpose-tablet-design {
+    text-align: left;
   }
 
   .purpose-tablet-buffon {
-    width: clamp(544px, calc(544px + (100vw - 875px) * 0.548), 721px);
-    font-size: clamp(132px, calc(132px + (100vw - 875px) * 0.133), 175px) !important;
-    line-height: clamp(122px, calc(122px + (100vw - 875px) * 0.1817), 180.7px) !important;
+    width: 544px;
+    font-size: 132px !important;
+    line-height: 122px !important;
   }
 }
 
