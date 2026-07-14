@@ -536,22 +536,22 @@ export default function App() {
         >
           <HeroFirstScreen />
         </SectionShell>
-        <SectionShell>
+        <SectionShell shellClassName="narrow-scale-shell">
           <ProductIntro />
         </SectionShell>
-        <SectionShell>
+        <SectionShell shellClassName="narrow-scale-shell">
           <About />
         </SectionShell>
-        <SectionShell shellClassName="purpose-shell">
+        <SectionShell shellClassName="purpose-shell narrow-scale-shell">
           <Purpose />
         </SectionShell>
-        <SectionShell>
+        <SectionShell shellClassName="narrow-scale-shell">
           <WorksHeading />
         </SectionShell>
-        <SectionShell>
+        <SectionShell shellClassName="narrow-scale-shell">
           <Works />
         </SectionShell>
-        <SectionShell shellClassName="footer-shell">
+        <SectionShell shellClassName="footer-shell narrow-scale-shell">
           <Footer />
         </SectionShell>
       </>

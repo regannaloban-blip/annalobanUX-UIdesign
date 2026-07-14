@@ -118,6 +118,14 @@ img {
   min-width: 0;
 }
 
+@media (max-width: 399px) {
+  .section-shell.narrow-scale-shell {
+    --narrow-scale: calc((100vw - 40px) / 360px);
+    width: 360px;
+    zoom: var(--narrow-scale);
+  }
+}
+
 @media (min-width: 768px) {
   .section-shell {
     width: min(775px, calc(100vw - 98px));
