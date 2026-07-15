@@ -111,6 +111,28 @@ img {
     width: 544px;
     font-size: 132px !important;
     line-height: 122px !important;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 600px) {
+  .purpose-mobile-with {
+    display: inline-block;
+    transform: translateY(4px);
+  }
+
+  .purpose-mobile-purpose-row {
+    transform: translateY(9px);
+  }
+
+  .works-heading-works-row {
+    margin-top: -12px;
+  }
+}
+
+@media (min-width: 601px) and (max-width: 874px) {
+  .purpose-small-tablet-purpose-row {
+    transform: translateY(6px);
   }
 }
 

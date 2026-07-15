@@ -42,14 +42,14 @@ function PurposeTitle() {
       <div className="flex w-full flex-col min-[875px]:hidden">
         <div className="flex h-[253px] w-full flex-col items-end gap-6 min-[600px]:max-[874px]:h-[178px]">
           <PurposeMiniText />
-          <h2 className="h-[150px] w-full font-display text-[78px] font-light uppercase leading-[75px] tracking-[-3.12px] text-white min-[600px]:max-[874px]:h-[75px]">
+          <h2 className="h-[150px] w-full font-display text-[78px] font-light uppercase leading-[75px] tracking-[-3.12px] text-white min-[601px]:max-[874px]:h-[75px]">
             <span>design</span>
-            <br className="max-[599px]:block hidden" />
+            <br className="max-[600px]:block hidden" />
             {" "}
-            <span className="min-[600px]:max-[874px]:float-right">with</span>
+            <span className="purpose-mobile-with min-[601px]:max-[874px]:float-right">with</span>
           </h2>
         </div>
-        <div className="flex h-[85px] w-full items-end">
+        <div className="purpose-small-tablet-purpose-row purpose-mobile-purpose-row flex h-[85px] w-full items-end">
           <h2 className="h-[85px] w-[347px] whitespace-nowrap font-buffon text-[84px] font-normal uppercase leading-[85px] text-white">
             purpose
           </h2>
@@ -65,7 +65,7 @@ function PurposeTitle() {
             <PurposeMiniText webglHero />
           </div>
         </div>
-        <h2 className="purpose-tablet-display purpose-tablet-design mt-[-14px] h-[136px] w-full whitespace-nowrap text-left font-display text-[126px] font-light uppercase leading-[136px] tracking-[-5.04px] text-white">
+        <h2 className="purpose-tablet-display purpose-tablet-design mt-[-16px] h-[136px] w-full whitespace-nowrap text-left font-display text-[126px] font-light uppercase leading-[136px] tracking-[-5.04px] text-white">
           design with
         </h2>
         <h2 className="purpose-tablet-buffon h-[122px] w-[544px] whitespace-nowrap font-buffon text-[132px] font-normal uppercase leading-[122px] text-white">
@@ -85,7 +85,7 @@ function PurposeTitle() {
         <div className="flex h-[154px] w-full items-center justify-center">
           <Display webglHero className="!text-[168px] !leading-[154px] !tracking-[-6.72px]">design with</Display>
         </div>
-        <div className="flex h-[181px] w-full items-end pl-[178px]">
+        <div className="flex h-[181px] w-full items-end">
           <Display webglHero buffon className="!text-[175px] !leading-[180.7px] tracking-[3.5px]">
             purpose
           </Display>

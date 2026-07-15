@@ -254,9 +254,9 @@ function WorksHeading() {
     <section className="works-heading-stack mt-0 flex w-full flex-col gap-2 py-[40px] min-[1199px]:py-[72px]">
       <div className="flex w-full flex-wrap items-end justify-between gap-y-[12px]">
         <Display webglHero className="works-heading-some shrink-0 !text-[78px] !leading-[84px] !tracking-[-3.12px] min-[875px]:max-[1198px]:!text-[126px] min-[875px]:max-[1198px]:!leading-[136px] min-[875px]:max-[1198px]:!tracking-[-5.04px] min-[1199px]:!text-[168px] min-[1199px]:!leading-[154px] min-[1199px]:!tracking-[-6.72px]">some</Display>
-        <Display webglHero className="works-heading-of-my relative top-[-14px] ml-auto basis-full shrink-0 !text-[78px] !leading-[84px] !tracking-[-3.12px] min-[506px]:top-0 min-[506px]:basis-auto min-[875px]:max-[1198px]:!text-[126px] min-[875px]:max-[1198px]:!leading-[136px] min-[875px]:max-[1198px]:!tracking-[-5.04px] min-[1199px]:!text-[168px] min-[1199px]:!leading-[154px] min-[1199px]:!tracking-[-6.72px]">of my</Display>
+        <Display webglHero className="works-heading-of-my relative top-[-15px] ml-auto basis-full shrink-0 !text-[78px] !leading-[84px] !tracking-[-3.12px] min-[601px]:top-0 min-[601px]:basis-auto min-[875px]:max-[1198px]:!text-[126px] min-[875px]:max-[1198px]:!leading-[136px] min-[875px]:max-[1198px]:!tracking-[-5.04px] min-[1199px]:!text-[168px] min-[1199px]:!leading-[154px] min-[1199px]:!tracking-[-6.72px]">of my</Display>
       </div>
-      <div className="relative top-[-18px] flex w-full items-center pl-0 min-[506px]:top-[-2px] min-[600px]:top-[-2px] min-[600px]:pl-[140px] min-[1199px]:top-0 min-[1199px]:pl-[188px]">
+      <div className="works-heading-works-row relative top-[-10px] flex w-full items-center pl-0 min-[601px]:top-[-2px] min-[601px]:pl-[140px] min-[875px]:max-[1198px]:!top-[-8px] min-[1199px]:top-0 min-[1199px]:pl-[188px]">
         <Display webglHero buffon className="works-heading-works w-full !text-[84px] !leading-[85px] min-[875px]:max-[1198px]:!text-[132px] min-[875px]:max-[1198px]:!leading-[122px] min-[1199px]:!text-[175px] min-[1199px]:!leading-[180.7px] min-[1199px]:tracking-[1.75px]">
           works
         </Display>

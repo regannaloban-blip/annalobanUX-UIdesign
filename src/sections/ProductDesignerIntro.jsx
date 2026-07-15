@@ -20,8 +20,8 @@ export function ResponsiveProductDesignerIntro() {
       <h2 data-gl-text className="product-title mb-[-16px] w-full font-buffon text-[84px] font-normal uppercase leading-[85px] text-white max-[874px]:!mb-[-10px]">
         Product
       </h2>
-      <div className="product-service-row flex w-full flex-col items-start whitespace-nowrap min-[600px]:flex-row min-[600px]:justify-between">
-        <div className="product-service-list order-2 flex flex-col pt-4 font-jakarta text-base font-normal uppercase leading-[25px] text-white min-[600px]:order-1">
+      <div className="product-service-row flex w-full flex-col items-start whitespace-nowrap min-[601px]:flex-row">
+        <div className="product-service-list order-2 flex flex-col pt-4 font-jakarta text-base font-normal uppercase leading-[25px] text-white min-[601px]:order-1">
           <span data-gl-text className="inline-block whitespace-nowrap">/ Web</span>
           <span data-gl-text className="inline-block whitespace-nowrap">/ Graphic</span>
           <span data-gl-text className="inline-block whitespace-nowrap">/ identity</span>

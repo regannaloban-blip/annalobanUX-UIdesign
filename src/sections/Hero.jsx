@@ -122,7 +122,7 @@ function PlusMarker({ className = "" }) {
 
 export function ResponsiveViewportGuide() {
   return (
-    <div className="pointer-events-none absolute inset-x-0 top-[-220px] z-20 h-[1054px] min-[600px]:max-[874px]:top-[-140px] min-[600px]:max-[874px]:h-[1072px] md:top-[-140px] md:h-[1072px] min-[1199px]:hidden" aria-hidden="true">
+    <div className="pointer-events-none absolute inset-x-0 top-[-220px] z-20 h-[1054px] min-[601px]:max-[874px]:top-[-140px] min-[601px]:max-[874px]:h-[1072px] md:top-[-140px] md:h-[1072px] min-[1199px]:hidden" aria-hidden="true">
       <span className="absolute left-[10px] top-0 h-full w-px bg-gradient-to-b from-white/25 via-white/25 to-transparent" />
       <span className="absolute right-[10px] top-0 h-full w-px bg-gradient-to-b from-white/25 via-white/25 to-transparent" />
     </div>
@@ -147,14 +147,14 @@ function ResponsiveHeroIntro() {
           src={heroBackground}
           alt=""
           aria-hidden="true"
-          className="pointer-events-none absolute left-0 top-[104px] h-[407px] w-[750px] max-w-none object-cover opacity-100 blur-[6px] min-[600px]:max-[874px]:left-0 min-[600px]:max-[874px]:top-[-22px] min-[600px]:max-[874px]:h-[608px] min-[600px]:max-[874px]:w-[1120px] md:left-0 md:top-[-22px] md:h-[608px] md:w-[1120px]"
+          className="pointer-events-none absolute left-0 top-[104px] h-[407px] w-[750px] max-w-none object-cover opacity-100 blur-[6px] min-[601px]:max-[874px]:left-0 min-[601px]:max-[874px]:top-[-22px] min-[601px]:max-[874px]:h-[608px] min-[601px]:max-[874px]:w-[1120px] md:left-0 md:top-[-22px] md:h-[608px] md:w-[1120px]"
         />
         <div className="hero-title-block relative left-0 z-10 w-full">
           <h1 data-gl-text className="mb-[-8px] w-fit whitespace-nowrap font-buffon text-[84px] font-normal uppercase leading-[85px] text-white">
             Hello!
           </h1>
           <div className="hero-anna-row w-full">
-            <h2 data-gl-text className="w-fit whitespace-nowrap font-display text-[78px] font-light uppercase leading-[84px] tracking-[-3.12px] text-white">
+            <h2 data-gl-text className="hero-tablet-anna-heading w-fit whitespace-nowrap font-display text-[78px] font-light uppercase leading-[84px] tracking-[-3.12px] text-white">
               Iam ANNa
             </h2>
           </div>
@@ -166,7 +166,7 @@ function ResponsiveHeroIntro() {
 
 function ResponsiveIntro() {
   return (
-    <section className="responsive-intro relative w-full min-[600px]:max-[874px]:mx-auto md:w-full min-[1199px]:hidden">
+    <section className="responsive-intro relative w-full min-[601px]:max-[874px]:mx-auto md:w-full min-[1199px]:hidden">
       <ResponsiveHeroIntro />
       <div className="ux-block relative flex flex-col items-start">
         <ResponsiveUxIntro />
