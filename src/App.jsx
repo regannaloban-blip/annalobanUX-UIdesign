@@ -66,7 +66,7 @@ function useDesktopEffects() {
   const [desktop, setDesktop] = useState(false);
 
   useEffect(() => {
-    const query = window.matchMedia("(min-width: 1024px)");
+    const query = window.matchMedia("(min-width: 1199px)");
     const update = () => setDesktop(query.matches);
     update();
     query.addEventListener("change", update);
@@ -310,7 +310,7 @@ function Works() {
 
       <div className="hidden w-full min-[1199px]:block">
         <div className="flex h-[710px] w-full items-start justify-between py-[72px]">
-          <div className="flex items-center gap-[113px]">
+          <div className="flex items-center gap-[64px] min-[1400px]:gap-[113px]">
             <ProjectCard work={works[0]} />
             <ProjectCard work={works[1]} />
           </div>
@@ -318,7 +318,7 @@ function Works() {
         </div>
         <div className="flex h-[710px] w-full items-start justify-between py-[72px]">
           <MonoText webglHero className="w-[271px] font-normal">The context changes with the audience.</MonoText>
-          <div className="flex items-center gap-[112px]">
+          <div className="flex items-center gap-[64px] min-[1400px]:gap-[112px]">
             <ProjectCard work={works[2]} />
             <ProjectCard work={works[3]} />
           </div>
@@ -339,8 +339,36 @@ function Footer() {
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [submitStatus, setSubmitStatus] = useState("idle");
   const successTimerRef = useRef(null);
+  const contactVideoRef = useRef(null);
 
   useEffect(() => () => window.clearTimeout(successTimerRef.current), []);
+
+  useEffect(() => {
+    const video = contactVideoRef.current;
+    if (!video) return undefined;
+
+    const playFromStart = () => {
+      video.currentTime = 0;
+      video.play().catch(() => {});
+    };
+
+    if (!("IntersectionObserver" in window)) {
+      playFromStart();
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        playFromStart();
+        observer.disconnect();
+      },
+      { threshold: 0.15, rootMargin: "0px 0px -20% 0px" },
+    );
+
+    observer.observe(video);
+    return () => observer.disconnect();
+  }, []);
 
   const validateFooterForm = (values) => {
     const errors = {};
@@ -422,13 +450,12 @@ function Footer() {
         <span>together</span>
       </h2>
 
-      <div className="mt-[32px] grid w-full grid-cols-1 py-6 md:max-lg:!mt-[40px] md:max-lg:h-[460px] lg:mt-[40px] lg:h-[460px] lg:grid-cols-[3fr_9fr] lg:gap-[40px] lg:p-6 min-[1440px]:grid-cols-[496px_minmax(0,1fr)]">
+      <div className="mt-[32px] grid w-full grid-cols-1 py-6 md:max-lg:!mt-[40px] md:max-lg:h-[460px] lg:mt-[40px] lg:h-[460px] lg:grid-cols-[4fr_6fr] lg:gap-[40px] lg:p-6 min-[1440px]:grid-cols-[496px_minmax(0,1fr)]">
         <div data-gl-media className="contact-image-frame relative order-2 hidden h-[412px] w-[496px] max-w-full overflow-hidden lg:order-1 lg:block lg:w-full min-[1440px]:w-[496px]">
           <video
+            ref={contactVideoRef}
             src={contactLiquidVideo}
-            poster={footerFormImage}
             className="contact-video h-full w-full object-cover"
-            autoPlay
             muted
             loop
             playsInline

@@ -21,9 +21,7 @@ const KEY_MAP = {
 };
 
 function isDesktop() {
-  const ua = navigator.userAgent || navigator.vendor || window.opera || "";
-  const mobile = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini|mobile|tablet/i.test(ua);
-  return !mobile;
+  return window.matchMedia("(min-width: 1199px)").matches;
 }
 
 function getRenderableElements(selector) {
