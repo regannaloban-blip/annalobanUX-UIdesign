@@ -114,12 +114,26 @@
 
 @media (min-width: 875px) and (max-width: 1198px) {
   .ux-title-row {
+    flex-direction: row !important;
     align-items: flex-start;
+    justify-content: space-between;
+    gap: 0;
     padding: 0 0 4px;
   }
 
-  .ux-mini-text {
+  .ux-title {
+    order: 1;
     flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  .ux-mini-text {
+    order: 2;
+    flex-shrink: 0;
+    width: 359px !important;
+    max-width: none !important;
+    margin-left: auto !important;
+    padding-right: 32px;
     padding-top: 4px;
   }
 
@@ -137,8 +151,8 @@
   }
 
   .product-title {
-    font-size: 84px !important;
-    line-height: 85px !important;
+    font-size: 132px !important;
+    line-height: 122px !important;
   }
 
   .hero-anna-row h2,
@@ -149,9 +163,9 @@
   }
 
   .designer-title {
-    font-size: 78px !important;
-    line-height: 84px !important;
-    letter-spacing: -3.12px !important;
+    font-size: 126px !important;
+    line-height: 136px !important;
+    letter-spacing: -5.04px !important;
   }
 }
 
