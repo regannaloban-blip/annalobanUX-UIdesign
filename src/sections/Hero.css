@@ -185,6 +185,27 @@
   }
 }
 
+@media (min-width: 875px) and (max-width: 1023px) {
+  .hero-anna-row,
+  .ux-block {
+    width: calc(100vw - 98px) !important;
+  }
+
+  .hero-title-block h1,
+  .product-title {
+    font-size: clamp(84px, calc(84px + (100vw - 875px) * 0.3243), 132px) !important;
+    line-height: clamp(85px, calc(85px + (100vw - 875px) * 0.25), 122px) !important;
+  }
+
+  .hero-anna-row h2,
+  .ux-title,
+  .designer-title {
+    font-size: clamp(78px, calc(78px + (100vw - 875px) * 0.3243), 126px) !important;
+    line-height: clamp(84px, calc(84px + (100vw - 875px) * 0.3514), 136px) !important;
+    letter-spacing: clamp(-5.04px, calc(-3.12px + (100vw - 875px) * -0.013), -3.12px) !important;
+  }
+}
+
 @media (min-width: 600px) and (max-width: 874px) {
   .hero-cta-block {
     top: 112px;

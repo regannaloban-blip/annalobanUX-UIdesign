@@ -153,6 +153,10 @@ img {
 }
 
 @media (min-width: 875px) and (max-width: 1023px) {
+  .section-shell {
+    width: calc(100vw - 98px);
+  }
+
   .section-shell.footer-shell {
     width: calc(100vw - 98px);
   }
