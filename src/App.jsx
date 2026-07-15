@@ -521,6 +521,7 @@ function LoopStart() {
 export default function App() {
   const reduced = useReducedMotion();
   const desktopEffects = useDesktopEffects();
+  const fluidDisabled = import.meta.env.DEV && import.meta.env.VITE_DISABLE_FLUID === "true";
   const page = useMemo(
     () => (
       <>
@@ -562,7 +563,7 @@ export default function App() {
   return (
     <>
       <Preloader reduced={reduced} />
-      <CanvasLayer enabled={desktopEffects && !reduced} />
+      <CanvasLayer enabled={desktopEffects && !reduced && !fluidDisabled} />
       <main className="relative z-[910] flex min-h-screen flex-col gap-0 overflow-x-hidden pb-5 pt-[49px] lg:gap-0 lg:pb-[40px] lg:pt-[32px]" aria-label="Anna Loban portfolio">
         <StableHeroGridOverlay />
         <StableHeroCtaOverlay />
