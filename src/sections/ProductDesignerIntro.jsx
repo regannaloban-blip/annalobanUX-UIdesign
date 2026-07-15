@@ -46,7 +46,7 @@ export function ProductIntro() {
         </div>
       </div>
       <div className="flex w-full flex-col items-start text-white">
-        <Display buffon webglHero>
+        <Display buffon webglHero className="translate-y-[8px]">
           Product
         </Display>
         <div className="flex w-full flex-col gap-5 lg:flex-row lg:items-start lg:gap-[194px]">
