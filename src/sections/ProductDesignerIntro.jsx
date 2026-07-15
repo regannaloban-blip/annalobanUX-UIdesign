@@ -45,8 +45,8 @@ export function ProductIntro() {
           </MonoText>
         </div>
       </div>
-      <div className="flex w-full flex-col items-start text-white">
-        <Display buffon webglHero className="translate-y-[8px]">
+      <div className="product-intro-heading-stack flex w-full flex-col items-start text-white">
+        <Display buffon webglHero className="product-intro-product-heading">
           Product
         </Display>
         <div className="flex w-full flex-col gap-5 lg:flex-row lg:items-start lg:gap-[194px]">
@@ -55,7 +55,7 @@ export function ProductIntro() {
             <span data-gl-text data-gl-hero-text className="inline-block whitespace-nowrap">/ Graphic</span>
             <span data-gl-text data-gl-hero-text className="inline-block whitespace-nowrap">/ identity</span>
           </div>
-          <Display webglHero className="order-1 lg:order-2 lg:tracking-[-6.72px]">Designer</Display>
+          <Display webglHero className="product-intro-designer-heading order-1 lg:order-2 lg:tracking-[-6.72px]">Designer</Display>
         </div>
       </div>
     </section>

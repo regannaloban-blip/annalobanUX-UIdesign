@@ -190,15 +190,15 @@ function BackgroundGlow() {
 
 export function Hero() {
   return (
-    <header className="relative hidden h-[748px] w-full flex-col gap-2 overflow-visible pb-0 pt-[354px] min-[1199px]:flex">
+    <header className="hero-desktop-title-stack relative hidden h-[748px] w-full flex-col gap-2 overflow-visible pb-0 pt-[354px] min-[1199px]:flex">
       <BackgroundGlow />
       <div className="relative z-10 flex w-full items-center">
-        <Display as="h1" buffon webglHero>
+        <Display as="h1" buffon webglHero className="hero-desktop-hello-heading">
           Hello!
         </Display>
       </div>
       <div className="relative z-10 flex w-full items-end lg:pl-[287px]">
-        <Display as="h2" className="text-right lg:tracking-[-6.72px]" webglHero>
+        <Display as="h2" className="hero-desktop-anna-heading text-right lg:tracking-[-6.72px]" webglHero>
           Iam ANNa
         </Display>
       </div>

@@ -185,6 +185,52 @@
   }
 }
 
+@media (min-width: 1199px) {
+  .hero-desktop-title-stack {
+    --hero-desktop-hello-offset-y: 6px;
+    --hero-desktop-anna-offset-y: -12px;
+  }
+
+  .hero-desktop-hello-heading {
+    transform: translateY(var(--hero-desktop-hello-offset-y));
+  }
+
+  .hero-desktop-anna-heading {
+    transform: translateY(var(--hero-desktop-anna-offset-y));
+  }
+
+  .product-intro-heading-stack {
+    --product-intro-product-offset-y: 6px;
+    --product-intro-designer-offset-y: -7px;
+  }
+
+  .product-intro-product-heading {
+    transform: translateY(var(--product-intro-product-offset-y));
+  }
+
+  .product-intro-designer-heading {
+    transform: translateY(var(--product-intro-designer-offset-y));
+  }
+
+  .works-heading-stack {
+    --works-heading-some-offset-y: 0px;
+    --works-heading-of-my-offset-y: -3px;
+    --works-heading-works-offset-y: -8px;
+  }
+
+  .works-heading-some {
+    transform: translateY(var(--works-heading-some-offset-y));
+  }
+
+  .works-heading-of-my {
+    transform: translateY(var(--works-heading-of-my-offset-y));
+  }
+
+  .works-heading-works {
+    transform: translateY(var(--works-heading-works-offset-y));
+  }
+}
+
 @media (min-width: 875px) and (max-width: 1023px) {
   .hero-anna-row,
   .ux-block {
