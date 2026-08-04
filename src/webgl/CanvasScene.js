@@ -21,9 +21,7 @@ const KEY_MAP = {
 };
 
 function isDesktop() {
-  const ua = navigator.userAgent || navigator.vendor || window.opera || "";
-  const mobile = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini|mobile|tablet/i.test(ua);
-  return !mobile;
+  return window.matchMedia("(min-width: 1199px)").matches;
 }
 
 function getRenderableElements(selector) {
@@ -126,16 +124,10 @@ export class CanvasScene {
 
   createPlanes() {
     this.destroyPlanes();
-    const mediaPlanes = getRenderableElements("[data-gl-hero-media]").map(
-      (element) => new MediaPlane({ gl: this.gl, scene: this.scene, element, canvas: this }),
-    );
-    const backgroundPlanes = getRenderableElements("[data-gl-hero-background]").map(
-      (element) => new BackgroundPlane({ gl: this.gl, scene: this.scene, element, canvas: this }),
-    );
-    const textPlanes = getRenderableElements("[data-gl-hero-text]:not([data-gl-text-no-fluid])")
-      .map((element) => new TextPlane({ gl: this.gl, scene: this.scene, element, canvas: this }));
-    const flowTextPlanes = getRenderableElements("[data-gl-flow-text]")
-      .map((element) => new FlowTextPlane({ gl: this.gl, scene: this.scene, element, canvas: this }));
+    const mediaPlanes = [];
+    const backgroundPlanes = [];
+    const textPlanes = [];
+    const flowTextPlanes = [];
     this.planes = [...mediaPlanes, ...backgroundPlanes, ...textPlanes, ...flowTextPlanes];
   }
 

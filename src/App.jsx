@@ -1,5 +1,10 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { CanvasScene } from "./webgl/CanvasScene.js";
+import { Button, Display, MonoText, briefHref, contactFormId } from "./components/PortfolioPrimitives.jsx";
+import { TopLinks } from "./components/TopLinks.jsx";
+import { Hero, HeroFirstScreen, ResponsiveViewportGuide, StableHeroCtaOverlay, StableHeroGridOverlay } from "./sections/Hero.jsx";
+import { ProductIntro } from "./sections/ProductDesignerIntro.jsx";
+import { Purpose } from "./sections/Purpose.jsx";
 
 import aboutPortrait from "../assets/ai-portfolio/figma/anna-redesign/about.png";
 import project1 from "../Case/Compressed/24 colab.jpg";
@@ -7,21 +12,11 @@ import project2 from "../Case/Compressed/smart business intelligence.jpg";
 import project3 from "../Case/Compressed/Skyliner.jpg";
 import project4 from "../Case/Compressed/your dissertation.jpg";
 import quoteIcon from "../assets/ai-portfolio/figma/anna-redesign/quote-icon.svg";
-import heroBackground from "../assets/ai-portfolio/image 16.png";
 import footerFormImage from "../Case/Compressed/contact.jpg";
 import contactLiquidVideo from "../Case/Compressed/contact-smoke-red.mp4";
 
-const contactEmail = "hello.anna.loban@proton.me";
-const briefHref = `mailto:${contactEmail}?subject=Website%20or%20visual%20system%20brief`;
 const formSubmitHref = "https://anna-contact-form-v2.ann-loban.workers.dev";
-const contactFormId = "contact-form";
 const canvasSceneKey = "__annaPortfolioCanvasScene";
-const footerLinks = [
-  { label: "Linkedin", href: "https://www.linkedin.com/in/annloban/" },
-  { label: "Dribbble", href: "https://dribbble.com/azzaza" },
-  { label: "telegram", href: "https://t.me/anna_loban" },
-  { label: "mail", href: briefHref, external: false },
-];
 
 const works = [
   {
@@ -53,31 +48,6 @@ const works = [
   },
 ];
 
-const advantageCards = [
-  {
-    number: "01/",
-    title: "Easy to use hard to ignore",
-    text: "Composition as the first signal of trust. Guiding users to target actions through visual logic.",
-  },
-  {
-    number: "02/",
-    title: "Nothing extra, nothing distracting.",
-    text: "Less guesswork, more precision. No endless revisions — just one sharp, effective strategy.",
-  },
-  {
-    number: "03/",
-    title: "Modern & AI-powered workflows.",
-    text: "Solid infrastructure. Developer ready Figma component sets built to stand out.",
-  },
-];
-
-const services = [
-  "+ UX/UI solutions",
-  "+ Identity & web design",
-  "+ Frontend-ready systems",
-  "+ AI-fast workflow",
-];
-
 function useReducedMotion() {
   const [reduced, setReduced] = useState(false);
 
@@ -96,7 +66,7 @@ function useDesktopEffects() {
   const [desktop, setDesktop] = useState(false);
 
   useEffect(() => {
-    const query = window.matchMedia("(min-width: 1024px)");
+    const query = window.matchMedia("(min-width: 1199px)");
     const update = () => setDesktop(query.matches);
     update();
     query.addEventListener("change", update);
@@ -180,57 +150,6 @@ function CanvasLayer({ enabled }) {
   );
 }
 
-function scrollToContactForm(event) {
-  const form = document.getElementById(contactFormId);
-
-  if (!form) return;
-
-  event.preventDefault();
-
-  const targetY = form.getBoundingClientRect().top + window.scrollY - (window.innerHeight - form.offsetHeight) / 2;
-  const startY = window.scrollY;
-  const distance = targetY - startY;
-
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    window.scrollTo(0, targetY);
-    return;
-  }
-
-  const duration = window.matchMedia("(min-width: 1024px)").matches ? 1800 : 1200;
-  const start = performance.now();
-  const easeInOutCubic = (value) => (value < 0.5 ? 4 * value * value * value : 1 - ((-2 * value + 2) ** 3) / 2);
-
-  const animate = (time) => {
-    const progress = Math.min((time - start) / duration, 1);
-    window.scrollTo(0, startY + distance * easeInOutCubic(progress));
-
-    if (progress < 1) window.requestAnimationFrame(animate);
-  };
-
-  window.requestAnimationFrame(animate);
-}
-
-function Button({ className = "", webglHero = false, noFluid = false }) {
-  return (
-    <a
-      {...(webglHero ? { "data-gl-hero-background": true } : {})}
-      href={briefHref}
-      onClick={scrollToContactForm}
-      className={`inline-flex h-12 w-fit items-center justify-center border-b border-black bg-white px-10 text-black ${className}`}
-    >
-      <span
-        data-gl-text
-        data-gl-text-no-fluid={!webglHero || noFluid ? true : undefined}
-        {...(webglHero ? { "data-gl-hero-text": true } : {})}
-        data-color="black"
-        className="block whitespace-nowrap font-jakarta text-base font-bold uppercase leading-[25px]"
-      >
-        start a project
-      </span>
-    </a>
-  );
-}
-
 function SectionShell({ children, className = "", shellClassName = "", decor = null }) {
   return (
     <section className={`relative w-full ${className}`}>
@@ -263,7 +182,7 @@ function FooterField({
 
   return (
     <label className={`relative flex min-w-0 flex-col gap-1 ${className}`}>
-      <span className="font-jakarta text-[14px] font-semibold normal-case leading-5 text-white/40">
+      <span className="font-jakarta text-[14px] font-medium normal-case leading-5 text-white/40">
         {label}
       </span>
       <FieldTag
@@ -295,296 +214,40 @@ function FooterField({
   );
 }
 
-function Display({ as: Tag = "h2", children, className = "", buffon = false, webglHero = false }) {
-  const fontClass = buffon ? "font-buffon font-normal" : "font-display font-light";
-  const sizeClass = buffon
-    ? "text-[84px] leading-[85px] md:text-[118px] md:leading-[110px] lg:text-[175px] lg:leading-[160px]"
-    : "text-[78px] leading-[84px] tracking-[-3.12px] md:text-[96px] md:leading-[94px] lg:text-[168px] lg:leading-[154px] lg:tracking-[-7px]";
-
+function ConsentCheckbox({ checked, error, onBlur, onChange }) {
   return (
-    <Tag
-      {...(webglHero ? { "data-gl-text": true, "data-gl-hero-text": true } : {})}
-      className={`${fontClass} ${sizeClass} whitespace-nowrap uppercase tracking-normal text-white ${className}`}
-    >
-      {children}
-    </Tag>
-  );
-}
-
-function MonoText({ children, className = "", as: Tag = "p", italic = false, bold = false, webglHero = false, noFluid = false }) {
-  return (
-    <Tag
-      data-gl-text
-      {...(webglHero ? { "data-gl-hero-text": true } : {})}
-      {...(noFluid ? { "data-gl-text-no-fluid": true } : {})}
-      className={`font-jakarta text-base uppercase leading-[25px] text-white ${italic ? "italic md:text-[22px] md:leading-[28px]" : ""} ${bold ? "font-bold" : "font-light"} ${className}`}
-    >
-      {children}
-    </Tag>
-  );
-}
-
-function TopLinks() {
-  return (
-    <nav className="relative z-40 flex w-full flex-wrap items-start justify-between gap-x-6 gap-y-2 font-jakarta text-base uppercase leading-[25px] text-white lg:justify-end lg:gap-[40px]">
-      {footerLinks.map((link) => (
-        <a
-          data-gl-text
-          data-gl-hero-text
-          href={link.href}
-          target={link.external === false ? undefined : "_blank"}
-          rel={link.external === false ? undefined : "noreferrer"}
-          className="underline"
-          key={link.label}
-        >
-          {link.label}
+    <label className="group relative flex w-full items-start gap-3 font-jakarta text-base font-normal normal-case leading-6 text-white">
+      <input
+        checked={checked}
+        className="peer sr-only"
+        name="consent"
+        onBlur={onBlur}
+        onChange={onChange}
+        required
+        type="checkbox"
+        value="yes"
+      />
+      <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center border border-[#94A3B8] bg-transparent transition-colors group-hover:border-white peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-white">
+        <svg className={`h-[11px] w-[14px] ${checked ? "opacity-100" : "opacity-0"}`} viewBox="0 0 14 11" fill="none" aria-hidden="true">
+          <path d="M1 5.5L5.2 9.5L13 1" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </span>
+      <span className="min-w-0 text-white/60">
+        I agree to my data being used to respond to this request.{" "}
+        <a className="underline decoration-white/60 underline-offset-4 transition-colors hover:text-white" href="/privacy">
+          Privacy Policy
         </a>
-      ))}
-    </nav>
-  );
-}
-
-const desktopGridStops = ["0%", "33.333333%", "66.666667%", "100%"];
-
-function FirstViewportGuide() {
-  const labels = [
-    { stop: desktopGridStops[0], text: "Personal page" },
-    { stop: desktopGridStops[1], text: "Poland, Poznan" },
-  ];
-
-  return (
-    <div className="desktop-hero-grid-rail pointer-events-none absolute top-[-59px] z-20 hidden h-[calc(100dvh+2px)] min-[1199px]:block" aria-hidden="true">
-      {desktopGridStops.map((stop) => (
-        <span
-          key={stop}
-          className="absolute top-0 h-full w-px bg-gradient-to-b from-white/20 via-white/20 to-transparent"
-          style={{ left: stop }}
-        />
-      ))}
-      {labels.map((label) => (
-        <div
-          key={label.text}
-          className="desktop-hero-grid-anchor absolute top-[236px] flex h-[25px] items-center gap-[22px] font-jakarta text-[13px] uppercase leading-[25px] text-white/40"
-          style={{ left: label.stop }}
-        >
-          <span className="relative block h-[20px] w-[20px] shrink-0">
-            <span data-gl-hero-background className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-white" />
-            <span data-gl-hero-background className="absolute left-0 top-1/2 h-px w-full -translate-y-1/2 bg-white" />
-          </span>
-          <span>{label.text}</span>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function StableHeroGridOverlay() {
-  const labels = [
-    { stop: desktopGridStops[0], text: "Personal page", fluidBoost: true },
-    { stop: desktopGridStops[1], text: "Poland, Poznan" },
-  ];
-
-  return (
-    <div className="desktop-hero-overlay-safe desktop-hero-labels-safe pointer-events-none absolute inset-x-0 top-[-2px] z-[950] hidden h-[calc(100dvh+2px)] min-[1199px]:block" aria-hidden="true">
-      <div className="section-shell relative h-full">
-        <div className="desktop-hero-grid-rail absolute inset-y-0">
-          {desktopGridStops.map((stop) => (
-            <span
-              key={stop}
-              className="absolute top-0 h-full w-px bg-[linear-gradient(to_bottom,rgba(255,255,255,0.2)_0%,rgba(255,255,255,0.2)_82%,rgba(255,255,255,0)_100%)]"
-              style={{ left: stop }}
-            />
-          ))}
-          {labels.map((label) => (
-            <div
-              key={label.text}
-              className="desktop-hero-grid-anchor absolute top-[236px] flex h-[25px] items-center gap-[22px] font-jakarta text-[13px] uppercase leading-[25px] text-white/40"
-              style={{ left: label.stop }}
-            >
-              <span className="relative block h-[20px] w-[20px] shrink-0">
-                <span
-                  {...(label.fluidBoost ? { "data-gl-hero-background": true } : {})}
-                  className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-white"
-                />
-                <span
-                  {...(label.fluidBoost ? { "data-gl-hero-background": true } : {})}
-                  className="absolute left-0 top-1/2 h-px w-full -translate-y-1/2 bg-white"
-                />
-              </span>
-              <span
-                {...(label.fluidBoost ? { "data-gl-flow-text": true, "data-gl-fluid-boost": true } : { "data-gl-text": true, "data-gl-hero-text": true })}
-                className="whitespace-nowrap"
-              >
-                {label.text}
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function StableHeroCtaOverlay() {
-  return (
-    <div className="desktop-hero-overlay-safe desktop-hero-cta-safe pointer-events-none absolute inset-x-0 top-[-2px] z-[960] hidden h-[calc(100dvh+2px)] min-[1199px]:block" aria-hidden="true">
-      <div className="section-shell relative h-full">
-        <div className="desktop-hero-grid-rail absolute inset-y-0">
-          <div
-            className="desktop-hero-grid-anchor hero-top-brief-card pointer-events-auto absolute top-[236px] flex items-start gap-[11px]"
-            style={{ left: desktopGridStops[2] }}
-          >
-            <span className="relative block h-[20px] w-[20px] shrink-0" aria-hidden="true">
-              <span className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-white" />
-              <span className="absolute left-0 top-1/2 h-px w-full -translate-y-1/2 bg-white" />
-            </span>
-            <div className="mt-[-4px] flex min-w-0 flex-1 flex-col items-start gap-[26px] pr-8">
-              <MonoText webglHero italic className="w-full !text-[20px] font-normal !leading-[33px] md:!text-[20px] md:!leading-[33px]">
-                Digital design beyond trends — built to be clear, logical, and easy to launch.
-              </MonoText>
-              <Button webglHero />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function PlusMarker({ className = "" }) {
-  return (
-    <span className={`relative block h-[20px] w-[20px] shrink-0 ${className}`} aria-hidden="true">
-      <span data-gl-hero-background className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-white" />
-      <span data-gl-hero-background className="absolute left-0 top-1/2 h-px w-full -translate-y-1/2 bg-white" />
-    </span>
-  );
-}
-
-function ResponsiveViewportGuide() {
-  return (
-    <div className="pointer-events-none absolute inset-x-0 top-[-220px] z-20 h-[1054px] min-[600px]:max-[874px]:top-[-140px] min-[600px]:max-[874px]:h-[1072px] md:top-[-140px] md:h-[1072px] min-[1199px]:hidden" aria-hidden="true">
-      <span className="absolute left-[10px] top-0 h-full w-px bg-gradient-to-b from-white/25 via-white/25 to-transparent" />
-      <span className="absolute right-[10px] top-0 h-full w-px bg-gradient-to-b from-white/25 via-white/25 to-transparent" />
-    </div>
-  );
-}
-
-function ResponsiveIntro() {
-  return (
-    <section className="responsive-intro relative w-full min-[600px]:max-[874px]:mx-auto md:w-full min-[1199px]:hidden">
-      <div className="hero-cta-block absolute left-0 top-[112px] z-20 flex w-[390px] max-w-none items-start gap-[11px] min-[1199px]:hidden">
-        <PlusMarker className="mt-2" />
-        <div className="hero-cta-content flex w-[359px] shrink-0 flex-col items-start gap-[26px] pr-8">
-          <MonoText italic className="hero-cta-copy w-full !text-[20px] font-normal !leading-[33px] md:!text-[20px] md:!leading-[33px]">
-            Digital design beyond trends — built to be clear, logical, and easy to launch.
-          </MonoText>
-          <Button className="hero-cta-button h-12" />
-        </div>
-      </div>
-
-      <div className="responsive-hero-block relative w-full overflow-visible">
-        <img
-          src={heroBackground}
-          alt=""
-          aria-hidden="true"
-          className="pointer-events-none absolute left-0 top-[104px] h-[407px] w-[750px] max-w-none object-cover opacity-100 blur-[6px] min-[600px]:max-[874px]:left-0 min-[600px]:max-[874px]:top-[-22px] min-[600px]:max-[874px]:h-[608px] min-[600px]:max-[874px]:w-[1120px] md:left-0 md:top-[-22px] md:h-[608px] md:w-[1120px]"
-        />
-        <div className="hero-title-block relative left-0 z-10 w-full">
-          <h1 data-gl-text className="mb-[-8px] w-fit whitespace-nowrap font-buffon text-[84px] font-normal uppercase leading-[85px] text-white">
-            Hello!
-          </h1>
-          <div className="hero-anna-row w-full">
-            <h2 data-gl-text className="w-fit whitespace-nowrap font-display text-[78px] font-light uppercase leading-[84px] tracking-[-3.12px] text-white">
-              Iam ANNa
-            </h2>
-          </div>
-        </div>
-      </div>
-
-      <div className="ux-block relative flex flex-col items-start">
-        <div className="ux-title-row flex w-full flex-col gap-6 pb-1 pt-2 max-[874px]:mb-[-6px]">
-          <MonoText className="ux-mini-text ml-auto w-full max-w-[296px] font-normal">
-            Shaping clear visual interfaces for thoughtful digital products and the people who use them.
-          </MonoText>
-          <h2 data-gl-text className="ux-title font-display text-[78px] font-light uppercase leading-[84px] tracking-[-3.12px] text-white max-[874px]:!leading-[75px]">
-            UX/UI
-          </h2>
-        </div>
-        <div className="flex w-full flex-col items-start text-white">
-          <h2 data-gl-text className="product-title mb-[-16px] w-full font-buffon text-[84px] font-normal uppercase leading-[85px] text-white max-[874px]:!mb-[-10px]">
-            Product
-          </h2>
-          <div className="product-service-row flex w-full flex-col items-start whitespace-nowrap min-[600px]:flex-row min-[600px]:justify-between">
-            <div className="product-service-list order-2 flex flex-col pt-4 font-jakarta text-base font-normal uppercase leading-[25px] text-white min-[600px]:order-1">
-              <span data-gl-text className="inline-block whitespace-nowrap">/ Web</span>
-              <span data-gl-text className="inline-block whitespace-nowrap">/ Graphic</span>
-              <span data-gl-text className="inline-block whitespace-nowrap">/ identity</span>
-            </div>
-            <h2 data-gl-text className="designer-title order-1 mt-[8px] w-fit font-display text-[78px] font-light uppercase leading-[84px] tracking-[-3.12px] text-white max-[874px]:!mt-0 max-[874px]:!leading-[75px]">
-              Designer
-            </h2>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function BackgroundGlow() {
-  return (
-    <img
-      data-gl-hero-media
-      src={heroBackground}
-      alt=""
-      aria-hidden="true"
-      className="pointer-events-none absolute left-[17%] top-[-64px] z-0 h-[420px] w-[780px] max-w-none object-cover opacity-100 blur-[6px] md:left-[18%] md:top-[-86px] md:h-[560px] md:w-[980px] lg:left-[302px] lg:top-[50px] lg:h-[608px] lg:w-[1120px]"
-    />
-  );
-}
-
-function Hero() {
-  return (
-    <header className="relative hidden h-[748px] w-full flex-col gap-2 overflow-visible pb-0 pt-[354px] min-[1199px]:flex">
-      <BackgroundGlow />
-      <div className="relative z-10 flex w-full items-center">
-        <Display as="h1" buffon webglHero>
-          Hello!
-        </Display>
-      </div>
-      <div className="relative z-10 flex w-full items-end lg:pl-[287px]">
-        <Display as="h2" className="text-right lg:tracking-[-6.72px]" webglHero>
-          Iam ANNa
-        </Display>
-      </div>
-    </header>
-  );
-}
-
-function ProductIntro() {
-  return (
-    <section className="hidden h-[592px] w-full flex-col items-start py-[72px] min-[1199px]:flex">
-      <div className="flex h-[158px] w-full flex-col gap-10 pb-1 lg:flex-row lg:items-start lg:justify-between lg:gap-8">
-        <Display className="lg:tracking-[-6.72px]" webglHero>UX/UI</Display>
-        <div className="flex w-[286px] max-w-full flex-col items-start gap-[42px] lg:h-[75px] lg:w-[359px] lg:gap-0 lg:pr-8 lg:pt-1">
-          <MonoText webglHero className="w-full max-w-[327px] font-normal">
-            Shaping clear visual interfaces for thoughtful digital products and the people who use them.
-          </MonoText>
-        </div>
-      </div>
-      <div className="flex w-full flex-col items-start text-white">
-        <Display buffon webglHero>
-          Product
-        </Display>
-        <div className="flex w-full flex-col gap-5 lg:flex-row lg:items-start lg:gap-[194px]">
-          <div className="order-2 flex flex-row gap-4 pt-0 font-jakarta text-base font-normal uppercase leading-[25px] text-white lg:order-1 lg:flex-col lg:gap-0 lg:pt-4">
-            <span data-gl-text data-gl-hero-text className="inline-block whitespace-nowrap">/ Web</span>
-            <span data-gl-text data-gl-hero-text className="inline-block whitespace-nowrap">/ Graphic</span>
-            <span data-gl-text data-gl-hero-text className="inline-block whitespace-nowrap">/ identity</span>
-          </div>
-          <Display webglHero className="order-1 lg:order-2 lg:tracking-[-6.72px]">Designer</Display>
-        </div>
-      </div>
-    </section>
+      </span>
+      <span
+        aria-live="polite"
+        className={`absolute left-0 top-full z-10 mt-1 flex items-center gap-1 font-jakarta text-[14px] font-semibold normal-case leading-5 text-white ${
+          error ? "visible" : "invisible pointer-events-none"
+        }`}
+      >
+        <span className="h-1 w-1 rounded-full bg-white" />
+        {error || "Validation message"}
+      </span>
+    </label>
   );
 }
 
@@ -596,7 +259,7 @@ function About() {
           <img data-gl-media data-gl-hero-media data-gl-fluid-boost src={quoteIcon} alt="" className="absolute top-[6px] h-[25px] w-[28px]" />
         </div>
         <div className="flex min-w-0 flex-1 flex-col gap-[91px]">
-          <div data-gl-flow-text data-gl-fluid-boost className="about-copy flow-root font-jakarta text-[20px] font-normal uppercase leading-[32px] text-white md:text-[26px] md:leading-[41px]">
+          <div className="about-copy flow-root font-jakarta text-[20px] font-normal uppercase leading-[32px] text-white md:text-[26px] md:leading-[41px]">
             <div
               data-gl-media
               data-gl-hero-media
@@ -605,146 +268,16 @@ function About() {
             >
               <img src={aboutPortrait} alt="Anna Loban portrait" className="h-full w-full object-cover" />
             </div>
-            <span data-gl-text data-gl-text-no-fluid>About.</span>
+            <span>About.</span>
             <br className="max-[599px]:block hidden" />
             {" "}
-            <span data-gl-text data-gl-text-no-fluid className="text-white/60">
+            <span className="text-white/60">
               I am a senior UX/UI designer. Strong product structure and refined visuals go hand in hand. Working independently, I create design systems that move business forward and save development time.{" "}
             </span>
-            <span data-gl-text data-gl-text-no-fluid>The result: no chaotic iterations — just constructive decisions that make sense.</span>
+            <span>The result: no chaotic iterations — just constructive decisions that make sense.</span>
           </div>
           <div className="flex h-auto w-[353px] max-w-full flex-col gap-[42px] pr-6 min-[387px]:h-[165px]">
-            <MonoText webglHero className="font-normal">Combining real human behavior, clear product logic, and strong visual appeal.</MonoText>
-            <Button webglHero />
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function PurposeMiniText({ webglHero = false }) {
-  return (
-    <div className="shrink-0 pt-1">
-      <MonoText webglHero={webglHero} className="h-[75px] w-[264px] !font-normal !text-base !leading-[25px]">
-        A web/UI designer crafting intuitive and engaging digital experiences
-      </MonoText>
-    </div>
-  );
-}
-
-function PurposeTitle() {
-  return (
-    <div className="w-full">
-      <div className="flex w-full flex-col min-[875px]:hidden">
-        <div className="flex h-[253px] w-full flex-col items-end gap-6 min-[600px]:max-[874px]:h-[178px]">
-          <PurposeMiniText />
-          <h2 className="h-[150px] w-full font-display text-[78px] font-light uppercase leading-[75px] tracking-[-3.12px] text-white min-[600px]:max-[874px]:h-[75px]">
-            <span>design</span>
-            <br className="max-[599px]:block hidden" />
-            {" "}
-            <span className="min-[600px]:max-[874px]:float-right">with</span>
-          </h2>
-        </div>
-        <div className="flex h-[85px] w-full items-end">
-          <h2 className="h-[85px] w-[347px] whitespace-nowrap font-buffon text-[84px] font-normal uppercase leading-[85px] text-white">
-            purpose
-          </h2>
-        </div>
-      </div>
-
-      <div className="hidden w-full flex-col min-[875px]:max-[1198px]:flex">
-        <div className="flex h-[136px] w-full items-start justify-between">
-          <h2 className="w-[437px] whitespace-nowrap text-right font-display text-[126px] font-light uppercase leading-[136px] tracking-[-5.04px] text-white">
-            digital
-          </h2>
-          <div className="pt-1">
-            <PurposeMiniText webglHero />
-          </div>
-        </div>
-        <h2 className="mt-[-14px] h-[136px] w-full whitespace-nowrap text-center font-display text-[126px] font-light uppercase leading-[136px] tracking-[-5.04px] text-white">
-          design with
-        </h2>
-        <h2 className="h-[122px] w-[544px] whitespace-nowrap font-buffon text-[132px] font-normal uppercase leading-[122px] text-white">
-          purpose
-        </h2>
-      </div>
-
-      <div className="hidden w-full min-[1199px]:block">
-        <div className="flex h-[154px] w-full items-start gap-28">
-          <Display webglHero className="!text-[168px] !leading-[154px] !tracking-[-6.72px]">digital</Display>
-          <div className="pt-2">
-            <MonoText webglHero className="h-[75px] w-[264px] font-normal !text-base !leading-[25px]">
-              A web/UI designer crafting intuitive and engaging digital experiences
-            </MonoText>
-          </div>
-        </div>
-        <div className="flex h-[154px] w-full items-center pl-0 min-[1400px]:pl-[202px]">
-          <Display webglHero className="!text-[168px] !leading-[154px] !tracking-[-6.72px]">design with</Display>
-        </div>
-        <div className="flex h-[181px] w-full items-end pl-[178px]">
-          <Display webglHero buffon className="!text-[175px] !leading-[180.7px] tracking-[3.5px]">
-            purpose
-          </Display>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function Purpose() {
-  return (
-    <section className="purpose-section flex w-full flex-col py-[40px] min-[1199px]:py-[72px]">
-      <PurposeTitle />
-
-      <div className="purpose-columns mt-16 flex w-full flex-col gap-[72px] min-[875px]:mt-0 min-[875px]:flex-row min-[875px]:items-start min-[875px]:justify-between min-[875px]:gap-20">
-        <div className="flex w-full flex-col gap-[24px] min-[875px]:w-[362px] min-[875px]:gap-10 min-[875px]:max-[1198px]:pt-[344px] min-[1199px]:pt-[280px]">
-          {advantageCards.map((card) => {
-            const isThirdCard = card.number === "03/";
-            return (
-            <div {...(isThirdCard ? {} : { "data-gl-flow-text": true, "data-gl-fluid-boost": true })} className="flex w-full items-start gap-[32px]" key={card.number}>
-              {isThirdCard ? (
-                <div data-gl-flow-text data-gl-fluid-boost className="h-[25px] shrink-0 whitespace-nowrap">
-                  <MonoText bold>{card.number}</MonoText>
-                </div>
-              ) : (
-                <MonoText bold className="h-[25px] shrink-0 whitespace-nowrap">
-                  {card.number}
-                </MonoText>
-              )}
-              <div className="flex min-w-0 flex-1 flex-col gap-5">
-                {isThirdCard ? (
-                  <div data-gl-flow-text data-gl-fluid-boost>
-                    <MonoText bold>{card.title}</MonoText>
-                  </div>
-                ) : (
-                  <MonoText bold>{card.title}</MonoText>
-                )}
-                {isThirdCard ? (
-                  <div data-gl-flow-text data-gl-fluid-boost>
-                    <MonoText className="font-bold min-[875px]:font-normal">{card.text}</MonoText>
-                  </div>
-                ) : (
-                  <MonoText className="font-bold min-[875px]:font-normal">{card.text}</MonoText>
-                )}
-              </div>
-            </div>
-            );
-          })}
-        </div>
-
-        <div className="flex w-full flex-col gap-4 min-[875px]:max-[1198px]:w-[251px] min-[875px]:max-[1198px]:pt-16 min-[1199px]:h-[361px] min-[1199px]:w-[334px] min-[1199px]:pr-[108px] min-[1400px]:w-[359px]">
-          <MonoText webglHero className="w-full max-w-full font-bold min-[875px]:w-[251px] min-[875px]:font-normal">
-            Delivering tailored solutions for my <br className="hidden max-md:block" /> clients
-          </MonoText>
-          <div className="flex w-full flex-col gap-[42px] min-[875px]:w-[251px] min-[875px]:max-w-full min-[1199px]:max-w-none">
-            <div data-gl-background data-gl-hero-background className="flex w-full flex-col overflow-hidden border-y border-white">
-              {services.map((service, index) => (
-                <div data-gl-background data-gl-hero-background className={`flex h-[41px] items-center min-[1199px]:h-[42px] ${index === 0 ? "" : "border-t border-white"}`} key={service}>
-                  <MonoText webglHero className="whitespace-nowrap font-bold min-[875px]:font-normal">{service}</MonoText>
-                </div>
-              ))}
-            </div>
+            <MonoText className="font-normal">Combining real human behavior, clear product logic, and strong visual appeal.</MonoText>
             <Button webglHero />
           </div>
         </div>
@@ -755,13 +288,13 @@ function Purpose() {
 
 function WorksHeading() {
   return (
-    <section className="mt-0 flex w-full flex-col gap-2 py-[40px] min-[1199px]:py-[72px]">
+    <section className="works-heading-stack mt-0 flex w-full flex-col gap-2 py-[40px] min-[1199px]:py-[72px]">
       <div className="flex w-full flex-wrap items-end justify-between gap-y-[12px]">
-        <Display webglHero className="shrink-0 !text-[78px] !leading-[84px] !tracking-[-3.12px] min-[873px]:max-[1198px]:!text-[126px] min-[873px]:max-[1198px]:!leading-[136px] min-[873px]:max-[1198px]:!tracking-[-5.04px] min-[1199px]:!text-[168px] min-[1199px]:!leading-[154px] min-[1199px]:!tracking-[-6.72px]">some</Display>
-        <Display webglHero className="relative top-[-14px] ml-auto basis-full shrink-0 !text-[78px] !leading-[84px] !tracking-[-3.12px] min-[506px]:top-0 min-[506px]:basis-auto min-[873px]:max-[1198px]:!text-[126px] min-[873px]:max-[1198px]:!leading-[136px] min-[873px]:max-[1198px]:!tracking-[-5.04px] min-[1199px]:!text-[168px] min-[1199px]:!leading-[154px] min-[1199px]:!tracking-[-6.72px]">of my</Display>
+        <Display webglHero className="works-heading-some shrink-0 !text-[78px] !leading-[84px] !tracking-[-3.12px] min-[875px]:max-[1198px]:!text-[126px] min-[875px]:max-[1198px]:!leading-[136px] min-[875px]:max-[1198px]:!tracking-[-5.04px] min-[1199px]:!text-[168px] min-[1199px]:!leading-[154px] min-[1199px]:!tracking-[-6.72px]">some</Display>
+        <Display webglHero className="works-heading-of-my relative top-[-15px] ml-auto basis-full shrink-0 !text-[78px] !leading-[84px] !tracking-[-3.12px] min-[601px]:top-0 min-[601px]:basis-auto min-[875px]:max-[1198px]:!text-[126px] min-[875px]:max-[1198px]:!leading-[136px] min-[875px]:max-[1198px]:!tracking-[-5.04px] min-[1199px]:!text-[168px] min-[1199px]:!leading-[154px] min-[1199px]:!tracking-[-6.72px]">of my</Display>
       </div>
-      <div className="relative top-[-18px] flex w-full items-center pl-0 min-[506px]:top-[-2px] min-[600px]:top-[-2px] min-[600px]:pl-[140px] min-[1199px]:top-0 min-[1199px]:pl-[188px]">
-        <Display webglHero buffon className="w-full !text-[84px] !leading-[85px] min-[873px]:max-[1198px]:!text-[132px] min-[873px]:max-[1198px]:!leading-[122px] min-[1199px]:!text-[175px] min-[1199px]:!leading-[180.7px] min-[1199px]:tracking-[1.75px]">
+      <div className="works-heading-works-row relative top-[-10px] flex w-full items-center pl-0 min-[601px]:top-[-2px] min-[601px]:pl-[140px] min-[875px]:max-[1198px]:!top-[-8px] min-[1199px]:top-0 min-[1199px]:pl-[188px]">
+        <Display webglHero buffon className="works-heading-works w-full !text-[84px] !leading-[85px] min-[875px]:max-[1198px]:!text-[132px] min-[875px]:max-[1198px]:!leading-[122px] min-[1199px]:!text-[175px] min-[1199px]:!leading-[180.7px] min-[1199px]:tracking-[1.75px]">
           works
         </Display>
       </div>
@@ -772,7 +305,7 @@ function WorksHeading() {
 function ProjectCard({ work, className = "" }) {
   return (
     <article className={`flex w-[368px] max-w-full flex-col gap-3 ${className}`}>
-      <p data-gl-text data-gl-hero-text className="font-jakarta text-[13px] font-normal uppercase leading-[25px] text-white/40">
+      <p className="font-jakarta text-[13px] font-normal uppercase leading-[25px] text-white/40">
         {work.kind}
       </p>
       <div
@@ -789,10 +322,10 @@ function ProjectCard({ work, className = "" }) {
         data-gl-hero-background
         className="flex w-full items-start justify-between gap-4 border-b border-white pb-3 font-jakarta text-base font-normal uppercase leading-[25px] text-white md:max-lg:pb-[11px]"
       >
-        <span data-gl-text data-gl-hero-text className="min-w-0 whitespace-nowrap">
+        <span className="min-w-0 whitespace-nowrap">
           {work.name}
         </span>
-        <a data-gl-text data-gl-hero-text href={work.href} target="_blank" rel="noreferrer" className="shrink-0 underline">
+        <a href={work.href} target="_blank" rel="noreferrer" className="shrink-0 underline">
           Live
         </a>
       </div>
@@ -814,15 +347,15 @@ function Works() {
 
       <div className="hidden w-full min-[1199px]:block">
         <div className="flex h-[710px] w-full items-start justify-between py-[72px]">
-          <div className="flex items-center gap-[113px]">
+          <div className="flex items-center gap-[64px] min-[1400px]:gap-[113px]">
             <ProjectCard work={works[0]} />
             <ProjectCard work={works[1]} />
           </div>
-          <MonoText webglHero className="w-[257px] font-normal">Users always compare options.</MonoText>
+          <MonoText className="w-[257px] font-normal">Users always compare options.</MonoText>
         </div>
         <div className="flex h-[710px] w-full items-start justify-between py-[72px]">
-          <MonoText webglHero className="w-[271px] font-normal">The context changes with the audience.</MonoText>
-          <div className="flex items-center gap-[112px]">
+          <MonoText className="w-[271px] font-normal">The context changes with the audience.</MonoText>
+          <div className="flex items-center gap-[64px] min-[1400px]:gap-[112px]">
             <ProjectCard work={works[2]} />
             <ProjectCard work={works[3]} />
           </div>
@@ -838,13 +371,42 @@ function Footer() {
     name: "",
     project: "",
     message: "",
+    consent: false,
   });
   const [formTouched, setFormTouched] = useState({});
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [submitStatus, setSubmitStatus] = useState("idle");
   const successTimerRef = useRef(null);
+  const contactVideoRef = useRef(null);
 
   useEffect(() => () => window.clearTimeout(successTimerRef.current), []);
+
+  useEffect(() => {
+    const video = contactVideoRef.current;
+    if (!video) return undefined;
+
+    const playFromStart = () => {
+      video.currentTime = 0;
+      video.play().catch(() => {});
+    };
+
+    if (!("IntersectionObserver" in window)) {
+      playFromStart();
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        playFromStart();
+        observer.disconnect();
+      },
+      { threshold: 0.15, rootMargin: "0px 0px -20% 0px" },
+    );
+
+    observer.observe(video);
+    return () => observer.disconnect();
+  }, []);
 
   const validateFooterForm = (values) => {
     const errors = {};
@@ -859,19 +421,23 @@ function Footer() {
       errors.name = "Please fill out this field.";
     }
 
+    if (!values.consent) {
+      errors.consent = "Please confirm consent.";
+    }
+
     return errors;
   };
 
   const formErrors = validateFooterForm(formValues);
   const getFieldError = (fieldName) => (formSubmitted || formTouched[fieldName] ? formErrors[fieldName] : "");
   const updateField = (event) => {
-    const { name, value } = event.target;
-    setFormValues((current) => ({ ...current, [name]: value }));
+    const { checked, name, type, value } = event.target;
+    setFormValues((current) => ({ ...current, [name]: type === "checkbox" ? checked : value }));
     setSubmitStatus("idle");
   };
   const markFieldTouched = (event) => {
-    const { name, value } = event.target;
-    setFormValues((current) => ({ ...current, [name]: value }));
+    const { checked, name, type, value } = event.target;
+    setFormValues((current) => ({ ...current, [name]: type === "checkbox" ? checked : value }));
     setFormTouched((current) => ({ ...current, [name]: true }));
     setSubmitStatus("idle");
   };
@@ -897,7 +463,7 @@ function Footer() {
       if (!response.ok) throw new Error("Form submit failed");
 
       setSubmitStatus("success");
-      setFormValues({ email: "", name: "", project: "", message: "" });
+      setFormValues({ email: "", name: "", project: "", message: "", consent: false });
       setFormTouched({});
       setFormSubmitted(false);
       successTimerRef.current = window.setTimeout(() => setSubmitStatus("idle"), 3000);
@@ -909,10 +475,10 @@ function Footer() {
   return (
     <section className="relative mt-0 flex w-full flex-col pt-[40px] lg:mt-0 lg:h-[874px] lg:pt-[72px]">
       <div className="flex w-full items-start justify-between">
-        <p data-gl-flow-text data-gl-fluid-boost className="shrink-0 whitespace-nowrap font-jakarta text-[13px] font-normal uppercase leading-[25px] text-white/40">
+        <p className="shrink-0 whitespace-nowrap font-jakarta text-[13px] font-normal uppercase leading-[25px] text-white/40">
           Start a project
         </p>
-        <p data-gl-text data-gl-hero-text className="w-[288px] font-jakarta text-base font-normal uppercase leading-[25px] text-right text-white lg:w-[180px]">
+        <p className="w-[288px] font-jakarta text-base font-normal uppercase leading-[25px] text-right text-white lg:w-[180px]">
           Open for a few
           <br />
           selected projects
@@ -926,13 +492,12 @@ function Footer() {
         <span>together</span>
       </h2>
 
-      <div className="mt-[32px] grid w-full grid-cols-1 py-6 md:max-lg:!mt-[40px] md:max-lg:h-[460px] lg:mt-[40px] lg:h-[460px] lg:grid-cols-[3fr_9fr] lg:gap-[40px] lg:p-6 min-[1440px]:grid-cols-[496px_minmax(0,1fr)]">
-        <div data-gl-media className="contact-image-frame relative order-2 hidden h-[412px] w-[496px] max-w-full overflow-hidden lg:order-1 lg:block lg:w-full min-[1440px]:w-[496px]">
+      <div className="mt-[32px] grid w-full grid-cols-1 py-6 md:max-lg:!mt-[40px] md:max-lg:h-[498px] lg:mt-[40px] lg:h-[498px] lg:grid-cols-[4fr_6fr] lg:gap-[40px] lg:p-6 min-[1440px]:grid-cols-[496px_minmax(0,1fr)]">
+        <div data-gl-media className="contact-image-frame relative order-2 hidden h-[450px] w-[496px] max-w-full overflow-hidden lg:order-1 lg:block lg:w-full min-[1440px]:w-[496px]">
           <video
+            ref={contactVideoRef}
             src={contactLiquidVideo}
-            poster={footerFormImage}
             className="contact-video h-full w-full object-cover"
-            autoPlay
             muted
             loop
             playsInline
@@ -941,56 +506,64 @@ function Footer() {
           />
         </div>
 
-        <form id={contactFormId} action={formSubmitHref} method="POST" className="order-1 flex min-w-0 flex-col gap-[24px] max-md:gap-[32px] md:order-2 md:max-lg:!order-1 md:max-lg:!h-[412px] md:max-lg:!w-full md:max-lg:!gap-[32px] lg:gap-[32px]" aria-label="Project request form" noValidate onSubmit={submitFooterForm}>
+        <form id={contactFormId} action={formSubmitHref} method="POST" className="order-1 flex min-w-0 flex-col gap-[32px] md:order-2 md:max-lg:!order-1 md:max-lg:!h-[450px] md:max-lg:!w-full lg:gap-[32px]" aria-label="Project request form" noValidate onSubmit={submitFooterForm}>
           <input type="hidden" name="_subject" value="New portfolio project request" />
           <input type="hidden" name="_template" value="table" />
           <input type="hidden" name="_replyto" value={formValues.email} />
-          <div data-gl-ignore-fluid className="flex w-full flex-col gap-[24px]">
-            <FooterField
-              error={getFieldError("email")}
-              label="Email*"
-              name="email"
-              onBlur={markFieldTouched}
-              onChange={updateField}
-              placeholder="e.g. hello@company.com"
-              type="email"
-              value={formValues.email}
-            />
-            <div className="grid min-w-0 w-full grid-cols-2 gap-3 md:grid-cols-1 md:gap-6 md:max-lg:!grid-cols-2 md:max-lg:!gap-3 lg:grid-cols-2 lg:gap-3">
+          <div data-gl-ignore-fluid className="flex w-full flex-col gap-[14px]">
+            <div className="flex w-full flex-col gap-[24px]">
               <FooterField
-                error={getFieldError("name")}
-                label="Full name*"
-                name="name"
+                error={getFieldError("email")}
+                label="Email*"
+                name="email"
                 onBlur={markFieldTouched}
                 onChange={updateField}
-                placeholder="e.g. Jane Smith"
-                value={formValues.name}
+                placeholder="e.g. hello@company.com"
+                type="email"
+                value={formValues.email}
               />
+              <div className="grid min-w-0 w-full grid-cols-2 gap-3 md:grid-cols-1 md:gap-6 md:max-lg:!grid-cols-2 md:max-lg:!gap-3 lg:grid-cols-2 lg:gap-3">
+                <FooterField
+                  error={getFieldError("name")}
+                  label="Full name*"
+                  name="name"
+                  onBlur={markFieldTouched}
+                  onChange={updateField}
+                  placeholder="e.g. Jane Smith"
+                  value={formValues.name}
+                />
+                <FooterField
+                  label="Company name"
+                  name="project"
+                  onBlur={markFieldTouched}
+                  onChange={updateField}
+                  placeholder="e.g. Northstar Studio"
+                  required={false}
+                  value={formValues.project}
+                />
+              </div>
               <FooterField
-                label="Company name"
-                name="project"
+                as="textarea"
+                label="Message"
+                name="message"
                 onBlur={markFieldTouched}
                 onChange={updateField}
-                placeholder="e.g. Northstar Studio"
                 required={false}
-                value={formValues.project}
+                placeholder="e.g. I need a website for..."
+                value={formValues.message}
               />
             </div>
-            <FooterField
-              as="textarea"
-              label="Message"
-              name="message"
+            <ConsentCheckbox
+              checked={formValues.consent}
+              error={getFieldError("consent")}
               onBlur={markFieldTouched}
               onChange={updateField}
-              placeholder="e.g. I need a website for..."
-              required={false}
-              value={formValues.message}
             />
           </div>
           <div className="relative">
             <button
-              className="flex h-12 w-full items-center justify-center border-b border-black bg-white px-10 font-jakarta text-base font-bold uppercase leading-[25px] text-black transition duration-200 lg:hover:bg-[#A40000] lg:hover:text-white/90 active:scale-[0.99] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white disabled:cursor-wait disabled:bg-white/65"
-              disabled={submitStatus === "sending"}
+              className="flex h-12 w-full items-center justify-center border-b border-black bg-white px-10 font-jakarta text-base font-bold uppercase leading-[25px] text-black transition duration-200 lg:hover:bg-[#A40000] lg:hover:text-white/90 active:scale-[0.99] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white disabled:cursor-not-allowed disabled:bg-white/70"
+              disabled={!formValues.consent || submitStatus === "sending"}
               type="submit"
             >
               <span className="block whitespace-nowrap leading-[25px]">
@@ -1012,6 +585,78 @@ function Footer() {
   );
 }
 
+function PrivacyPolicy() {
+  return (
+    <main className="relative z-[910] min-h-screen bg-black px-6 py-10 font-jakarta normal-case text-white md:px-10 lg:px-[72px]">
+      <div className="mx-auto flex w-full max-w-[980px] flex-col gap-10">
+        <a className="group inline-flex w-fit items-center gap-2 text-base font-normal uppercase leading-6 text-white/60 transition-colors hover:text-white" href="/">
+          <svg className="h-auto w-5 shrink-0 transition-colors" viewBox="0 0 28 20" fill="none" aria-hidden="true">
+            <path d="M10.5 3L3.5 10L10.5 17" stroke="currentColor" strokeWidth="2" strokeLinecap="square" strokeLinejoin="miter" />
+            <path d="M4 10H27" stroke="currentColor" strokeWidth="2" strokeLinecap="square" />
+          </svg>
+          <span className="underline underline-offset-4">Back</span>
+        </a>
+        <header className="flex flex-col gap-4">
+          <p className="text-[13px] font-normal uppercase leading-[25px] text-white/40">Privacy Policy</p>
+          <h1 className="font-display text-[48px] font-light uppercase leading-[54px] tracking-[-2px] md:text-[84px] md:leading-[92px] md:tracking-[-5.88px]">
+            Privacy Policy
+          </h1>
+          <p className="max-w-[720px] text-base font-normal leading-7 text-white/70">
+            This policy explains how Anna Loban processes personal data submitted through the portfolio contact form.
+          </p>
+        </header>
+
+        <section className="grid gap-8 border-t border-white/10 pt-8 md:grid-cols-[220px_minmax(0,1fr)]">
+          <h2 className="text-[14px] font-medium uppercase leading-5 text-white/40">Controller</h2>
+          <div className="flex flex-col gap-3 text-base leading-7 text-white/75">
+            <p>Anna Loban is the controller of the personal data submitted through this website.</p>
+            <p>
+              Contact email:{" "}
+              <a className="text-white/75 transition-colors hover:text-white" href="mailto:hello.anna.loban@proton.me">
+                hello.anna.loban@proton.me
+              </a>
+            </p>
+          </div>
+        </section>
+
+        <section className="grid gap-8 border-t border-white/10 pt-8 md:grid-cols-[220px_minmax(0,1fr)]">
+          <h2 className="text-[14px] font-medium uppercase leading-5 text-white/40">Data and purpose</h2>
+          <div className="flex flex-col gap-3 text-base leading-7 text-white/75">
+            <p>The contact form may collect your email address, full name, company name, message, and technical metadata needed to deliver and protect the request.</p>
+            <p>The data is used only to respond to your message, discuss a potential project, and prevent abuse of the form.</p>
+          </div>
+        </section>
+
+        <section className="grid gap-8 border-t border-white/10 pt-8 md:grid-cols-[220px_minmax(0,1fr)]">
+          <h2 className="text-[14px] font-medium uppercase leading-5 text-white/40">Legal basis</h2>
+          <div className="flex flex-col gap-3 text-base leading-7 text-white/75">
+            <p>The legal basis is your consent under GDPR Article 6(1)(a), given by ticking the consent checkbox before submitting the form.</p>
+            <p>You can withdraw consent at any time by contacting Anna Loban at the email address above.</p>
+          </div>
+        </section>
+
+        <section className="grid gap-8 border-t border-white/10 pt-8 md:grid-cols-[220px_minmax(0,1fr)]">
+          <h2 className="text-[14px] font-medium uppercase leading-5 text-white/40">Processors</h2>
+          <div className="flex flex-col gap-3 text-base leading-7 text-white/75">
+            <p>The form is processed through Cloudflare Workers. Notifications may be delivered through Resend and Telegram so the message can reach Anna Loban.</p>
+            <p>Your data is not sold and is not used for newsletters or unrelated marketing.</p>
+          </div>
+        </section>
+
+        <section className="grid gap-8 border-t border-white/10 pt-8 md:grid-cols-[220px_minmax(0,1fr)]">
+          <h2 className="text-[14px] font-medium uppercase leading-5 text-white/40">Retention and rights</h2>
+          <div className="flex flex-col gap-3 text-base leading-7 text-white/75">
+            <p>Messages are kept only as long as needed to respond and manage the request, and no longer than 12 months unless cooperation starts or legal obligations require longer storage.</p>
+            <p>You may request access, rectification, erasure, restriction, portability, or lodge a complaint with a supervisory authority.</p>
+          </div>
+        </section>
+
+        <p className="border-t border-white/10 pt-8 text-[14px] leading-6 text-white/40">Last updated: July 16, 2026.</p>
+      </div>
+    </main>
+  );
+}
+
 function LoopStart() {
   return (
     <section className="pointer-events-none relative hidden h-screen w-full overflow-clip min-[1440px]:block" aria-hidden="true">
@@ -1025,6 +670,8 @@ function LoopStart() {
 export default function App() {
   const reduced = useReducedMotion();
   const desktopEffects = useDesktopEffects();
+  const fluidDisabled = import.meta.env.DEV && import.meta.env.VITE_DISABLE_FLUID === "true";
+  const isPrivacyPage = typeof window !== "undefined" && window.location.pathname === "/privacy";
   const page = useMemo(
     () => (
       <>
@@ -1038,25 +685,24 @@ export default function App() {
             </>
           }
         >
-          <ResponsiveIntro />
-          <Hero />
+          <HeroFirstScreen />
         </SectionShell>
-        <SectionShell>
+        <SectionShell shellClassName="narrow-scale-shell">
           <ProductIntro />
         </SectionShell>
-        <SectionShell>
+        <SectionShell shellClassName="narrow-scale-shell">
           <About />
         </SectionShell>
-        <SectionShell>
+        <SectionShell shellClassName="purpose-shell narrow-scale-shell">
           <Purpose />
         </SectionShell>
-        <SectionShell>
+        <SectionShell shellClassName="narrow-scale-shell">
           <WorksHeading />
         </SectionShell>
-        <SectionShell>
+        <SectionShell shellClassName="narrow-scale-shell">
           <Works />
         </SectionShell>
-        <SectionShell shellClassName="footer-shell">
+        <SectionShell shellClassName="footer-shell narrow-scale-shell">
           <Footer />
         </SectionShell>
       </>
@@ -1064,10 +710,14 @@ export default function App() {
     [],
   );
 
+  if (isPrivacyPage) {
+    return <PrivacyPolicy />;
+  }
+
   return (
     <>
       <Preloader reduced={reduced} />
-      <CanvasLayer enabled={desktopEffects && !reduced} />
+      <CanvasLayer enabled={false && desktopEffects && !reduced && !fluidDisabled} />
       <main className="relative z-[910] flex min-h-screen flex-col gap-0 overflow-x-hidden pb-5 pt-[49px] lg:gap-0 lg:pb-[40px] lg:pt-[32px]" aria-label="Anna Loban portfolio">
         <StableHeroGridOverlay />
         <StableHeroCtaOverlay />
