@@ -1,5 +1,5 @@
 import React from "react";
-import { briefHref } from "./PortfolioPrimitives.jsx";
+import { briefHref, HoverText } from "./PortfolioPrimitives.jsx";
 import "./TopLinks.css";
 
 const topLinks = [
@@ -23,7 +23,7 @@ export function TopLinks() {
           className="underline"
           key={link.id}
         >
-          {link.label}
+          <HoverText>{link.label}</HoverText>
         </a>
       ))}
     </nav>

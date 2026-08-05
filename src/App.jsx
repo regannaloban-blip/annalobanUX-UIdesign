@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { CanvasScene } from "./webgl/CanvasScene.js";
-import { Button, Display, MonoText, briefHref, contactFormId } from "./components/PortfolioPrimitives.jsx";
+import { Button, Display, HoverText, MonoText, briefHref, contactFormId } from "./components/PortfolioPrimitives.jsx";
 import { TopLinks } from "./components/TopLinks.jsx";
 import { Hero, HeroFirstScreen, ResponsiveViewportGuide, StableHeroCtaOverlay, StableHeroGridOverlay } from "./sections/Hero.jsx";
 import { ProductIntro } from "./sections/ProductDesignerIntro.jsx";
@@ -236,7 +236,7 @@ function ConsentCheckbox({ checked, error, onBlur, onChange }) {
       <span className="min-w-0 text-white/60">
         I agree to my data being used to respond to this request.{" "}
         <a className="underline decoration-white/60 underline-offset-4 transition-colors hover:text-white" href="/privacy">
-          Privacy Policy
+          <HoverText>Privacy Policy</HoverText>
         </a>
       </span>
       <span
@@ -327,7 +327,7 @@ function ProjectCard({ work, className = "" }) {
           {work.name}
         </span>
         <a href={work.href} target="_blank" rel="noreferrer" className="shrink-0 underline">
-          Live
+          <HoverText>Live</HoverText>
         </a>
       </div>
     </article>
@@ -568,7 +568,7 @@ function Footer() {
               type="submit"
             >
               <span className="block whitespace-nowrap leading-[25px]">
-                {submitStatus === "sending" ? "Sending..." : "Start a project"}
+                <HoverText>{submitStatus === "sending" ? "Sending..." : "Start a project"}</HoverText>
               </span>
             </button>
             <p
@@ -595,7 +595,7 @@ function PrivacyPolicy() {
             <path d="M10.5 3L3.5 10L10.5 17" stroke="currentColor" strokeWidth="2" strokeLinecap="square" strokeLinejoin="miter" />
             <path d="M4 10H27" stroke="currentColor" strokeWidth="2" strokeLinecap="square" />
           </svg>
-          <span className="underline underline-offset-4">Back</span>
+          <span className="underline underline-offset-4"><HoverText>Back</HoverText></span>
         </a>
         <header className="flex flex-col gap-4">
           <p className="text-[13px] font-normal uppercase leading-[25px] text-white/40">Privacy Policy</p>
@@ -614,7 +614,7 @@ function PrivacyPolicy() {
             <p>
               Contact email:{" "}
               <a className="text-white/75 transition-colors hover:text-white" href="mailto:hello.anna.loban@proton.me">
-                hello.anna.loban@proton.me
+                <HoverText>hello.anna.loban@proton.me</HoverText>
               </a>
             </p>
           </div>

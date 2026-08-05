@@ -1,5 +1,4 @@
 import React from "react";
-import heroBackground from "../../assets/ai-portfolio/image 16.png";
 import { Button, Display, MonoText } from "../components/PortfolioPrimitives.jsx";
 import { ResponsiveProductDesignerIntro, ResponsiveUxIntro } from "./ProductDesignerIntro.jsx";
 import "./Hero.css";
@@ -111,12 +110,6 @@ function ResponsiveHeroIntro() {
       </div>
 
       <div className="responsive-hero-block relative w-full overflow-visible">
-        <img
-          src={heroBackground}
-          alt=""
-          aria-hidden="true"
-          className="pointer-events-none absolute left-0 top-[104px] h-[407px] w-[750px] max-w-none object-cover opacity-100 blur-[6px] min-[601px]:max-[874px]:left-0 min-[601px]:max-[874px]:top-[-22px] min-[601px]:max-[874px]:h-[608px] min-[601px]:max-[874px]:w-[1120px] md:left-0 md:top-[-22px] md:h-[608px] md:w-[1120px]"
-        />
         <div className="hero-title-block relative left-0 z-10 w-full">
           <h1 data-gl-text className="mb-[-8px] w-fit whitespace-nowrap font-buffon text-[84px] font-normal uppercase leading-[85px] text-white">
             Hello!
@@ -144,22 +137,9 @@ function ResponsiveIntro() {
   );
 }
 
-function BackgroundGlow() {
-  return (
-    <img
-      data-gl-hero-media
-      src={heroBackground}
-      alt=""
-      aria-hidden="true"
-      className="hero-background-glow pointer-events-none absolute left-[17%] top-[-64px] z-0 h-[420px] w-[780px] max-w-none object-cover opacity-100 blur-[6px] md:left-[18%] md:top-[-86px] md:h-[560px] md:w-[980px] lg:left-[302px] lg:top-[50px] lg:h-[608px] lg:w-[1120px]"
-    />
-  );
-}
-
 export function Hero() {
   return (
     <header className="hero-desktop-title-stack relative hidden h-[748px] w-full flex-col gap-2 overflow-visible pb-0 pt-[354px] min-[1199px]:flex">
-      <BackgroundGlow />
       <div className="relative z-10 flex w-full items-center">
         <Display as="h1" buffon webglHero className="hero-desktop-hello-heading">
           Hello!

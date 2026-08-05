@@ -1,8 +1,61 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 const contactEmail = "hello.anna.loban@proton.me";
 export const briefHref = `mailto:${contactEmail}?subject=Website%20or%20visual%20system%20brief`;
 export const contactFormId = "contact-form";
+
+const scrambleGlyphs = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*?<>/\\\\";
+
+export function HoverText({ children }) {
+  const text = String(children);
+  const characters = Array.from(text);
+  const frameRef = useRef(null);
+  const [displayedCharacters, setDisplayedCharacters] = useState(characters);
+
+  useEffect(() => () => window.cancelAnimationFrame(frameRef.current), []);
+
+  const stopScramble = () => {
+    window.cancelAnimationFrame(frameRef.current);
+    setDisplayedCharacters(characters);
+  };
+
+  const startScramble = () => {
+    window.cancelAnimationFrame(frameRef.current);
+    const startedAt = performance.now();
+
+    const update = (time) => {
+      const elapsed = time - startedAt;
+      const nextCharacters = characters.map((character, index) => {
+        if (character === " ") return character;
+        const progress = elapsed - index * 40;
+
+        if (progress >= 225) return character;
+        return scrambleGlyphs[Math.floor(Math.random() * scrambleGlyphs.length)];
+      });
+
+      setDisplayedCharacters(nextCharacters);
+
+      if (elapsed < 225 + characters.length * 40) {
+        frameRef.current = window.requestAnimationFrame(update);
+      }
+    };
+
+    frameRef.current = window.requestAnimationFrame(update);
+  };
+
+  return (
+    <span aria-label={text} className="interactive-label" onPointerEnter={startScramble} onPointerLeave={stopScramble}>
+      <span aria-hidden="true" className="interactive-label-characters">
+        {characters.map((character, index) => (
+          <span className="interactive-character" key={`${character}-${index}`}>
+            <span className="interactive-character-sizer">{character === " " ? "\u00a0" : character}</span>
+            <span className="interactive-character-glyph">{displayedCharacters[index] === " " ? "\u00a0" : displayedCharacters[index]}</span>
+          </span>
+        ))}
+      </span>
+    </span>
+  );
+}
 
 function scrollToContactForm(event) {
   const form = document.getElementById(contactFormId);
@@ -46,7 +99,7 @@ export function Button({ className = "", webglHero = false, noFluid = false }) {
         data-color="black"
         className="block whitespace-nowrap font-jakarta text-base font-bold uppercase leading-[25px]"
       >
-        start a project
+        <HoverText>start a project</HoverText>
       </span>
     </a>
   );
