@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import Lenis from "lenis";
 import { CanvasScene } from "./webgl/CanvasScene.js";
 import { Button, Display, HoverText, MonoText, briefHref, contactFormId } from "./components/PortfolioPrimitives.jsx";
 import { TopLinks } from "./components/TopLinks.jsx";
@@ -6,6 +7,7 @@ import { Hero, HeroFirstScreen, ResponsiveViewportGuide, StableHeroCtaOverlay, S
 import { ProductIntro } from "./sections/ProductDesignerIntro.jsx";
 import { Purpose } from "./sections/Purpose.jsx";
 import { PortfolioFluidBackground } from "./sections/HeroFluidBackground.jsx";
+import { FluidImageHover } from "./components/FluidImageHover.jsx";
 
 import aboutPortrait from "../assets/ai-portfolio/figma/anna-redesign/about.png";
 import project1 from "../Case/Compressed/24 colab.jpg";
@@ -75,6 +77,34 @@ function useDesktopEffects() {
   }, []);
 
   return desktop;
+}
+
+function SmoothScroll({ reduced }) {
+  useEffect(() => {
+    if (reduced) return undefined;
+
+    const lenis = new Lenis({
+      lerp: 0.075,
+      smoothWheel: true,
+      wheelMultiplier: 0.9,
+      syncTouch: false,
+    });
+    let frameId = 0;
+
+    const raf = (time) => {
+      lenis.raf(time);
+      frameId = window.requestAnimationFrame(raf);
+    };
+
+    frameId = window.requestAnimationFrame(raf);
+
+    return () => {
+      window.cancelAnimationFrame(frameId);
+      lenis.destroy();
+    };
+  }, [reduced]);
+
+  return null;
 }
 
 function Preloader({ reduced }) {
@@ -265,9 +295,9 @@ function About() {
               data-gl-media
               data-gl-hero-media
               data-gl-flow-exclude
-              className="about-photo float-right ml-5 h-[200px] w-[200px] overflow-hidden bg-white md:ml-7 md:h-[239px] md:w-[239px] lg:ml-6"
+              className="about-photo relative float-right ml-5 h-[200px] w-[200px] overflow-hidden bg-white md:ml-7 md:h-[239px] md:w-[239px] lg:ml-6"
             >
-              <img src={aboutPortrait} alt="Anna Loban portrait" className="h-full w-full object-cover" />
+              <FluidImageHover src={aboutPortrait} alt="Anna Loban portrait" />
             </div>
             <span>About.</span>
             <br className="max-[599px]:block hidden" />
@@ -315,7 +345,7 @@ function ProjectCard({ work, className = "" }) {
         {...(work.mediaZoom ? { "data-gl-media-zoom": work.mediaZoom } : {})}
         className="relative h-[480px] w-full overflow-hidden bg-white lg:h-[480px]"
       >
-        <img src={work.image} alt="" className={`h-full w-full object-cover ${work.imageClass ?? ""}`} />
+        <FluidImageHover src={work.image} alt="" className={work.imageClass ?? ""} />
         {work.maskBottomEdge ? <span aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-[6px] bg-[#062322]" /> : null}
       </div>
       <div
@@ -718,6 +748,7 @@ export default function App() {
   return (
     <>
       <Preloader reduced={reduced} />
+      <SmoothScroll reduced={reduced} />
       <CanvasLayer enabled={false && desktopEffects && !reduced && !fluidDisabled} />
       <PortfolioFluidBackground reduced={reduced} />
       <main className="relative z-[910] flex min-h-screen flex-col gap-0 overflow-x-hidden pb-5 pt-[49px] lg:gap-0 lg:pb-[40px] lg:pt-[32px]" aria-label="Anna Loban portfolio">
