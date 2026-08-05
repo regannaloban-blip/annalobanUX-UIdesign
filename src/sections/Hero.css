@@ -11,6 +11,25 @@
   width: min(390px, calc(33.333333% + 108px));
 }
 
+.portfolio-fluid-background,
+.portfolio-fluid-pointer {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100dvh;
+}
+
+.portfolio-fluid-background {
+  z-index: 0;
+  pointer-events: none;
+}
+
+.portfolio-fluid-pointer {
+  z-index: 1;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
 .ux-block {
   left: 0;
   width: 100%;
@@ -241,6 +260,10 @@
 }
 
 @media (min-width: 1199px) {
+  .hero-background-glow {
+    display: none;
+  }
+
   .hero-desktop-title-stack {
     --hero-desktop-hello-offset-y: 6px;
     --hero-desktop-anna-offset-y: -12px;

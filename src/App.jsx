@@ -5,6 +5,7 @@ import { TopLinks } from "./components/TopLinks.jsx";
 import { Hero, HeroFirstScreen, ResponsiveViewportGuide, StableHeroCtaOverlay, StableHeroGridOverlay } from "./sections/Hero.jsx";
 import { ProductIntro } from "./sections/ProductDesignerIntro.jsx";
 import { Purpose } from "./sections/Purpose.jsx";
+import { PortfolioFluidBackground } from "./sections/HeroFluidBackground.jsx";
 
 import aboutPortrait from "../assets/ai-portfolio/figma/anna-redesign/about.png";
 import project1 from "../Case/Compressed/24 colab.jpg";
@@ -492,7 +493,7 @@ function Footer() {
         <span>together</span>
       </h2>
 
-      <div className="mt-[32px] grid w-full grid-cols-1 py-6 md:max-lg:!mt-[40px] md:max-lg:h-[498px] lg:mt-[40px] lg:h-[498px] lg:grid-cols-[4fr_6fr] lg:gap-[40px] lg:p-6 min-[1440px]:grid-cols-[496px_minmax(0,1fr)]">
+      <div className="contact-form-backdrop relative isolate z-0 mt-[32px] grid w-full grid-cols-1 py-6 md:max-lg:!mt-[40px] md:max-lg:h-[498px] lg:mt-[40px] lg:h-[498px] lg:grid-cols-[4fr_6fr] lg:gap-[40px] lg:p-6 min-[1440px]:grid-cols-[496px_minmax(0,1fr)]">
         <div data-gl-media className="contact-image-frame relative order-2 hidden h-[450px] w-[496px] max-w-full overflow-hidden lg:order-1 lg:block lg:w-full min-[1440px]:w-[496px]">
           <video
             ref={contactVideoRef}
@@ -718,6 +719,7 @@ export default function App() {
     <>
       <Preloader reduced={reduced} />
       <CanvasLayer enabled={false && desktopEffects && !reduced && !fluidDisabled} />
+      <PortfolioFluidBackground reduced={reduced} />
       <main className="relative z-[910] flex min-h-screen flex-col gap-0 overflow-x-hidden pb-5 pt-[49px] lg:gap-0 lg:pb-[40px] lg:pt-[32px]" aria-label="Anna Loban portfolio">
         <StableHeroGridOverlay />
         <StableHeroCtaOverlay />
