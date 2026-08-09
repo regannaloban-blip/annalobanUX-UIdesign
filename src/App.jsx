@@ -8,6 +8,7 @@ import { ProductIntro } from "./sections/ProductDesignerIntro.jsx";
 import { Purpose } from "./sections/Purpose.jsx";
 import { PortfolioFluidBackground } from "./sections/HeroFluidBackground.jsx";
 import { FluidImageHover } from "./components/FluidImageHover.jsx";
+import { SeoManager } from "./seo.jsx";
 
 import aboutPortrait from "../assets/ai-portfolio/figma/anna-redesign/about.png";
 import project1 from "../Case/Compressed/24 colab.jpg";
@@ -27,12 +28,14 @@ const works = [
     name: "24 colab",
     href: "https://24colab.com/",
     image: project1,
+    imageAlt: "24 colab website project by Anna Loban",
   },
   {
     kind: "site/",
     name: "smart business intelligence",
     href: "https://smartbusinessintelligence.co.uk",
     image: project2,
+    imageAlt: "Smart Business Intelligence website project by Anna Loban",
     imageClass: "scale-[1.06]",
     mediaZoom: 1.02,
     maskBottomEdge: true,
@@ -42,12 +45,14 @@ const works = [
     name: "Skyliner",
     href: "https://skyliner.rv.ua/",
     image: project3,
+    imageAlt: "Skyliner brand identity project by Anna Loban",
   },
   {
     kind: "site/",
     name: "your dissertation",
     href: "https://yourdissertation.com",
     image: project4,
+    imageAlt: "Your Dissertation website project by Anna Loban",
   },
 ];
 
@@ -122,9 +127,9 @@ function Preloader({ reduced }) {
         reduced ? "preloader-reduced" : ""
       }`}
     >
-      <h1 className="preloader-title font-display text-4xl font-light uppercase text-white md:text-6xl">
+      <p className="preloader-title font-display text-4xl font-light uppercase text-white md:text-6xl">
         Initializing
-      </h1>
+      </p>
     </section>
   );
 }
@@ -345,7 +350,7 @@ function ProjectCard({ work, className = "" }) {
         {...(work.mediaZoom ? { "data-gl-media-zoom": work.mediaZoom } : {})}
         className="relative h-[480px] w-full overflow-hidden bg-white lg:h-[480px]"
       >
-        <FluidImageHover src={work.image} alt="" className={work.imageClass ?? ""} />
+        <FluidImageHover src={work.image} alt={work.imageAlt} className={work.imageClass ?? ""} />
         {work.maskBottomEdge ? <span aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-[6px] bg-[#062322]" /> : null}
       </div>
       <div
@@ -702,7 +707,8 @@ export default function App() {
   const reduced = useReducedMotion();
   const desktopEffects = useDesktopEffects();
   const fluidDisabled = import.meta.env.DEV && import.meta.env.VITE_DISABLE_FLUID === "true";
-  const isPrivacyPage = typeof window !== "undefined" && window.location.pathname === "/privacy";
+  const pathname = typeof window !== "undefined" ? window.location.pathname : "/";
+  const isPrivacyPage = pathname === "/privacy";
   const page = useMemo(
     () => (
       <>
@@ -742,11 +748,17 @@ export default function App() {
   );
 
   if (isPrivacyPage) {
-    return <PrivacyPolicy />;
+    return (
+      <>
+        <SeoManager pathname={pathname} />
+        <PrivacyPolicy />
+      </>
+    );
   }
 
   return (
     <>
+      <SeoManager pathname={pathname} />
       <Preloader reduced={reduced} />
       <SmoothScroll reduced={reduced} />
       <CanvasLayer enabled={false && desktopEffects && !reduced && !fluidDisabled} />

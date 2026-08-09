@@ -111,7 +111,11 @@ function ResponsiveHeroIntro() {
 
       <div className="responsive-hero-block relative w-full overflow-visible">
         <div className="hero-title-block relative left-0 z-10 w-full">
-          <h1 data-gl-text className="mb-[-8px] w-fit whitespace-nowrap font-buffon text-[84px] font-normal uppercase leading-[85px] text-white">
+          <h1
+            aria-label="Anna Loban, UX/UI Designer and Landing Page Designer"
+            data-gl-text
+            className="mb-[-8px] w-fit whitespace-nowrap font-buffon text-[84px] font-normal uppercase leading-[85px] text-white"
+          >
             Hello!
           </h1>
           <div className="hero-anna-row w-full">
@@ -141,7 +145,7 @@ export function Hero() {
   return (
     <header className="hero-desktop-title-stack relative hidden h-[748px] w-full flex-col gap-2 overflow-visible pb-0 pt-[354px] min-[1199px]:flex">
       <div className="relative z-10 flex w-full items-center">
-        <Display as="h1" buffon webglHero className="hero-desktop-hello-heading">
+        <Display as="div" buffon webglHero className="hero-desktop-hello-heading">
           Hello!
         </Display>
       </div>
