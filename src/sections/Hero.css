@@ -45,6 +45,14 @@
   padding-bottom: 40px;
 }
 
+.product-concept-code-title {
+  width: 100% !important;
+  max-width: 100%;
+  white-space: normal !important;
+  overflow-wrap: normal;
+  word-break: keep-all;
+}
+
 @media (max-width: 600px) {
   .hero-cta-block {
     top: 112px;
@@ -96,8 +104,7 @@
 }
 
 @media (max-width: 389px) {
-  .hero-anna-row h2,
-  .responsive-intro .designer-title {
+  .hero-anna-row h2 {
     font-size: 76px;
   }
 }
