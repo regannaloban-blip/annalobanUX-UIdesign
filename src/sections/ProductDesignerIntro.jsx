@@ -18,7 +18,7 @@ export function ResponsiveProductDesignerIntro() {
   return (
     <div className="flex w-full flex-col items-start text-white">
       <h2 data-gl-text className="product-title product-concept-code-title mb-[-16px] w-full font-buffon text-[84px] font-normal uppercase leading-[85px] text-white max-[874px]:!mb-[-10px]">
-        CONCEPT+<wbr />CODE
+        CONCEPT<span className="concept-code-plus">+</span><wbr />CODE
       </h2>
       <div className="product-service-row flex w-full flex-col items-start whitespace-nowrap min-[601px]:flex-row">
         <div className="product-service-list order-2 flex flex-col pt-4 font-jakarta text-base font-normal uppercase leading-[25px] text-white min-[601px]:order-1">
@@ -47,7 +47,7 @@ export function ProductIntro() {
       </div>
       <div className="product-intro-heading-stack flex w-full flex-col items-start text-white">
         <h2 data-gl-text data-gl-hero-text className="product-intro-product-heading product-concept-code-title font-buffon text-[84px] font-normal uppercase leading-[85px] tracking-normal text-white md:text-[118px] md:leading-[110px] lg:text-[175px] lg:leading-[160px]">
-          CONCEPT+<wbr />CODE
+          CONCEPT<span className="concept-code-plus">+</span><wbr />CODE
         </h2>
         <div className="flex w-full flex-col gap-5 lg:flex-row lg:items-start lg:gap-[194px]">
           <div className="order-2 flex flex-row gap-4 pt-0 font-jakarta text-base font-normal uppercase leading-[25px] text-white lg:order-1 lg:flex-col lg:gap-0 lg:pt-4">

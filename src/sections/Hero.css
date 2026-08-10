@@ -53,6 +53,11 @@
   word-break: keep-all;
 }
 
+.concept-code-plus {
+  display: inline-block;
+  padding-right: 0.08em;
+}
+
 @media (max-width: 600px) {
   .hero-cta-block {
     top: 112px;
