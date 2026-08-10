@@ -412,10 +412,15 @@ img {
     linear-gradient(180deg, transparent 0 58%, rgba(0, 0, 0, 0.28) 82%, rgba(0, 0, 0, 0.72) 100%);
 }
 
-.contact-video {
+.contact-video,
+.contact-video-poster {
   position: relative;
   z-index: 0;
   display: block;
+}
+
+.contact-video-poster {
+  z-index: -1;
 }
 
 .contact-image {

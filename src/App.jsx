@@ -468,7 +468,7 @@ function Footer() {
 
     const observer = new IntersectionObserver(
       () => scheduleCheck(),
-      { threshold: [0, 0.25, 0.5, 0.75, 0.99], rootMargin: "0px 0px 0px 0px" },
+      { threshold: [0, 0.25, 0.5, 0.75, 0.99], rootMargin: "650px 0px 650px 0px" },
     );
 
     observer.observe(heading);
@@ -570,6 +570,12 @@ function Footer() {
 
       <div className="contact-form-backdrop relative isolate z-0 mt-[32px] grid w-full grid-cols-1 py-6 md:max-lg:!mt-[40px] md:max-lg:h-[498px] lg:mt-[40px] lg:h-[498px] lg:grid-cols-[4fr_6fr] lg:gap-[40px] lg:p-6 min-[1440px]:grid-cols-[496px_minmax(0,1fr)]">
         <div data-gl-media className="contact-image-frame relative order-2 hidden h-[450px] w-[496px] max-w-full overflow-hidden lg:order-1 lg:block lg:w-full min-[1440px]:w-[496px]">
+          <img
+            src={footerFormImage}
+            alt=""
+            className="contact-video-poster absolute inset-0 h-full w-full object-cover"
+            aria-hidden="true"
+          />
           <video
             ref={contactVideoRef}
             src={contactLiquidVideo}
@@ -577,7 +583,8 @@ function Footer() {
             muted
             loop
             playsInline
-            preload="none"
+            preload="metadata"
+            poster={footerFormImage}
             aria-hidden="true"
           />
         </div>
