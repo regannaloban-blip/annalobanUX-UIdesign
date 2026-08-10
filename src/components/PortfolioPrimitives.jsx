@@ -6,13 +6,19 @@ export const contactFormId = "contact-form";
 
 const scrambleGlyphs = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*?<>/\\\\";
 
-export function HoverText({ children }) {
+export function HoverText({ children, triggerOnParent = false }) {
   const text = String(children);
   const characters = Array.from(text);
+  const labelRef = useRef(null);
   const frameRef = useRef(null);
   const [displayedCharacters, setDisplayedCharacters] = useState(characters);
 
   useEffect(() => () => window.cancelAnimationFrame(frameRef.current), []);
+
+  useEffect(() => {
+    window.cancelAnimationFrame(frameRef.current);
+    setDisplayedCharacters(characters);
+  }, [text]);
 
   const stopScramble = () => {
     window.cancelAnimationFrame(frameRef.current);
@@ -45,8 +51,30 @@ export function HoverText({ children }) {
     frameRef.current = window.requestAnimationFrame(update);
   };
 
+  useEffect(() => {
+    if (!triggerOnParent) return undefined;
+
+    const label = labelRef.current;
+    const trigger = label?.closest("[data-hover-text-trigger]");
+    if (!trigger) return undefined;
+
+    trigger.addEventListener("pointerenter", startScramble);
+    trigger.addEventListener("pointerleave", stopScramble);
+
+    return () => {
+      trigger.removeEventListener("pointerenter", startScramble);
+      trigger.removeEventListener("pointerleave", stopScramble);
+    };
+  }, [triggerOnParent, text]);
+
   return (
-    <span aria-label={text} className="interactive-label" onPointerEnter={startScramble} onPointerLeave={stopScramble}>
+    <span
+      ref={labelRef}
+      aria-label={text}
+      className="interactive-label"
+      onPointerEnter={triggerOnParent ? undefined : startScramble}
+      onPointerLeave={triggerOnParent ? undefined : stopScramble}
+    >
       <span aria-hidden="true" className="interactive-label-characters">
         {characters.map((character, index) => (
           <span className="interactive-character" key={`${character}-${index}`}>
@@ -93,15 +121,17 @@ export function Button({ className = "", webglHero = false, noFluid = false }) {
   return (
     <a
       {...(webglHero ? { "data-gl-hero-background": true } : {})}
+      data-hover-text-trigger
       href={briefHref}
       onClick={scrollToContactForm}
-      className={`inline-flex h-12 w-fit items-center justify-center border-b border-black bg-white px-10 text-black ${className}`}
+      className={`group relative inline-flex h-12 w-fit items-center justify-center border-b border-black bg-white px-10 text-black ${className}`}
     >
+      <span aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-[-2px] hidden h-0 bg-[#A40000] transition-[height] duration-200 ease-out lg:block lg:group-hover:h-0.5" />
       <span
         data-color="black"
-        className="block whitespace-nowrap font-jakarta text-base font-bold uppercase leading-[25px]"
+        className="relative z-10 block whitespace-nowrap font-jakarta text-base font-bold uppercase leading-[25px]"
       >
-        <HoverText>start a project</HoverText>
+        <HoverText triggerOnParent>start a project</HoverText>
       </span>
     </a>
   );

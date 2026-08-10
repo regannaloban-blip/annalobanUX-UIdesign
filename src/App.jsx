@@ -624,12 +624,13 @@ function Footer() {
           </div>
           <div className="relative">
             <button
-              className="flex h-12 w-full items-center justify-center border-b border-black bg-white px-10 font-jakarta text-base font-bold uppercase leading-[25px] text-black transition duration-200 lg:hover:bg-[#A40000] lg:hover:text-white/90 active:scale-[0.99] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white disabled:cursor-not-allowed disabled:bg-white/70"
+              data-hover-text-trigger
+              className="flex h-12 w-full items-center justify-center border-b border-black bg-white px-10 font-jakarta text-base font-bold uppercase leading-[25px] text-black transition duration-200 lg:hover:bg-[#A40000] lg:hover:text-white/90 active:scale-[0.99] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white disabled:pointer-events-none disabled:cursor-not-allowed disabled:bg-white/70"
               disabled={!formValues.consent || submitStatus === "sending"}
               type="submit"
             >
               <span className="block whitespace-nowrap leading-[25px]">
-                <HoverText>{submitStatus === "sending" ? "Sending..." : "Start a project"}</HoverText>
+                <HoverText triggerOnParent>{submitStatus === "sending" ? "Sending..." : "Start a project"}</HoverText>
               </span>
             </button>
             <p
