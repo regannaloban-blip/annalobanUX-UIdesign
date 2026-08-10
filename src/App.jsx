@@ -10,7 +10,7 @@ import { PortfolioFluidBackground } from "./sections/HeroFluidBackground.jsx";
 import { FluidImageHover } from "./components/FluidImageHover.jsx";
 import { SeoManager } from "./seo.jsx";
 
-import aboutPortrait from "../assets/ai-portfolio/figma/anna-redesign/about.png";
+import aboutPortrait from "../assets/Photo/img anna.webp";
 import project1 from "../Case/Compressed/24 colab.jpg";
 import project2 from "../Case/Compressed/smart business intelligence.jpg";
 import project3 from "../Case/Compressed/Skyliner.jpg";

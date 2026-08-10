@@ -1,0 +1,3 @@
+name = "anna-contact-form-v2"
+main = "workers/anna-contact-form.js"
+compatibility_date = "2026-08-10"
