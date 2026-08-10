@@ -9,10 +9,10 @@ import { FluidImageHover } from "./components/FluidImageHover.jsx";
 import { SeoManager } from "./seo.jsx";
 
 import aboutPortrait from "../assets/Photo/img anna.webp";
-import project1 from "../Case/Compressed/24 colab.jpg";
-import project2 from "../Case/Compressed/smart business intelligence.jpg";
-import project3 from "../Case/Compressed/Skyliner.jpg";
-import project4 from "../Case/Compressed/your dissertation.jpg";
+import project1 from "../Case/Compressed/24 colab.webp";
+import project2 from "../Case/Compressed/smart business intelligence.webp";
+import project3 from "../Case/Compressed/Skyliner.webp";
+import project4 from "../Case/Compressed/your dissertation.webp";
 import quoteIcon from "../assets/ai-portfolio/figma/anna-redesign/quote-icon.svg";
 import contactLiquidVideo from "../Case/Compressed/contact-smoke-red.mp4";
 
@@ -79,6 +79,26 @@ function useDesktopEffects() {
   }, []);
 
   return desktop;
+}
+
+function useUserActivatedEffects() {
+  const [activated, setActivated] = useState(false);
+
+  useEffect(() => {
+    if (activated) return undefined;
+
+    const activate = () => setActivated(true);
+    const options = { once: true, passive: true };
+    const events = ["pointermove", "pointerdown", "wheel", "touchstart", "keydown"];
+
+    events.forEach((eventName) => window.addEventListener(eventName, activate, options));
+
+    return () => {
+      events.forEach((eventName) => window.removeEventListener(eventName, activate));
+    };
+  }, [activated]);
+
+  return activated;
 }
 
 function SmoothScroll({ enabled, reduced }) {
@@ -211,7 +231,7 @@ function PortfolioImage({ alt, className = "", desktopEffects, src }) {
     return <FluidImageHover src={src} alt={alt} className={className} />;
   }
 
-  return <img src={src} alt={alt} className={`h-full w-full object-cover ${className}`} />;
+  return <img src={src} alt={alt} className={`h-full w-full object-cover ${className}`} loading="lazy" decoding="async" />;
 }
 
 function FooterField({
@@ -427,14 +447,16 @@ function Footer() {
   const [submitStatus, setSubmitStatus] = useState("idle");
   const successTimerRef = useRef(null);
   const contactHeadingRef = useRef(null);
+  const contactHeadingFirstLineRef = useRef(null);
   const contactVideoRef = useRef(null);
 
   useEffect(() => () => window.clearTimeout(successTimerRef.current), []);
 
   useEffect(() => {
     const heading = contactHeadingRef.current;
+    const firstLine = contactHeadingFirstLineRef.current;
     const video = contactVideoRef.current;
-    if (!heading || !video) return undefined;
+    if (!heading || !firstLine || !video) return undefined;
 
     let triggered = false;
     let frameId = 0;
@@ -442,6 +464,7 @@ function Footer() {
     const playFromStart = () => {
       if (triggered) return;
       triggered = true;
+      if (!video.currentSrc) video.src = contactLiquidVideo;
       video.currentTime = 0;
       video.load();
       video.play().catch(() => {});
@@ -449,7 +472,7 @@ function Footer() {
 
     const checkHeading = () => {
       frameId = 0;
-      const bounds = heading.getBoundingClientRect();
+      const bounds = firstLine.getBoundingClientRect();
       if (bounds.bottom <= window.innerHeight && bounds.bottom > 0) {
         playFromStart();
       }
@@ -470,7 +493,7 @@ function Footer() {
       { threshold: [0, 0.25, 0.5, 0.75, 0.99], rootMargin: "650px 0px 650px 0px" },
     );
 
-    observer.observe(heading);
+    observer.observe(firstLine);
     window.addEventListener("scroll", scheduleCheck, { passive: true });
     window.addEventListener("resize", scheduleCheck);
     scheduleCheck();
@@ -561,7 +584,7 @@ function Footer() {
       </div>
 
       <h2 ref={contactHeadingRef} data-gl-flow-text data-gl-fluid-boost className="relative z-10 mt-[32px] font-display text-[32px] font-light uppercase leading-[48px] tracking-[-2.24px] text-white md:text-[54px] md:leading-[62px] md:tracking-[-0.5px] md:max-lg:!mt-[40px] md:max-lg:!text-[56px] md:max-lg:!leading-[74px] md:max-lg:!tracking-[-3.92px] lg:mt-[40px] lg:text-[96px] lg:leading-[106px] lg:tracking-[-6.72px]">
-        <span>Let`s create something</span>
+        <span ref={contactHeadingFirstLineRef}>Let`s create something</span>
         <br />
         <span className="text-white/60">amazing</span>{" "}
         <span>together</span>
@@ -571,12 +594,11 @@ function Footer() {
         <div data-gl-media className="contact-image-frame relative order-2 hidden h-[450px] w-[496px] max-w-full overflow-hidden lg:order-1 lg:block lg:w-full min-[1440px]:w-[496px]">
           <video
             ref={contactVideoRef}
-            src={contactLiquidVideo}
             className="contact-video h-full w-full object-cover"
             muted
             loop
             playsInline
-            preload="metadata"
+            preload="none"
             aria-hidden="true"
           />
         </div>
@@ -746,6 +768,7 @@ function LoopStart() {
 export default function App() {
   const reduced = useReducedMotion();
   const desktopEffects = useDesktopEffects();
+  const userActivatedEffects = useUserActivatedEffects();
   const fluidDisabled = import.meta.env.DEV && import.meta.env.VITE_DISABLE_FLUID === "true";
   const pathname = typeof window !== "undefined" ? window.location.pathname : "/";
   const isPrivacyPage = pathname === "/privacy";
@@ -802,7 +825,7 @@ export default function App() {
       <EntryVeil />
       <SmoothScroll enabled={desktopEffects} reduced={reduced} />
       <CanvasLayer enabled={false && desktopEffects && !reduced && !fluidDisabled} />
-      <PortfolioFluidBackground desktop={desktopEffects} enabled={!fluidDisabled} reduced={reduced} />
+      <PortfolioFluidBackground desktop={desktopEffects} enabled={(desktopEffects || userActivatedEffects) && !fluidDisabled} reduced={reduced} />
       <main className="relative z-[910] flex min-h-screen flex-col gap-0 overflow-x-hidden pb-5 pt-[49px] lg:gap-0 lg:pb-[40px] lg:pt-[32px]" aria-label="Anna Loban portfolio">
         <StableHeroGridOverlay />
         <StableHeroCtaOverlay />

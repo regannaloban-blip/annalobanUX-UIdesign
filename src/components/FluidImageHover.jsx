@@ -115,6 +115,7 @@ export function FluidImageHover({ src, alt, className = "" }) {
     let width = 1;
     let height = 1;
     let frameId = 0;
+    let textureUploaded = false;
 
     const resize = () => {
       const rect = container.getBoundingClientRect();
@@ -134,7 +135,20 @@ export function FluidImageHover({ src, alt, className = "" }) {
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
+      textureUploaded = true;
       setReady(true);
+    };
+
+    const startRender = () => {
+      if (!visible || frameId || !textureUploaded) return;
+      canvas.classList.add("is-active");
+      frameId = window.requestAnimationFrame(render);
+    };
+
+    const stopRender = () => {
+      if (frameId) window.cancelAnimationFrame(frameId);
+      frameId = 0;
+      canvas.classList.remove("is-active");
     };
 
     const updatePointer = (event) => {
@@ -150,11 +164,12 @@ export function FluidImageHover({ src, alt, className = "" }) {
       lives.copyWithin(1, 0, MAX_STAMPS - 1);
       stamps.set([x, y, vx, vy], 0);
       lives[0] = 1;
+      startRender();
     };
 
     const onEnter = (event) => {
-      updatePointer(event);
       pointer.active = true;
+      updatePointer(event);
     };
     const onLeave = () => { pointer.active = false; };
     const observer = new ResizeObserver(resize);
@@ -163,11 +178,7 @@ export function FluidImageHover({ src, alt, className = "" }) {
       ? new IntersectionObserver(
         ([entry]) => {
           visible = entry.isIntersecting;
-          if (visible && !frameId) frameId = window.requestAnimationFrame(render);
-          if (!visible && frameId) {
-            window.cancelAnimationFrame(frameId);
-            frameId = 0;
-          }
+          if (!visible) stopRender();
         },
         { rootMargin: "160px 0px" },
       )
@@ -182,7 +193,14 @@ export function FluidImageHover({ src, alt, className = "" }) {
     else image.addEventListener("load", uploadTexture, { once: true });
 
     const render = () => {
+      let hasLiveStamp = false;
       for (let index = 0; index < lives.length; index += 1) lives[index] *= TRAIL_FADE;
+      for (let index = 0; index < lives.length; index += 1) {
+        if (lives[index] > 0.015) {
+          hasLiveStamp = true;
+          break;
+        }
+      }
       gl.useProgram(program);
       gl.activeTexture(gl.TEXTURE0);
       gl.bindTexture(gl.TEXTURE_2D, texture);
@@ -195,12 +213,16 @@ export function FluidImageHover({ src, alt, className = "" }) {
       gl.uniform4fv(uniforms.stamps, stamps);
       gl.uniform1fv(uniforms.lives, lives);
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-      frameId = visible ? window.requestAnimationFrame(render) : 0;
+      if (visible && (pointer.active || hasLiveStamp)) {
+        frameId = window.requestAnimationFrame(render);
+      } else {
+        frameId = 0;
+        canvas.classList.remove("is-active");
+      }
     };
 
-    if (visible) frameId = window.requestAnimationFrame(render);
     return () => {
-      window.cancelAnimationFrame(frameId);
+      stopRender();
       observer.disconnect();
       visibilityObserver?.disconnect();
       container.removeEventListener("pointerenter", onEnter);
@@ -214,7 +236,7 @@ export function FluidImageHover({ src, alt, className = "" }) {
 
   return (
     <>
-      <img ref={imageRef} src={src} alt={alt} className={`h-full w-full object-cover ${className}`} />
+      <img ref={imageRef} src={src} alt={alt} className={`h-full w-full object-cover ${className}`} loading="lazy" decoding="async" />
       <canvas ref={canvasRef} aria-hidden="true" className={`fluid-image-hover-canvas ${ready ? "is-ready" : ""} ${className}`} />
     </>
   );

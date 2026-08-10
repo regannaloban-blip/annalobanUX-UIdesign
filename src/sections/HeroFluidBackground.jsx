@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "react";
+import WebGLFluid from "webgl-fluid";
 
 const vertexSource = `
   attribute vec2 aPosition;
@@ -108,7 +109,7 @@ export function PortfolioFluidBackground({ desktop, enabled, reduced }) {
       time: gl.getUniformLocation(program, "uTime"),
     };
 
-    let backgroundActive = desktop || window.scrollY < window.innerHeight;
+    let backgroundActive = window.scrollY < window.innerHeight;
     let frame = 0;
     let lastRender = 0;
 
@@ -117,12 +118,12 @@ export function PortfolioFluidBackground({ desktop, enabled, reduced }) {
       background.width = Math.round(background.clientWidth * dpr);
       background.height = Math.round(background.clientHeight * dpr);
       gl.viewport(0, 0, background.width, background.height);
-      backgroundActive = desktop || window.scrollY < window.innerHeight;
+      backgroundActive = window.scrollY < window.innerHeight;
       startBackgroundRender();
     };
 
     const updateScrollState = () => {
-      const nextBackgroundActive = desktop || window.scrollY < window.innerHeight;
+      const nextBackgroundActive = window.scrollY < window.innerHeight;
       if (nextBackgroundActive === backgroundActive) return;
       backgroundActive = nextBackgroundActive;
       startBackgroundRender();
@@ -158,14 +159,10 @@ export function PortfolioFluidBackground({ desktop, enabled, reduced }) {
 
     const coarsePointer = window.matchMedia("(pointer: coarse)").matches;
     let fluidReady = false;
-    let fluidLoading = false;
     let disposed = false;
 
-    const setupFluid = async () => {
-      if (fluidReady || fluidLoading || disposed) return;
-      fluidLoading = true;
-      const { default: WebGLFluid } = await import("webgl-fluid");
-      if (disposed) return;
+    const setupFluid = () => {
+      if (fluidReady || disposed) return;
 
       WebGLFluid(pointer, {
         TRIGGER: "hover",
@@ -190,12 +187,12 @@ export function PortfolioFluidBackground({ desktop, enabled, reduced }) {
         SUNRAYS: false,
       });
       fluidReady = true;
-      fluidLoading = false;
     };
 
-    const forwardPointer = async (event) => {
+    const forwardPointer = (event) => {
       if (!event.isTrusted) return;
-      await setupFluid();
+      if (window.scrollY >= window.innerHeight) return;
+      setupFluid();
       pointer.dispatchEvent(new MouseEvent("mousemove", {
         bubbles: true,
         clientX: event.clientX,
@@ -203,9 +200,9 @@ export function PortfolioFluidBackground({ desktop, enabled, reduced }) {
       }));
     };
 
-    const startPointer = async (event) => {
+    const startPointer = (event) => {
       if (!event.isTrusted) return;
-      await setupFluid();
+      setupFluid();
       pointer.dispatchEvent(new MouseEvent("mousedown", {
         bubbles: true,
         clientX: event.clientX,
@@ -249,21 +246,21 @@ export function PortfolioFluidBackground({ desktop, enabled, reduced }) {
       }
     };
 
-    const moveTouchPointer = async (event) => {
+    const moveTouchPointer = (event) => {
       const touch = event.touches[0] || event.changedTouches[0];
       if (!touch) return;
 
-      await setupFluid();
+      setupFluid();
       startTouchStroke(touch);
       drawTouchTail(touch, lastTouchPoint);
       lastTouchPoint = { clientX: touch.clientX, clientY: touch.clientY };
     };
 
-    const pulseTapPointer = async (event) => {
+    const pulseTapPointer = (event) => {
       const touch = event.changedTouches[0] || event.touches[0];
       if (!touch) return;
 
-      await setupFluid();
+      setupFluid();
       lastTouchPoint = { clientX: touch.clientX, clientY: touch.clientY };
       startTouchStroke(touch);
       drawTouchTail(touch);
