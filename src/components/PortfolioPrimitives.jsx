@@ -124,7 +124,7 @@ export function Button({ className = "", webglHero = false, noFluid = false }) {
       data-hover-text-trigger
       href={briefHref}
       onClick={scrollToContactForm}
-      className={`group relative inline-flex h-12 w-fit items-center justify-center border-b border-black bg-white px-10 text-black ${className}`}
+      className={`group relative inline-flex h-12 w-fit items-center justify-center border-b border-black bg-white px-10 text-black active:scale-[0.99] ${className}`}
     >
       <span aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-[-2px] hidden h-0 bg-[#A40000] transition-[height] duration-200 ease-out lg:block lg:group-hover:h-0.5" />
       <span
