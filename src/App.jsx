@@ -21,14 +21,14 @@ const canvasSceneKey = "__annaPortfolioCanvasScene";
 
 const works = [
   {
-    kind: "site/",
+    kind: "website/",
     name: "24 colab",
     href: "https://24colab.com/",
     image: project1,
     imageAlt: "24 colab website project by Anna Loban",
   },
   {
-    kind: "site/",
+    kind: "website/",
     name: "smart business intelligence",
     href: "https://smartbusinessintelligence.co.uk",
     image: project2,
@@ -38,14 +38,14 @@ const works = [
     maskBottomEdge: true,
   },
   {
-    kind: "brand identity/",
+    kind: "landing/",
     name: "Skyliner",
     href: "https://skyliner.rv.ua/",
     image: project3,
     imageAlt: "Skyliner brand identity project by Anna Loban",
   },
   {
-    kind: "site/",
+    kind: "website/",
     name: "your dissertation",
     href: "https://yourdissertation.com",
     image: project4,
