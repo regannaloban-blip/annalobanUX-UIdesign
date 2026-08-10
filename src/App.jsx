@@ -14,7 +14,6 @@ import project2 from "../Case/Compressed/smart business intelligence.jpg";
 import project3 from "../Case/Compressed/Skyliner.jpg";
 import project4 from "../Case/Compressed/your dissertation.jpg";
 import quoteIcon from "../assets/ai-portfolio/figma/anna-redesign/quote-icon.svg";
-import footerFormImage from "../Case/Compressed/contact.jpg";
 import contactLiquidVideo from "../Case/Compressed/contact-smoke-red.mp4";
 
 const formSubmitHref = "https://anna-contact-form-v2.ann-loban.workers.dev";
@@ -570,12 +569,6 @@ function Footer() {
 
       <div className="contact-form-backdrop relative isolate z-0 mt-[32px] grid w-full grid-cols-1 py-6 md:max-lg:!mt-[40px] md:max-lg:h-[498px] lg:mt-[40px] lg:h-[498px] lg:grid-cols-[4fr_6fr] lg:gap-[40px] lg:p-6 min-[1440px]:grid-cols-[496px_minmax(0,1fr)]">
         <div data-gl-media className="contact-image-frame relative order-2 hidden h-[450px] w-[496px] max-w-full overflow-hidden lg:order-1 lg:block lg:w-full min-[1440px]:w-[496px]">
-          <img
-            src={footerFormImage}
-            alt=""
-            className="contact-video-poster absolute inset-0 h-full w-full object-cover"
-            aria-hidden="true"
-          />
           <video
             ref={contactVideoRef}
             src={contactLiquidVideo}
@@ -584,7 +577,6 @@ function Footer() {
             loop
             playsInline
             preload="metadata"
-            poster={footerFormImage}
             aria-hidden="true"
           />
         </div>
