@@ -413,17 +413,38 @@ function Footer() {
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [submitStatus, setSubmitStatus] = useState("idle");
   const successTimerRef = useRef(null);
+  const contactHeadingRef = useRef(null);
   const contactVideoRef = useRef(null);
 
   useEffect(() => () => window.clearTimeout(successTimerRef.current), []);
 
   useEffect(() => {
+    const heading = contactHeadingRef.current;
     const video = contactVideoRef.current;
-    if (!video) return undefined;
+    if (!heading || !video) return undefined;
+
+    let triggered = false;
+    let frameId = 0;
 
     const playFromStart = () => {
+      if (triggered) return;
+      triggered = true;
       video.currentTime = 0;
+      video.load();
       video.play().catch(() => {});
+    };
+
+    const checkHeading = () => {
+      frameId = 0;
+      const bounds = heading.getBoundingClientRect();
+      if (bounds.bottom <= window.innerHeight && bounds.bottom > 0) {
+        playFromStart();
+      }
+    };
+
+    const scheduleCheck = () => {
+      if (triggered || frameId) return;
+      frameId = window.requestAnimationFrame(checkHeading);
     };
 
     if (!("IntersectionObserver" in window)) {
@@ -432,16 +453,21 @@ function Footer() {
     }
 
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) return;
-        playFromStart();
-        observer.disconnect();
-      },
-      { threshold: 0.15, rootMargin: "0px 0px -20% 0px" },
+      () => scheduleCheck(),
+      { threshold: [0, 0.25, 0.5, 0.75, 0.99], rootMargin: "0px 0px 0px 0px" },
     );
 
-    observer.observe(video);
-    return () => observer.disconnect();
+    observer.observe(heading);
+    window.addEventListener("scroll", scheduleCheck, { passive: true });
+    window.addEventListener("resize", scheduleCheck);
+    scheduleCheck();
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("scroll", scheduleCheck);
+      window.removeEventListener("resize", scheduleCheck);
+      window.cancelAnimationFrame(frameId);
+    };
   }, []);
 
   const validateFooterForm = (values) => {
@@ -521,7 +547,7 @@ function Footer() {
         </p>
       </div>
 
-      <h2 data-gl-flow-text data-gl-fluid-boost className="mt-[32px] font-display text-[32px] font-light uppercase leading-[48px] tracking-[-2.24px] text-white md:text-[54px] md:leading-[62px] md:tracking-[-0.5px] md:max-lg:!mt-[40px] md:max-lg:!text-[56px] md:max-lg:!leading-[74px] md:max-lg:!tracking-[-3.92px] lg:mt-[40px] lg:text-[96px] lg:leading-[106px] lg:tracking-[-6.72px]">
+      <h2 ref={contactHeadingRef} data-gl-flow-text data-gl-fluid-boost className="mt-[32px] font-display text-[32px] font-light uppercase leading-[48px] tracking-[-2.24px] text-white md:text-[54px] md:leading-[62px] md:tracking-[-0.5px] md:max-lg:!mt-[40px] md:max-lg:!text-[56px] md:max-lg:!leading-[74px] md:max-lg:!tracking-[-3.92px] lg:mt-[40px] lg:text-[96px] lg:leading-[106px] lg:tracking-[-6.72px]">
         <span>Let`s create something</span>
         <br />
         <span className="text-white/35">amazing</span>{" "}
@@ -537,7 +563,7 @@ function Footer() {
             muted
             loop
             playsInline
-            preload="metadata"
+            preload="auto"
             aria-hidden="true"
           />
         </div>

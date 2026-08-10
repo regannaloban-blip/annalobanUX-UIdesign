@@ -20,6 +20,8 @@ export function HoverText({ children }) {
   };
 
   const startScramble = () => {
+    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+
     window.cancelAnimationFrame(frameRef.current);
     const startedAt = performance.now();
 

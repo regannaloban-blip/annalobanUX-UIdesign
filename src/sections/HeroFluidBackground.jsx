@@ -116,6 +116,7 @@ export function PortfolioFluidBackground({ reduced }) {
 
     resize();
     window.addEventListener("resize", resize);
+    const coarsePointer = window.matchMedia("(pointer: coarse)").matches;
 
     WebGLFluid(pointer, {
       TRIGGER: "hover",
@@ -123,13 +124,13 @@ export function PortfolioFluidBackground({ reduced }) {
       AUTO: false,
       SIM_RESOLUTION: 192,
       DYE_RESOLUTION: 1024,
-      DENSITY_DISSIPATION: 0.93,
-      VELOCITY_DISSIPATION: 0.08,
+      DENSITY_DISSIPATION: coarsePointer ? 0.965 : 0.93,
+      VELOCITY_DISSIPATION: coarsePointer ? 0.045 : 0.08,
       PRESSURE: 0.8,
       PRESSURE_ITERATIONS: 24,
       CURL: 0,
-      SPLAT_RADIUS: 0.24,
-      SPLAT_FORCE: 2800,
+      SPLAT_RADIUS: coarsePointer ? 0.36 : 0.24,
+      SPLAT_FORCE: coarsePointer ? 5200 : 2800,
       SPLAT_COUNT: 1,
       SPLAT_COLOR: { r: 0.34, g: 0, b: 0 },
       SHADING: false,
@@ -158,8 +159,16 @@ export function PortfolioFluidBackground({ reduced }) {
       }));
     };
 
+    const dispatchTouchSplat = (touch, offsetX, offsetY) => {
+      pointer.dispatchEvent(new MouseEvent("mousemove", {
+        bubbles: true,
+        clientX: touch.clientX + offsetX,
+        clientY: touch.clientY + offsetY,
+      }));
+    };
+
     const tapPointer = (event) => {
-      const touch = event.touches[0];
+      const touch = event.touches[0] || event.changedTouches[0];
       if (!touch) return;
 
       pointer.dispatchEvent(new MouseEvent("mousedown", {
@@ -167,16 +176,38 @@ export function PortfolioFluidBackground({ reduced }) {
         clientX: touch.clientX,
         clientY: touch.clientY,
       }));
-      pointer.dispatchEvent(new MouseEvent("mousemove", {
-        bubbles: true,
-        clientX: touch.clientX + 28,
-        clientY: touch.clientY - 8,
-      }));
+
+      [
+        [0, 0],
+        [44, -14],
+        [86, -22],
+        [128, -18],
+      ].forEach(([offsetX, offsetY]) => {
+        dispatchTouchSplat(touch, offsetX, offsetY);
+      });
+    };
+
+    const pulseTapPointer = (event) => {
+      const touch = event.changedTouches[0] || event.touches[0];
+      if (!touch) return;
+
+      tapPointer(event);
+      window.setTimeout(() => dispatchTouchSplat(touch, 72, 22), 34);
+      window.setTimeout(() => dispatchTouchSplat(touch, 132, -26), 72);
+      window.setTimeout(() => dispatchTouchSplat(touch, 188, -10), 118);
+    };
+
+    const stopNativeTouchFluid = (event) => {
+      event.stopImmediatePropagation();
     };
 
     window.addEventListener("mousemove", forwardPointer, { passive: true });
     window.addEventListener("mousedown", startPointer, { passive: true });
-    window.addEventListener("touchstart", tapPointer, { passive: true });
+    pointer.addEventListener("touchstart", stopNativeTouchFluid, { capture: true });
+    pointer.addEventListener("touchmove", stopNativeTouchFluid, { capture: true });
+    window.addEventListener("touchstart", pulseTapPointer, { passive: true });
+    window.addEventListener("touchmove", tapPointer, { passive: true });
+    window.addEventListener("touchend", stopNativeTouchFluid, { capture: true });
 
     let frame;
     const render = (time) => {
@@ -196,7 +227,11 @@ export function PortfolioFluidBackground({ reduced }) {
       window.removeEventListener("resize", resize);
       window.removeEventListener("mousemove", forwardPointer);
       window.removeEventListener("mousedown", startPointer);
-      window.removeEventListener("touchstart", tapPointer);
+      pointer.removeEventListener("touchstart", stopNativeTouchFluid, { capture: true });
+      pointer.removeEventListener("touchmove", stopNativeTouchFluid, { capture: true });
+      window.removeEventListener("touchstart", pulseTapPointer);
+      window.removeEventListener("touchmove", tapPointer);
+      window.removeEventListener("touchend", stopNativeTouchFluid, { capture: true });
     };
   }, [reduced]);
 

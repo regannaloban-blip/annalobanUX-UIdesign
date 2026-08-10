@@ -54,7 +54,7 @@ export function StableHeroGridOverlay() {
 
 export function StableHeroCtaOverlay() {
   return (
-    <div className="desktop-hero-overlay-safe desktop-hero-cta-safe pointer-events-none absolute inset-x-0 top-[-2px] z-[960] hidden h-[calc(100dvh+2px)] min-[1199px]:block" aria-hidden="true">
+    <div className="desktop-hero-overlay-safe desktop-hero-cta-safe pointer-events-none absolute inset-x-0 top-[-2px] z-[960] hidden h-[calc(100dvh+2px)] min-[1199px]:block">
       <div className="section-shell relative h-full">
         <div className="desktop-hero-grid-rail absolute inset-y-0">
           <div

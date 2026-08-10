@@ -111,6 +111,7 @@ export function FluidImageHover({ src, alt, className = "" }) {
     const stamps = new Float32Array(MAX_STAMPS * 4);
     const lives = new Float32Array(MAX_STAMPS);
     const pointer = { previousX: 0.5, previousY: 0.5, active: false };
+    let visible = false;
     let width = 1;
     let height = 1;
     let frameId = 0;
@@ -158,6 +159,21 @@ export function FluidImageHover({ src, alt, className = "" }) {
     const onLeave = () => { pointer.active = false; };
     const observer = new ResizeObserver(resize);
     observer.observe(container);
+    const visibilityObserver = "IntersectionObserver" in window
+      ? new IntersectionObserver(
+        ([entry]) => {
+          visible = entry.isIntersecting;
+          if (visible && !frameId) frameId = window.requestAnimationFrame(render);
+          if (!visible && frameId) {
+            window.cancelAnimationFrame(frameId);
+            frameId = 0;
+          }
+        },
+        { rootMargin: "160px 0px" },
+      )
+      : null;
+    visibilityObserver?.observe(container);
+    if (!visibilityObserver) visible = true;
     container.addEventListener("pointerenter", onEnter);
     container.addEventListener("pointermove", updatePointer);
     container.addEventListener("pointerleave", onLeave);
@@ -179,13 +195,14 @@ export function FluidImageHover({ src, alt, className = "" }) {
       gl.uniform4fv(uniforms.stamps, stamps);
       gl.uniform1fv(uniforms.lives, lives);
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-      frameId = window.requestAnimationFrame(render);
+      frameId = visible ? window.requestAnimationFrame(render) : 0;
     };
 
-    frameId = window.requestAnimationFrame(render);
+    if (visible) frameId = window.requestAnimationFrame(render);
     return () => {
       window.cancelAnimationFrame(frameId);
       observer.disconnect();
+      visibilityObserver?.disconnect();
       container.removeEventListener("pointerenter", onEnter);
       container.removeEventListener("pointermove", updatePointer);
       container.removeEventListener("pointerleave", onLeave);
