@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from "react";
-import WebGLFluid from "webgl-fluid";
 
 const vertexSource = `
   attribute vec2 aPosition;
@@ -78,16 +77,18 @@ function createShader(gl, type, source) {
   return shader;
 }
 
-export function PortfolioFluidBackground({ reduced }) {
+export function PortfolioFluidBackground({ desktop, enabled, reduced }) {
   const backgroundRef = useRef(null);
   const pointerRef = useRef(null);
 
   useEffect(() => {
-    if (reduced || !backgroundRef.current || !pointerRef.current) return undefined;
+    if (!enabled || reduced || !backgroundRef.current || !pointerRef.current) return undefined;
 
     const background = backgroundRef.current;
     const pointer = pointerRef.current;
     const gl = background.getContext("webgl", { alpha: false, antialias: false });
+    if (!gl) return undefined;
+
     const program = gl.createProgram();
     gl.attachShader(program, createShader(gl, gl.VERTEX_SHADER, vertexSource));
     gl.attachShader(program, createShader(gl, gl.FRAGMENT_SHADER, fragmentSource));
@@ -107,42 +108,94 @@ export function PortfolioFluidBackground({ reduced }) {
       time: gl.getUniformLocation(program, "uTime"),
     };
 
+    let backgroundActive = desktop || window.scrollY < window.innerHeight;
+    let frame = 0;
+    let lastRender = 0;
+
     const resize = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
       background.width = Math.round(background.clientWidth * dpr);
       background.height = Math.round(background.clientHeight * dpr);
       gl.viewport(0, 0, background.width, background.height);
+      backgroundActive = desktop || window.scrollY < window.innerHeight;
+      startBackgroundRender();
     };
 
-    resize();
-    window.addEventListener("resize", resize);
+    const updateScrollState = () => {
+      const nextBackgroundActive = desktop || window.scrollY < window.innerHeight;
+      if (nextBackgroundActive === backgroundActive) return;
+      backgroundActive = nextBackgroundActive;
+      startBackgroundRender();
+    };
+
+    const renderBackground = (time) => {
+      if (!backgroundActive || document.hidden) {
+        gl.clearColor(0, 0, 0, 1);
+        gl.clear(gl.COLOR_BUFFER_BIT);
+        frame = 0;
+        return;
+      }
+
+      if (time - lastRender < 66) {
+        frame = requestAnimationFrame(renderBackground);
+        return;
+      }
+
+      lastRender = time;
+      gl.useProgram(program);
+      gl.bindBuffer(gl.ARRAY_BUFFER, position);
+      gl.enableVertexAttribArray(locations.position);
+      gl.vertexAttribPointer(locations.position, 2, gl.FLOAT, false, 0, 0);
+      gl.uniform2f(locations.resolution, background.width, background.height);
+      gl.uniform1f(locations.time, time * 0.001);
+      gl.drawArrays(gl.TRIANGLES, 0, 3);
+      frame = requestAnimationFrame(renderBackground);
+    };
+
+    function startBackgroundRender() {
+      if (!frame) frame = requestAnimationFrame(renderBackground);
+    }
+
     const coarsePointer = window.matchMedia("(pointer: coarse)").matches;
+    let fluidReady = false;
+    let fluidLoading = false;
+    let disposed = false;
 
-    WebGLFluid(pointer, {
-      TRIGGER: "hover",
-      IMMEDIATE: false,
-      AUTO: false,
-      SIM_RESOLUTION: 192,
-      DYE_RESOLUTION: 1024,
-      DENSITY_DISSIPATION: coarsePointer ? 0.985 : 0.93,
-      VELOCITY_DISSIPATION: coarsePointer ? 0.035 : 0.08,
-      PRESSURE: 0.8,
-      PRESSURE_ITERATIONS: 24,
-      CURL: 0,
-      SPLAT_RADIUS: coarsePointer ? 0.48 : 0.24,
-      SPLAT_FORCE: coarsePointer ? 8200 : 2800,
-      SPLAT_COUNT: 1,
-      SPLAT_COLOR: { r: coarsePointer ? 0.52 : 0.34, g: 0, b: 0 },
-      SHADING: false,
-      COLORFUL: false,
-      BACK_COLOR: { r: 0, g: 0, b: 0 },
-      TRANSPARENT: true,
-      BLOOM: false,
-      SUNRAYS: false,
-    });
+    const setupFluid = async () => {
+      if (fluidReady || fluidLoading || disposed) return;
+      fluidLoading = true;
+      const { default: WebGLFluid } = await import("webgl-fluid");
+      if (disposed) return;
 
-    const forwardPointer = (event) => {
+      WebGLFluid(pointer, {
+        TRIGGER: "hover",
+        IMMEDIATE: false,
+        AUTO: false,
+        SIM_RESOLUTION: coarsePointer ? 128 : 192,
+        DYE_RESOLUTION: coarsePointer ? 768 : 1024,
+        DENSITY_DISSIPATION: coarsePointer ? 0.985 : 0.93,
+        VELOCITY_DISSIPATION: coarsePointer ? 0.035 : 0.08,
+        PRESSURE: 0.8,
+        PRESSURE_ITERATIONS: coarsePointer ? 16 : 24,
+        CURL: 0,
+        SPLAT_RADIUS: coarsePointer ? 0.48 : 0.24,
+        SPLAT_FORCE: coarsePointer ? 8200 : 2800,
+        SPLAT_COUNT: 1,
+        SPLAT_COLOR: { r: coarsePointer ? 0.52 : 0.34, g: 0, b: 0 },
+        SHADING: false,
+        COLORFUL: false,
+        BACK_COLOR: { r: 0, g: 0, b: 0 },
+        TRANSPARENT: true,
+        BLOOM: false,
+        SUNRAYS: false,
+      });
+      fluidReady = true;
+      fluidLoading = false;
+    };
+
+    const forwardPointer = async (event) => {
       if (!event.isTrusted) return;
+      await setupFluid();
       pointer.dispatchEvent(new MouseEvent("mousemove", {
         bubbles: true,
         clientX: event.clientX,
@@ -150,8 +203,9 @@ export function PortfolioFluidBackground({ reduced }) {
       }));
     };
 
-    const startPointer = (event) => {
+    const startPointer = async (event) => {
       if (!event.isTrusted) return;
+      await setupFluid();
       pointer.dispatchEvent(new MouseEvent("mousedown", {
         bubbles: true,
         clientX: event.clientX,
@@ -195,19 +249,21 @@ export function PortfolioFluidBackground({ reduced }) {
       }
     };
 
-    const moveTouchPointer = (event) => {
+    const moveTouchPointer = async (event) => {
       const touch = event.touches[0] || event.changedTouches[0];
       if (!touch) return;
 
+      await setupFluid();
       startTouchStroke(touch);
       drawTouchTail(touch, lastTouchPoint);
       lastTouchPoint = { clientX: touch.clientX, clientY: touch.clientY };
     };
 
-    const pulseTapPointer = (event) => {
+    const pulseTapPointer = async (event) => {
       const touch = event.changedTouches[0] || event.touches[0];
       if (!touch) return;
 
+      await setupFluid();
       lastTouchPoint = { clientX: touch.clientX, clientY: touch.clientY };
       startTouchStroke(touch);
       drawTouchTail(touch);
@@ -224,6 +280,9 @@ export function PortfolioFluidBackground({ reduced }) {
       event.stopImmediatePropagation();
     };
 
+    resize();
+    window.addEventListener("resize", resize);
+    window.addEventListener("scroll", updateScrollState, { passive: true });
     window.addEventListener("mousemove", forwardPointer, { passive: true });
     window.addEventListener("mousedown", startPointer, { passive: true });
     pointer.addEventListener("touchstart", stopNativeTouchFluid, { capture: true });
@@ -232,23 +291,13 @@ export function PortfolioFluidBackground({ reduced }) {
     window.addEventListener("touchmove", moveTouchPointer, { passive: true });
     window.addEventListener("touchend", resetTouchPointer, { passive: true });
     window.addEventListener("touchcancel", resetTouchPointer, { passive: true });
+    startBackgroundRender();
 
-    let frame;
-    const render = (time) => {
-      gl.useProgram(program);
-      gl.bindBuffer(gl.ARRAY_BUFFER, position);
-      gl.enableVertexAttribArray(locations.position);
-      gl.vertexAttribPointer(locations.position, 2, gl.FLOAT, false, 0, 0);
-      gl.uniform2f(locations.resolution, background.width, background.height);
-      gl.uniform1f(locations.time, time * 0.001);
-      gl.drawArrays(gl.TRIANGLES, 0, 3);
-      frame = requestAnimationFrame(render);
-    };
-
-    frame = requestAnimationFrame(render);
     return () => {
+      disposed = true;
       cancelAnimationFrame(frame);
       window.removeEventListener("resize", resize);
+      window.removeEventListener("scroll", updateScrollState);
       window.removeEventListener("mousemove", forwardPointer);
       window.removeEventListener("mousedown", startPointer);
       pointer.removeEventListener("touchstart", stopNativeTouchFluid, { capture: true });
@@ -257,10 +306,12 @@ export function PortfolioFluidBackground({ reduced }) {
       window.removeEventListener("touchmove", moveTouchPointer);
       window.removeEventListener("touchend", resetTouchPointer);
       window.removeEventListener("touchcancel", resetTouchPointer);
+      gl.deleteBuffer(position);
+      gl.deleteProgram(program);
     };
-  }, [reduced]);
+  }, [desktop, enabled, reduced]);
 
-  if (reduced) return null;
+  if (!enabled || reduced) return null;
 
   return (
     <>

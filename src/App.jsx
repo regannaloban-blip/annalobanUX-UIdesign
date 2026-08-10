@@ -1,13 +1,10 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import Lenis from "lenis";
-import { CanvasScene } from "./webgl/CanvasScene.js";
 import { Button, Display, HoverText, MonoText, briefHref, contactFormId } from "./components/PortfolioPrimitives.jsx";
 import { TopLinks } from "./components/TopLinks.jsx";
 import { Hero, HeroFirstScreen, ResponsiveViewportGuide, StableHeroCtaOverlay, StableHeroGridOverlay } from "./sections/Hero.jsx";
 import { ProductIntro } from "./sections/ProductDesignerIntro.jsx";
 import { Purpose } from "./sections/Purpose.jsx";
 import { PortfolioFluidBackground } from "./sections/HeroFluidBackground.jsx";
-import { FluidImageHover } from "./components/FluidImageHover.jsx";
 import { SeoManager } from "./seo.jsx";
 
 import aboutPortrait from "../assets/Photo/img anna.webp";
@@ -84,53 +81,57 @@ function useDesktopEffects() {
   return desktop;
 }
 
-function SmoothScroll({ reduced }) {
+function SmoothScroll({ enabled, reduced }) {
   useEffect(() => {
-    if (reduced) return undefined;
+    if (!enabled || reduced) return undefined;
 
-    const lenis = new Lenis({
-      lerp: 0.075,
-      smoothWheel: true,
-      wheelMultiplier: 0.9,
-      syncTouch: false,
-    });
+    let lenis = null;
     let frameId = 0;
+    let cancelled = false;
 
     const raf = (time) => {
+      if (!lenis) return;
       lenis.raf(time);
       frameId = window.requestAnimationFrame(raf);
     };
 
-    frameId = window.requestAnimationFrame(raf);
+    const start = async () => {
+      window.removeEventListener("wheel", start);
+      window.removeEventListener("touchstart", start);
+      if (cancelled || lenis) return;
+
+      const { default: Lenis } = await import("lenis");
+      if (cancelled) return;
+
+      lenis = new Lenis({
+        lerp: 0.075,
+        smoothWheel: true,
+        wheelMultiplier: 0.9,
+        syncTouch: false,
+      });
+      frameId = window.requestAnimationFrame(raf);
+    };
+
+    window.addEventListener("wheel", start, { once: true, passive: true });
+    window.addEventListener("touchstart", start, { once: true, passive: true });
 
     return () => {
+      cancelled = true;
+      window.removeEventListener("wheel", start);
+      window.removeEventListener("touchstart", start);
       window.cancelAnimationFrame(frameId);
-      lenis.destroy();
+      lenis?.destroy();
     };
-  }, [reduced]);
+  }, [enabled, reduced]);
 
   return null;
 }
 
-function Preloader({ reduced }) {
-  const rootRef = useRef(null);
-
-  useEffect(() => {
-    const timer = window.setTimeout(() => rootRef.current?.remove(), reduced ? 220 : 1150);
-    return () => window.clearTimeout(timer);
-  }, [reduced]);
-
+function EntryVeil() {
   return (
-    <section
-      ref={rootRef}
-      className={`preloader fixed inset-0 z-[1000] flex h-screen w-full items-center justify-center bg-black pointer-events-none ${
-        reduced ? "preloader-reduced" : ""
-      }`}
-    >
-      <p className="preloader-title font-display text-4xl font-light uppercase text-white md:text-6xl">
-        Initializing
-      </p>
-    </section>
+    <div className="entry-veil fixed inset-0 z-[1000] pointer-events-none" aria-hidden="true">
+      <span className="entry-veil-panel" />
+    </div>
   );
 }
 
@@ -147,7 +148,10 @@ function CanvasLayer({ enabled }) {
     window[canvasSceneKey]?.destroy?.();
 
     let active = true;
-    const scene = new CanvasScene({
+    import("./webgl/CanvasScene.js").then(({ CanvasScene }) => {
+      if (!active) return;
+
+      const scene = new CanvasScene({
       canvas,
       enableSmoothScroll: false,
       onReady: () => {
@@ -160,13 +164,14 @@ function CanvasLayer({ enabled }) {
         canvas.dataset.webglState = "fallback";
         document.body.classList.remove("gl-ready");
       },
+      });
+      window[canvasSceneKey] = scene;
     });
-    window[canvasSceneKey] = scene;
 
     return () => {
       active = false;
-      scene.destroy();
-      if (window[canvasSceneKey] === scene) delete window[canvasSceneKey];
+      window[canvasSceneKey]?.destroy?.();
+      delete window[canvasSceneKey];
       canvas.style.opacity = "0";
       delete canvas.dataset.webglState;
       document.body.classList.remove("gl-ready");
@@ -302,7 +307,7 @@ function About() {
               data-gl-flow-exclude
               className="about-photo relative float-right ml-5 h-[200px] w-[200px] overflow-hidden bg-white md:ml-7 md:h-[239px] md:w-[239px] lg:ml-6"
             >
-              <FluidImageHover src={aboutPortrait} alt="Anna Loban portrait" />
+              <img src={aboutPortrait} alt="Anna Loban portrait" className="h-full w-full object-cover" />
             </div>
             <span>About.</span>
             <br className="max-[599px]:block hidden" />
@@ -350,7 +355,7 @@ function ProjectCard({ work, className = "" }) {
         {...(work.mediaZoom ? { "data-gl-media-zoom": work.mediaZoom } : {})}
         className="relative h-[480px] w-full overflow-hidden bg-white lg:h-[480px]"
       >
-        <FluidImageHover src={work.image} alt={work.imageAlt} className={work.imageClass ?? ""} />
+        <img src={work.image} alt={work.imageAlt} className={`h-full w-full object-cover ${work.imageClass ?? ""}`} />
         {work.maskBottomEdge ? <span aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-[6px] bg-[#062322]" /> : null}
       </div>
       <div
@@ -563,7 +568,7 @@ function Footer() {
             muted
             loop
             playsInline
-            preload="auto"
+            preload="none"
             aria-hidden="true"
           />
         </div>
@@ -786,10 +791,10 @@ export default function App() {
   return (
     <>
       <SeoManager pathname={pathname} />
-      <Preloader reduced={reduced} />
-      <SmoothScroll reduced={reduced} />
+      <EntryVeil />
+      <SmoothScroll enabled={desktopEffects} reduced={reduced} />
       <CanvasLayer enabled={false && desktopEffects && !reduced && !fluidDisabled} />
-      <PortfolioFluidBackground reduced={reduced} />
+      <PortfolioFluidBackground desktop={desktopEffects} enabled={!fluidDisabled} reduced={reduced} />
       <main className="relative z-[910] flex min-h-screen flex-col gap-0 overflow-x-hidden pb-5 pt-[49px] lg:gap-0 lg:pb-[40px] lg:pt-[32px]" aria-label="Anna Loban portfolio">
         <StableHeroGridOverlay />
         <StableHeroCtaOverlay />
