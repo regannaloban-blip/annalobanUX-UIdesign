@@ -547,10 +547,10 @@ function Footer() {
         </p>
       </div>
 
-      <h2 ref={contactHeadingRef} data-gl-flow-text data-gl-fluid-boost className="mt-[32px] font-display text-[32px] font-light uppercase leading-[48px] tracking-[-2.24px] text-white md:text-[54px] md:leading-[62px] md:tracking-[-0.5px] md:max-lg:!mt-[40px] md:max-lg:!text-[56px] md:max-lg:!leading-[74px] md:max-lg:!tracking-[-3.92px] lg:mt-[40px] lg:text-[96px] lg:leading-[106px] lg:tracking-[-6.72px]">
+      <h2 ref={contactHeadingRef} data-gl-flow-text data-gl-fluid-boost className="relative z-10 mt-[32px] font-display text-[32px] font-light uppercase leading-[48px] tracking-[-2.24px] text-white md:text-[54px] md:leading-[62px] md:tracking-[-0.5px] md:max-lg:!mt-[40px] md:max-lg:!text-[56px] md:max-lg:!leading-[74px] md:max-lg:!tracking-[-3.92px] lg:mt-[40px] lg:text-[96px] lg:leading-[106px] lg:tracking-[-6.72px]">
         <span>Let`s create something</span>
         <br />
-        <span className="text-white/35">amazing</span>{" "}
+        <span className="text-white/60">amazing</span>{" "}
         <span>together</span>
       </h2>
 
