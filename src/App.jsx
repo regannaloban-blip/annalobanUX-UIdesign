@@ -5,6 +5,7 @@ import { Hero, HeroFirstScreen, ResponsiveViewportGuide, StableHeroCtaOverlay, S
 import { ProductIntro } from "./sections/ProductDesignerIntro.jsx";
 import { Purpose } from "./sections/Purpose.jsx";
 import { PortfolioFluidBackground } from "./sections/HeroFluidBackground.jsx";
+import { FluidImageHover } from "./components/FluidImageHover.jsx";
 import { SeoManager } from "./seo.jsx";
 
 import aboutPortrait from "../assets/Photo/img anna.webp";
@@ -206,6 +207,14 @@ function SectionShell({ children, className = "", shellClassName = "", decor = n
   );
 }
 
+function PortfolioImage({ alt, className = "", desktopEffects, src }) {
+  if (desktopEffects) {
+    return <FluidImageHover src={src} alt={alt} className={className} />;
+  }
+
+  return <img src={src} alt={alt} className={`h-full w-full object-cover ${className}`} />;
+}
+
 function FooterField({
   label,
   name,
@@ -292,7 +301,7 @@ function ConsentCheckbox({ checked, error, onBlur, onChange }) {
   );
 }
 
-function About() {
+function About({ desktopEffects }) {
   return (
     <section className="about-section relative ml-auto w-full max-w-[1202px]">
       <div className="about-layout ml-auto flex w-full max-w-[1020px] items-start gap-4">
@@ -307,7 +316,7 @@ function About() {
               data-gl-flow-exclude
               className="about-photo relative float-right ml-5 h-[200px] w-[200px] overflow-hidden bg-white md:ml-7 md:h-[239px] md:w-[239px] lg:ml-6"
             >
-              <img src={aboutPortrait} alt="Anna Loban portrait" className="h-full w-full object-cover" />
+              <PortfolioImage src={aboutPortrait} alt="Anna Loban portrait" desktopEffects={desktopEffects} />
             </div>
             <span>About.</span>
             <br className="max-[599px]:block hidden" />
@@ -343,7 +352,7 @@ function WorksHeading() {
   );
 }
 
-function ProjectCard({ work, className = "" }) {
+function ProjectCard({ work, className = "", desktopEffects }) {
   return (
     <article className={`flex w-[368px] max-w-full flex-col gap-3 ${className}`}>
       <p className="font-jakarta text-[13px] font-normal uppercase leading-[25px] text-white/40">
@@ -355,7 +364,7 @@ function ProjectCard({ work, className = "" }) {
         {...(work.mediaZoom ? { "data-gl-media-zoom": work.mediaZoom } : {})}
         className="relative h-[480px] w-full overflow-hidden bg-white lg:h-[480px]"
       >
-        <img src={work.image} alt={work.imageAlt} className={`h-full w-full object-cover ${work.imageClass ?? ""}`} />
+        <PortfolioImage src={work.image} alt={work.imageAlt} className={work.imageClass ?? ""} desktopEffects={desktopEffects} />
         {work.maskBottomEdge ? <span aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-[6px] bg-[#062322]" /> : null}
       </div>
       <div
@@ -374,31 +383,31 @@ function ProjectCard({ work, className = "" }) {
   );
 }
 
-function Works() {
+function Works({ desktopEffects }) {
   return (
     <section className="mt-0 w-full">
       <div className="flex w-full flex-col gap-[72px] py-[40px] min-[1199px]:hidden">
         <div className="flex w-full justify-start min-[600px]:justify-end">
-          <ProjectCard work={works[0]} />
+          <ProjectCard work={works[0]} desktopEffects={desktopEffects} />
         </div>
         <div className="flex w-full justify-start">
-          <ProjectCard work={works[2]} />
+          <ProjectCard work={works[2]} desktopEffects={desktopEffects} />
         </div>
       </div>
 
       <div className="hidden w-full min-[1199px]:block">
         <div className="flex h-[710px] w-full items-start justify-between py-[72px]">
           <div className="flex items-center gap-[64px] min-[1400px]:gap-[113px]">
-            <ProjectCard work={works[0]} />
-            <ProjectCard work={works[1]} />
+            <ProjectCard work={works[0]} desktopEffects={desktopEffects} />
+            <ProjectCard work={works[1]} desktopEffects={desktopEffects} />
           </div>
           <MonoText className="w-[257px] font-normal">Users always compare options.</MonoText>
         </div>
         <div className="flex h-[710px] w-full items-start justify-between py-[72px]">
           <MonoText className="w-[271px] font-normal">The context changes with the audience.</MonoText>
           <div className="flex items-center gap-[64px] min-[1400px]:gap-[112px]">
-            <ProjectCard work={works[2]} />
-            <ProjectCard work={works[3]} />
+            <ProjectCard work={works[2]} desktopEffects={desktopEffects} />
+            <ProjectCard work={works[3]} desktopEffects={desktopEffects} />
           </div>
         </div>
       </div>
@@ -760,7 +769,7 @@ export default function App() {
           <ProductIntro />
         </SectionShell>
         <SectionShell shellClassName="narrow-scale-shell">
-          <About />
+          <About desktopEffects={desktopEffects} />
         </SectionShell>
         <SectionShell shellClassName="purpose-shell narrow-scale-shell">
           <Purpose />
@@ -769,14 +778,14 @@ export default function App() {
           <WorksHeading />
         </SectionShell>
         <SectionShell shellClassName="narrow-scale-shell">
-          <Works />
+          <Works desktopEffects={desktopEffects} />
         </SectionShell>
         <SectionShell shellClassName="footer-shell narrow-scale-shell">
           <Footer />
         </SectionShell>
       </>
     ),
-    [],
+    [desktopEffects],
   );
 
   if (isPrivacyPage) {
