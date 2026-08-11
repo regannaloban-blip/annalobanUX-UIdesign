@@ -109,7 +109,8 @@ export function PortfolioFluidBackground({ desktop, enabled, reduced }) {
       time: gl.getUniformLocation(program, "uTime"),
     };
 
-    let backgroundActive = window.scrollY < window.innerHeight;
+    const shouldRunAcrossPage = () => desktop || window.scrollY < window.innerHeight;
+    let backgroundActive = shouldRunAcrossPage();
     let frame = 0;
     let lastRender = 0;
 
@@ -118,12 +119,12 @@ export function PortfolioFluidBackground({ desktop, enabled, reduced }) {
       background.width = Math.round(background.clientWidth * dpr);
       background.height = Math.round(background.clientHeight * dpr);
       gl.viewport(0, 0, background.width, background.height);
-      backgroundActive = window.scrollY < window.innerHeight;
+      backgroundActive = shouldRunAcrossPage();
       startBackgroundRender();
     };
 
     const updateScrollState = () => {
-      const nextBackgroundActive = window.scrollY < window.innerHeight;
+      const nextBackgroundActive = shouldRunAcrossPage();
       if (nextBackgroundActive === backgroundActive) return;
       backgroundActive = nextBackgroundActive;
       startBackgroundRender();
@@ -191,7 +192,7 @@ export function PortfolioFluidBackground({ desktop, enabled, reduced }) {
 
     const forwardPointer = (event) => {
       if (!event.isTrusted) return;
-      if (window.scrollY >= window.innerHeight) return;
+      if (!desktop && window.scrollY >= window.innerHeight) return;
       setupFluid();
       pointer.dispatchEvent(new MouseEvent("mousemove", {
         bubbles: true,
