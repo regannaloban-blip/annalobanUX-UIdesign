@@ -45,19 +45,6 @@
   padding-bottom: 40px;
 }
 
-.product-concept-code-title {
-  width: 100% !important;
-  max-width: 100%;
-  white-space: normal !important;
-  overflow-wrap: normal;
-  word-break: keep-all;
-}
-
-.concept-code-plus {
-  display: inline-block;
-  padding-right: 0.08em;
-}
-
 @media (max-width: 600px) {
   .hero-cta-block {
     top: 112px;
@@ -109,7 +96,8 @@
 }
 
 @media (max-width: 389px) {
-  .hero-anna-row h2 {
+  .hero-anna-row h2,
+  .responsive-intro .designer-title {
     font-size: 76px;
   }
 }
@@ -373,17 +361,20 @@
   }
 
   .product-service-row {
-    flex-direction: column;
+    flex-direction: row !important;
+    flex-wrap: nowrap;
     align-items: flex-start;
-    justify-content: flex-start;
+    justify-content: space-between;
+    column-gap: 80px;
   }
 
   .product-service-list {
-    order: 2;
+    order: 1 !important;
   }
 
   .designer-title {
-    order: 1;
+    order: 2 !important;
+    margin-left: 0 !important;
   }
 }
 

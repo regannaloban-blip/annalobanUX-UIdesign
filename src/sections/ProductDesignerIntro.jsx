@@ -17,8 +17,8 @@ export function ResponsiveUxIntro() {
 export function ResponsiveProductDesignerIntro() {
   return (
     <div className="flex w-full flex-col items-start text-white">
-      <h2 data-gl-text className="product-title product-concept-code-title mb-[-16px] w-full font-buffon text-[84px] font-normal uppercase leading-[85px] text-white max-[874px]:!mb-[-10px]">
-        CONCEPT<span className="concept-code-plus">+</span><wbr />CODE
+      <h2 data-gl-text className="product-title mb-[-16px] w-full font-buffon text-[84px] font-normal uppercase leading-[85px] text-white max-[874px]:!mb-[-10px]">
+        CONCEPT
       </h2>
       <div className="product-service-row flex w-full flex-col items-start whitespace-nowrap min-[601px]:flex-row">
         <div className="product-service-list order-2 flex flex-col pt-4 font-jakarta text-base font-normal uppercase leading-[25px] text-white min-[601px]:order-1">
@@ -36,7 +36,7 @@ export function ResponsiveProductDesignerIntro() {
 
 export function ProductIntro() {
   return (
-    <section className="hidden min-h-[592px] w-full flex-col items-start py-[72px] min-[1199px]:flex">
+    <section className="hidden h-[592px] w-full flex-col items-start py-[72px] min-[1199px]:flex">
       <div className="flex h-[158px] w-full flex-col gap-10 pb-1 lg:flex-row lg:items-start lg:justify-between lg:gap-8">
         <Display className="lg:tracking-[-6.72px]" webglHero>UX/UI</Display>
         <div className="flex w-[286px] max-w-full flex-col items-start gap-[42px] lg:h-[75px] lg:w-[359px] lg:gap-0 lg:pr-8 lg:pt-1">
@@ -46,9 +46,9 @@ export function ProductIntro() {
         </div>
       </div>
       <div className="product-intro-heading-stack flex w-full flex-col items-start text-white">
-        <h2 data-gl-text data-gl-hero-text className="product-intro-product-heading product-concept-code-title font-buffon text-[84px] font-normal uppercase leading-[85px] tracking-normal text-white md:text-[118px] md:leading-[110px] lg:text-[175px] lg:leading-[160px]">
-          CONCEPT<span className="concept-code-plus">+</span><wbr />CODE
-        </h2>
+        <Display buffon webglHero className="product-intro-product-heading">
+          CONCEPT
+        </Display>
         <div className="flex w-full flex-col gap-5 lg:flex-row lg:items-start lg:gap-[194px]">
           <div className="order-2 flex flex-row gap-4 pt-0 font-jakarta text-base font-normal uppercase leading-[25px] text-white lg:order-1 lg:flex-col lg:gap-0 lg:pt-4">
             <span className="inline-block whitespace-nowrap">/ Web</span>
