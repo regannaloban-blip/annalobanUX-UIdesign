@@ -7,6 +7,7 @@ import { Purpose } from "./sections/Purpose.jsx";
 import { PortfolioFluidBackground } from "./sections/HeroFluidBackground.jsx";
 import { FluidImageHover } from "./components/FluidImageHover.jsx";
 import { SeoManager } from "./seo.jsx";
+import { loadGoogleAnalytics, readAnalyticsConsent, saveAnalyticsConsent, shouldLoadAnalytics } from "./analyticsConsent.js";
 
 import aboutPortrait from "../assets/Photo/img anna.webp";
 import project1 from "../Case/Compressed/24 colab.webp";
@@ -99,6 +100,21 @@ function useUserActivatedEffects() {
   }, [activated]);
 
   return activated;
+}
+
+function AnalyticsConsentBanner({ onChoice }) {
+  return (
+    <section className="fixed inset-x-4 bottom-4 z-[1100] mx-auto max-w-[540px] border border-white bg-black p-5 font-jakarta text-white shadow-2xl md:inset-x-auto md:right-6" aria-label="Analytics cookie preferences">
+      <p className="text-[13px] font-medium uppercase leading-5 text-white/50">Cookie preferences</p>
+      <p className="mt-3 text-sm leading-6 text-white/80">
+        We use analytics cookies to understand how visitors use this website. See the <a className="underline underline-offset-4 transition-colors hover:text-white" href="/privacy">Privacy Policy</a>.
+      </p>
+      <div className="mt-5 flex flex-wrap gap-3">
+        <button type="button" className="border border-white bg-white px-4 py-2 text-sm font-medium uppercase text-black transition-colors hover:bg-transparent hover:text-white" onClick={() => onChoice("granted")}>Accept analytics</button>
+        <button type="button" className="border border-white/50 px-4 py-2 text-sm font-medium uppercase text-white transition-colors hover:border-white" onClick={() => onChoice("denied")}>Decline</button>
+      </div>
+    </section>
+  );
 }
 
 function SmoothScroll({ enabled, reduced }) {
@@ -742,6 +758,14 @@ function PrivacyPolicy() {
         </section>
 
         <section className="grid gap-8 border-t border-white/10 pt-8 md:grid-cols-[220px_minmax(0,1fr)]">
+          <h2 className="text-[14px] font-medium uppercase leading-5 text-white/40">Analytics cookies</h2>
+          <div className="flex flex-col gap-3 text-base leading-7 text-white/75">
+            <p>With your consent, Google Analytics uses cookies to measure visits, page views, scrolling, and outbound link clicks. This helps improve the website and understand which channels generate enquiries.</p>
+            <p>You can accept or decline analytics cookies when the banner appears. Declining does not affect the website’s core functions.</p>
+          </div>
+        </section>
+
+        <section className="grid gap-8 border-t border-white/10 pt-8 md:grid-cols-[220px_minmax(0,1fr)]">
           <h2 className="text-[14px] font-medium uppercase leading-5 text-white/40">Retention and rights</h2>
           <div className="flex flex-col gap-3 text-base leading-7 text-white/75">
             <p>Messages are kept only as long as needed to respond and manage the request, and no longer than 12 months unless cooperation starts or legal obligations require longer storage.</p>
@@ -772,6 +796,16 @@ export default function App() {
   const fluidDisabled = import.meta.env.DEV && import.meta.env.VITE_DISABLE_FLUID === "true";
   const pathname = typeof window !== "undefined" ? window.location.pathname : "/";
   const isPrivacyPage = pathname === "/privacy";
+  const [analyticsConsent, setAnalyticsConsent] = useState(() => (typeof window === "undefined" ? null : readAnalyticsConsent()));
+
+  useEffect(() => {
+    if (shouldLoadAnalytics(analyticsConsent)) loadGoogleAnalytics();
+  }, [analyticsConsent]);
+
+  const setConsent = (choice) => {
+    saveAnalyticsConsent(choice);
+    setAnalyticsConsent(choice);
+  };
   const page = useMemo(
     () => (
       <>
@@ -833,6 +867,7 @@ export default function App() {
           {page}
         </div>
       </main>
+      {analyticsConsent === null ? <AnalyticsConsentBanner onChoice={setConsent} /> : null}
     </>
   );
 }
