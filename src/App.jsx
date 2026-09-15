@@ -110,7 +110,7 @@ function AnalyticsConsentBanner({ onChoice }) {
         We use analytics cookies to understand how visitors use this website. See the <a className="underline underline-offset-4 transition-colors hover:text-white" href="/privacy">Privacy Policy</a>.
       </p>
       <div className="mt-5 flex flex-wrap gap-3">
-        <button type="button" className="border border-white bg-white px-4 py-2 text-sm font-medium uppercase text-black transition-colors hover:bg-transparent hover:text-white" onClick={() => onChoice("granted")}>Accept analytics</button>
+        <button type="button" className="border border-white bg-white px-4 py-2 text-sm font-medium uppercase text-black transition-colors hover:bg-transparent hover:text-white" onClick={() => onChoice("granted")}>Accept</button>
         <button type="button" className="border border-white/50 px-4 py-2 text-sm font-medium uppercase text-white transition-colors hover:border-white" onClick={() => onChoice("denied")}>Decline</button>
       </div>
     </section>
