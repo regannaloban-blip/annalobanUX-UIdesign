@@ -29,3 +29,8 @@ test("classifies home, privacy, project, and unknown paths explicitly", () => {
   assert.equal(getRouteKind("/work/skyliner-commercial-property-website"), "project");
   assert.equal(getRouteKind("/missing"), "not-found");
 });
+
+test("a case project exposes the four hero metadata rows", () => {
+  const project = getProjectByPath("/work/24colab-content-services-website");
+  assert.deepEqual(Object.keys(project.meta), ["Project type", "Industry", "Scope of work", "Website goal"]);
+});
