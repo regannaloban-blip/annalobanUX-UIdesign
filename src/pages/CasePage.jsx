@@ -5,7 +5,7 @@ import { projectMedia } from "../content/projectMedia.js";
 import { getProjectByPath } from "../content/projects.js";
 import "./CasePage.css";
 
-export function CasePage({ project }) {
+export function CasePage({ project, footer }) {
   const relatedProject = getProjectByPath(project.relatedPath);
   const nextProject = relatedProject ? getProjectByPath(relatedProject.relatedPath) : null;
 
@@ -25,7 +25,8 @@ export function CasePage({ project }) {
         <section className="case-features"><p>Key features</p><div>{project.features.map((feature, index) => <article key={feature}><span>0{index + 1}</span><h3>{feature}</h3></article>)}</div></section>
         <section className="case-next"><h2>Next projects</h2><div>{[relatedProject, nextProject].filter(Boolean).map((next) => <a href={next.path} key={next.path}><img src={projectMedia[next.image]} alt={next.imageAlt} /><span>{next.name}</span></a>)}</div></section>
       </section>
-      <footer className="case-contact"><p>Start a project</p><h2>Let’s create something <span>amazing</span> together</h2><a href="/#contact-form"><HoverText>Start a project</HoverText></a><a className="case-live" href={project.liveUrl} target="_blank" rel="noreferrer"><HoverText>View live project</HoverText></a></footer>
+      <section className="case-contact"><a className="case-live" href={project.liveUrl} target="_blank" rel="noreferrer"><HoverText>View live project</HoverText></a></section>
+      {footer}
     </main>
   );
 }

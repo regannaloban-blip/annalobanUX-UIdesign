@@ -858,7 +858,7 @@ export default function App() {
   }
 
   if (routeKind === "project") {
-    return <><SeoManager pathname={pathname} /><CasePage project={project} /></>;
+    return <><SeoManager pathname={pathname} /><CasePage project={project} footer={<SectionShell shellClassName="footer-shell narrow-scale-shell"><Footer /></SectionShell>} /></>;
   }
 
   if (routeKind === "not-found") {
