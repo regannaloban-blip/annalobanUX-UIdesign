@@ -8,6 +8,9 @@ import { PortfolioFluidBackground } from "./sections/HeroFluidBackground.jsx";
 import { FluidImageHover } from "./components/FluidImageHover.jsx";
 import { SeoManager } from "./seo.jsx";
 import { loadGoogleAnalytics, readAnalyticsConsent, saveAnalyticsConsent, shouldLoadAnalytics } from "./analyticsConsent.js";
+import { CasePage } from "./pages/CasePage.jsx";
+import { NotFoundPage } from "./pages/NotFoundPage.jsx";
+import { getProjectByPath, getRouteKind } from "./content/projects.js";
 
 import aboutPortrait from "../assets/Photo/img anna.webp";
 import project1 from "../Case/Compressed/24 colab.webp";
@@ -795,7 +798,8 @@ export default function App() {
   const userActivatedEffects = useUserActivatedEffects();
   const fluidDisabled = import.meta.env.DEV && import.meta.env.VITE_DISABLE_FLUID === "true";
   const pathname = typeof window !== "undefined" ? window.location.pathname : "/";
-  const isPrivacyPage = pathname === "/privacy";
+  const routeKind = getRouteKind(pathname);
+  const project = getProjectByPath(pathname);
   const [analyticsConsent, setAnalyticsConsent] = useState(() => (typeof window === "undefined" ? null : readAnalyticsConsent()));
 
   useEffect(() => {
@@ -844,13 +848,21 @@ export default function App() {
     [desktopEffects],
   );
 
-  if (isPrivacyPage) {
+  if (routeKind === "privacy") {
     return (
       <>
         <SeoManager pathname={pathname} />
         <PrivacyPolicy />
       </>
     );
+  }
+
+  if (routeKind === "project") {
+    return <><SeoManager pathname={pathname} /><CasePage project={project} /></>;
+  }
+
+  if (routeKind === "not-found") {
+    return <><SeoManager pathname={pathname} /><NotFoundPage /></>;
   }
 
   return (
