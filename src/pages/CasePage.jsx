@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { TopLinks } from "../components/TopLinks.jsx";
 import { HoverText } from "../components/PortfolioPrimitives.jsx";
 import { projectMedia } from "../content/projectMedia.js";
-import { getProjectByPath } from "../content/projects.js";
+import { projects } from "../content/projects.js";
 import logoVector from "../assets/figma/24colab/logo-vector.svg";
 import logoVectorOne from "../assets/figma/24colab/logo-vector-1.svg";
 import logoGroup from "../assets/figma/24colab/logo-group.svg";
@@ -33,10 +33,111 @@ const colabMobileMenuItems = [
   ["Contact", "/#contact-form"],
 ];
 
+const projectKinds = {
+  "24colab": "Website/",
+  "smart-business-intelligence": "Website/",
+  skyliner: "Landing/",
+  "your-dissertation": "Website/",
+};
+
+function useProjectSlider() {
+  const sliderRef = useRef(null);
+
+  useEffect(() => {
+    const carousel = sliderRef.current;
+    if (!carousel) return undefined;
+
+    carousel.scrollLeft = 0;
+
+    let pointerId = null;
+    let startX = 0;
+    let startScrollLeft = 0;
+    let lastX = 0;
+    let lastMoveAt = 0;
+    let velocity = 0;
+    let didDrag = false;
+    let resizeFrame = 0;
+
+    const isCarousel = () => carousel.scrollWidth > carousel.clientWidth;
+    const clampScroll = (value) => {
+      const maxScrollLeft = carousel.scrollWidth - carousel.clientWidth;
+      return Math.min(maxScrollLeft, Math.max(0, value));
+    };
+    const finishDrag = (event) => {
+      if (event.pointerId !== pointerId) return;
+      if (carousel.hasPointerCapture(pointerId)) carousel.releasePointerCapture(pointerId);
+      const points = [...carousel.querySelectorAll("[data-project-slide]")].map((slide) => clampScroll(slide.offsetLeft));
+      const nearestIndex = points.reduce((closest, point, index) => (
+        Math.abs(point - carousel.scrollLeft) < Math.abs(points[closest] - carousel.scrollLeft) ? index : closest
+      ), 0);
+      const targetIndex = velocity > .3 ? nearestIndex + 1 : velocity < -.3 ? nearestIndex - 1 : nearestIndex;
+      carousel.scrollTo({ left: points[Math.min(points.length - 1, Math.max(0, targetIndex))], behavior: "smooth" });
+      pointerId = null;
+      carousel.classList.remove("is-dragging");
+    };
+    const startDrag = (event) => {
+      if (!isCarousel() || !event.isPrimary || (event.pointerType === "mouse" && event.button !== 0)) return;
+      pointerId = event.pointerId;
+      startX = event.clientX;
+      startScrollLeft = carousel.scrollLeft;
+      lastX = event.clientX;
+      lastMoveAt = performance.now();
+      velocity = 0;
+      didDrag = false;
+      carousel.setPointerCapture(pointerId);
+    };
+    const drag = (event) => {
+      if (event.pointerId !== pointerId) return;
+      const distance = event.clientX - startX;
+      if (Math.abs(distance) <= 4) return;
+      didDrag = true;
+      carousel.classList.add("is-dragging");
+      event.preventDefault();
+      const now = performance.now();
+      const elapsed = Math.max(1, now - lastMoveAt);
+      velocity = ((lastX - event.clientX) / elapsed) * 16.67;
+      lastX = event.clientX;
+      lastMoveAt = now;
+      carousel.scrollLeft = clampScroll(startScrollLeft - distance);
+    };
+    const preventClickAfterDrag = (event) => {
+      if (!didDrag) return;
+      event.preventDefault();
+      event.stopPropagation();
+      didDrag = false;
+    };
+    const resetAfterResize = () => {
+      window.cancelAnimationFrame(resizeFrame);
+      resizeFrame = window.requestAnimationFrame(() => {
+        carousel.scrollLeft = 0;
+      });
+    };
+
+    carousel.addEventListener("pointerdown", startDrag);
+    carousel.addEventListener("pointermove", drag);
+    carousel.addEventListener("pointerup", finishDrag);
+    carousel.addEventListener("pointercancel", finishDrag);
+    carousel.addEventListener("click", preventClickAfterDrag, true);
+    window.addEventListener("resize", resetAfterResize);
+    return () => {
+      carousel.removeEventListener("pointerdown", startDrag);
+      carousel.removeEventListener("pointermove", drag);
+      carousel.removeEventListener("pointerup", finishDrag);
+      carousel.removeEventListener("pointercancel", finishDrag);
+      carousel.removeEventListener("click", preventClickAfterDrag, true);
+      window.removeEventListener("resize", resetAfterResize);
+      window.cancelAnimationFrame(resizeFrame);
+    };
+  }, []);
+
+  return sliderRef;
+}
+
 function ColabCasePage({ footer }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileMenuOpening, setIsMobileMenuOpening] = useState(false);
   const menuOpenTimer = useRef();
+  const nextProjectsRef = useProjectSlider();
 
   const openMobileMenu = () => {
     setIsMobileMenuOpening(true);
@@ -129,18 +230,13 @@ function ColabCasePage({ footer }) {
         </section>
         <section className="colab-next">
           <div className="colab-next-head"><h2>Next projects</h2></div>
-          <div className="colab-next-content">
+          <div ref={nextProjectsRef} className="colab-next-content">
             <div className="colab-next-cards">
-              <article className="colab-next-card">
-                <p>Site/</p><div className="colab-next-image colab-next-image-dim"><img src={nextSmartBusinessIntelligence} alt="Smart Business Intelligence project" /></div>
-                <div><span>Smart Business Intelligence</span><a href="https://smartbusinessintelligence.co.uk" target="_blank" rel="noreferrer"><HoverText>Live</HoverText></a></div>
-              </article>
-              <article className="colab-next-card">
-                <p>Landing/</p><div className="colab-next-image"><img src={projectMedia.skyliner} alt="Skyliner project" /></div>
-                <div><span>Skyliner</span><a href="https://skyliner.rv.ua/" target="_blank" rel="noreferrer"><HoverText>Live</HoverText></a></div>
-              </article>
+              {projects.map((next) => <article data-project-slide className="colab-next-card" key={next.path}>
+                <p>{projectKinds[next.image]}</p><div className={`colab-next-image${next.image === "smart-business-intelligence" ? " colab-next-image-dim" : ""}`}><img src={next.image === "smart-business-intelligence" ? nextSmartBusinessIntelligence : projectMedia[next.image]} alt={next.imageAlt} /></div>
+                <div><span>{next.name}</span><a href={next.liveUrl} target="_blank" rel="noreferrer"><HoverText>Live</HoverText></a></div>
+              </article>)}
             </div>
-            <p className="colab-next-note">Users always compare options.</p>
           </div>
         </section>
       </section>
@@ -150,9 +246,8 @@ function ColabCasePage({ footer }) {
 }
 
 export function CasePage({ project, footer }) {
+  const nextProjectsRef = useProjectSlider();
   if (project.path === "/work/24colab-content-services-website") return <ColabCasePage footer={footer} />;
-  const relatedProject = getProjectByPath(project.relatedPath);
-  const nextProject = relatedProject ? getProjectByPath(relatedProject.relatedPath) : null;
 
   return (
     <main className="case-page" aria-label={`${project.name} project case study`}>
@@ -168,7 +263,7 @@ export function CasePage({ project, footer }) {
         <section className="case-preview"><img src={projectMedia[project.image]} alt="" /></section>
         <section className="case-two-col"><p>The solution</p><div><h2>{project.solution}</h2></div></section>
         <section className="case-features"><p>Key features</p><div>{project.features.map((feature, index) => <article key={feature}><span>0{index + 1}</span><h3>{feature}</h3></article>)}</div></section>
-        <section className="case-next"><h2>Next projects</h2><div>{[relatedProject, nextProject].filter(Boolean).map((next) => <a href={next.path} key={next.path}><img src={projectMedia[next.image]} alt={next.imageAlt} /><span>{next.name}</span></a>)}</div></section>
+        <section className="case-next"><h2>Next projects</h2><div ref={nextProjectsRef} className="case-next-slider">{projects.map((next) => <a data-project-slide href={next.path} key={next.path}><p>{projectKinds[next.image]}</p><img src={projectMedia[next.image]} alt={next.imageAlt} /><span>{next.name}</span></a>)}</div></section>
       </section>
       <section className="case-contact"><a className="case-live" href={project.liveUrl} target="_blank" rel="noreferrer"><HoverText>View live project</HoverText></a></section>
       {footer}
