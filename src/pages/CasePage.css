@@ -5,9 +5,12 @@
 .colab-topbar,
 .colab-hero { width: min(1488px, calc(100% - 98px)); margin-inline: auto; }
 .colab-topbar { display: flex; align-items: flex-start; justify-content: space-between; padding: 32px 40px 0 0; height: 58px; font-size: 13px; line-height: 25px; }
-.colab-back { display: inline-flex; align-items: center; gap: 8px; height: 25px; color: #fff; font-size: 13px; font-weight: 400; line-height: 25px; text-decoration: none; white-space: nowrap; }
+.colab-back { display: inline-flex; align-items: center; gap: 8px; height: 25px; color: #fff; font-size: 16px; font-weight: 400; line-height: 25px; text-decoration: none; white-space: nowrap; }
 .colab-back img { display: block; width: 20px; height: 20px; }
-.colab-topbar .top-links { margin-top: 1px; }
+.colab-back__mobile { display: none; }
+.colab-topbar .top-links { flex: 0 0 auto; flex-wrap: nowrap; width: auto; margin-top: 1px; justify-content: flex-end; }
+.colab-menu-toggle,
+.colab-mobile-menu { display: none; }
 .colab-hero { height: 992px; padding: 173px 0 72px; }
 .colab-hero h1 { margin: 0; color: #fff; font-family: "Inter", sans-serif; font-size: 126px; font-style: normal; font-weight: 300 !important; font-variation-settings: "wght" 300; line-height: 136px; letter-spacing: -5.04px; font-synthesis: none; white-space: nowrap; }
 .colab-about { display: grid; grid-template-columns: minmax(0, 718fr) minmax(0, 704fr); gap: 26px; padding-right: 40px; margin-top: 120px; }
@@ -15,7 +18,7 @@
 .colab-about > p:last-child { width: auto; min-width: 0; }
 .colab-about p,
 .colab-label { margin: 0; font-size: 13px; font-weight: 400; line-height: 25px; }
-.colab-about .colab-about-label { display: flex; align-items: center; gap: 0; height: 22.398px; color: #fff; font-family: "Plus Jakarta Sans", sans-serif; font-size: 16px; font-weight: 500; font-variation-settings: "wght" 500; font-synthesis: none; line-height: 25px; opacity: .7; }
+.colab-about .colab-about-label { display: flex; align-items: center; gap: 0; height: 22.398px; color: #fff; font-family: "Plus Jakarta Sans", sans-serif; font-size: 16px; font-weight: 500; font-variation-settings: "wght" 500; font-synthesis: none; line-height: 25px; opacity: .7; white-space: nowrap; }
 .colab-label { color: rgba(255, 255, 255, .4); }
 .colab-about p:last-child { font-family: "Plus Jakarta Sans", sans-serif; font-size: 26px; font-style: normal; font-weight: 400 !important; font-variation-settings: "wght" 400; line-height: 41px; }
 .colab-meta { display: flex; flex-direction: column; gap: 4px; width: calc(100% - 40px); margin: 120px 0 0; }
@@ -32,14 +35,14 @@
 .colab-logo-vector { inset: 25.65% 73.34% 26.43% 12.22%; width: auto; height: auto; }
 .colab-logo-vector-one { inset: 25.55% 87.6% 26.44% 0; width: auto; height: auto; }
 .colab-logo-group { inset: 0 .84% 25.45% 31.02%; width: auto; height: auto; }
-.colab-copy-section { display: grid; grid-template-columns: 718px 704px; gap: 26px; width: min(1488px, calc(100% - 98px)); height: 559px; margin-inline: auto; padding-top: 120px; }
+.colab-copy-section { display: grid; grid-template-columns: 718px 704px; gap: 26px; width: min(1488px, calc(100% - 98px)); margin-inline: auto; padding-top: 120px; }
 .colab-copy-section .colab-label { color: rgba(0,0,0,.4); }
 .colab-copy-section h2 { max-width: 704px; margin: 0; font-size: 26px; font-weight: 400; line-height: 41px; }
 .colab-copy-section div > p { max-width: 704px; margin: 80px 0 0; font-size: 18px; font-weight: 400; line-height: 25px; text-transform: none; }
 .colab-copy-section.colab-challenge,
 .colab-copy-section.colab-solution { box-sizing: border-box; grid-template-columns: minmax(0, 1fr) 704px; width: 100%; padding-right: 89px; padding-left: 49px; }
-.colab-challenge { height: 559px; padding-top: 120px; padding-bottom: 120px; }
-.colab-section-label { display: flex; align-items: center; gap: 0; height: 22.398px; margin: 0; color: #000; font-family: "Plus Jakarta Sans", sans-serif; font-size: 16px; font-weight: 500; font-variation-settings: "wght" 500; font-synthesis: none; line-height: 25px; opacity: .7; }
+.colab-challenge { padding-top: 120px; padding-bottom: 120px; }
+.colab-section-label { display: flex; align-items: center; gap: 0; height: 22.398px; margin: 0; color: #000; font-family: "Plus Jakarta Sans", sans-serif; font-size: 16px; font-weight: 500; font-variation-settings: "wght" 500; font-synthesis: none; line-height: 25px; opacity: .7; white-space: nowrap; }
 .colab-challenge > div { display: flex; flex-direction: column; gap: 80px; width: 704px; }
 .colab-challenge > div > p { margin: 0; text-transform: uppercase; }
 .colab-screens { position: relative; height: 597px; overflow: hidden; background: rgba(114,129,141,.2); }
@@ -53,11 +56,11 @@
 .colab-screen-faq-bottom img, .colab-screen-faq-top img { top: 0; left: -.05%; width: 100.09%; height: 99.98%; }
 .colab-screen-outsourcing { top: -413.5px; left: 986.29px; width: 356.708px; height: 1397.886px; }
 .colab-screen-outsourcing img { top: .05%; left: 0; width: 100%; height: 104.99%; }
-.colab-solution { height: 600px; padding-top: 120px; padding-bottom: 120px; }
+.colab-solution { padding-top: 120px; padding-bottom: 120px; }
 .colab-solution > div { display: flex; flex-direction: column; gap: 80px; width: 704px; }
 .colab-solution > div > p { margin: 0; text-transform: uppercase; }
-.colab-features { display: flex; align-items: flex-start; justify-content: space-between; width: 100%; height: 804px; padding: 32px 89px 120px 49px; }
-.colab-feature-grid { display: grid; flex: 0 0 706px; grid-template-columns: repeat(2, 329px); grid-template-rows: repeat(2, 286px); align-items: start; column-gap: 48px; row-gap: 80px; width: 706px; height: 652px; }
+.colab-features { display: flex; align-items: flex-start; justify-content: space-between; width: 100%; padding: 32px 89px 120px 49px; }
+.colab-feature-grid { display: grid; flex: 0 0 706px; grid-template-columns: repeat(2, 329px); grid-template-rows: repeat(2, auto); align-items: start; column-gap: 48px; row-gap: 80px; width: 706px; }
 .colab-feature-grid article { display: flex; flex-direction: column; min-width: 0; }
 .colab-feature-icon { display: grid; place-items: center; position: relative; width: 48px; height: 48px; }
 .colab-feature-icon img { display: block; width: 48px; height: 48px; max-width: none; }
@@ -68,7 +71,7 @@
 .colab-next-head { height: 84px; }
 .colab-next h2 { margin: 0; font-family: Inter, sans-serif; font-size: 78px; font-weight: 300; line-height: 84px; letter-spacing: -3.12px; }
 .colab-next-content { display: flex; justify-content: space-between; margin-top: 64px; }
-.colab-next-cards { display: flex; gap: 112px; width: 848px; }
+.colab-next-cards { display: flex; gap: 64px; width: auto; }
 .colab-next-card { display: flex; flex: 0 0 368px; flex-direction: column; gap: 12px; min-width: 0; }
 .colab-next-card > p { margin: 0; color: rgba(0,0,0,.4); font-size: 13px; font-weight: 400; line-height: 25px; }
 .colab-next-image { position: relative; width: 368px; height: 480px; overflow: hidden; }
@@ -77,6 +80,9 @@
 .colab-next-card > div:last-child { display: flex; justify-content: space-between; box-sizing: border-box; width: 368px; min-height: 37px; padding-bottom: 12px; border-bottom: 1px solid #000; font-size: 16px; font-weight: 400; line-height: 25px; }
 .colab-next-card a { color: inherit; text-decoration: underline; text-underline-position: from-font; }
 .colab-next-note { width: 257px; margin: 0; font-size: 16px; font-weight: 400; line-height: 25px; }
+@media (min-width: 1400px) {
+  .colab-next-cards { gap: 113px; }
+}
 .colab-case .footer-shell { width: min(1488px, calc(100vw - 98px)); height: 848px; padding-right: 40px; }
 .colab-case .footer-shell > section { box-sizing: border-box; height: 848px; padding-top: 72px; }
 .colab-case .footer-shell h2 { margin-top: 40px; font-size: 78px; line-height: 84px; letter-spacing: -5.46px; }
@@ -84,6 +90,171 @@
 .colab-case .footer-shell h2 { font-family: "Inter", sans-serif; font-style: normal; font-weight: 300 !important; font-variation-settings: "wght" 300; font-synthesis: none; }
 .colab-case .footer-shell .contact-form-backdrop { margin-top: 40px; }
 .colab-case .footer-shell .contact-image-frame { background: rgba(255,255,255,.3); }
+
+/* Keep the label and fixed 704px copy column apart by at least 64px. */
+@media (min-width: 601px) and (max-width: 1020px) {
+  .colab-about { display: flex; flex-direction: column; gap: 48px; padding-right: 0; margin-top: 48px; }
+
+  .colab-copy-section.colab-challenge,
+  .colab-copy-section.colab-solution {
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+  }
+
+  .colab-challenge > div,
+  .colab-solution > div {
+    gap: 24px;
+    width: 100%;
+  }
+
+  .colab-copy-section h2,
+  .colab-copy-section div > p { max-width: none; }
+
+  .colab-features { flex-direction: column; justify-content: flex-start; gap: 48px; height: auto; padding: 16px 49px 48px; }
+  .colab-feature-grid { flex: 0 0 auto; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(2, auto); align-items: start; column-gap: 48px; row-gap: 80px; width: 100%; height: auto; }
+  .colab-feature-grid article { align-self: start; height: auto; }
+}
+
+/* Tablet frame 665:15620 (873px). */
+@media (min-width: 601px) and (max-width: 874px) {
+  .colab-hero { box-sizing: border-box; width: 100%; height: 833.398px; margin: 0; padding: 88px 49px 72px; }
+  .colab-about { display: flex; flex-direction: column; gap: 48px; padding-right: 0; margin-top: 48px; }
+  .colab-meta { width: 100%; margin-top: 48px; }
+  .colab-meta div { padding-left: 0; }
+
+  .colab-content { padding-bottom: 24px; }
+  .colab-copy-section.colab-challenge,
+  .colab-copy-section.colab-solution { height: auto; padding: 48px 49px; }
+  .colab-copy-section h2,
+  .colab-copy-section div > p { max-width: none; }
+  .colab-challenge > div,
+  .colab-solution > div { width: 100%; }
+
+  .colab-features { flex-direction: column; justify-content: flex-start; gap: 48px; height: auto; padding: 16px 49px 48px; }
+  .colab-feature-grid { flex: 0 0 auto; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(2, auto); align-items: start; column-gap: 48px; row-gap: 80px; width: 100%; height: auto; }
+  .colab-feature-grid article { align-self: start; height: auto; }
+
+  .colab-case .footer-shell { width: calc(100vw - 98px); height: 778px; padding-right: 0; }
+  .colab-case .footer-shell .content-layer > section { box-sizing: border-box; height: 778px; padding-top: 44px; }
+  .colab-case .footer-shell h2 { margin-top: 40px; font-size: 56px; line-height: 74px; letter-spacing: -3.92px; }
+  .colab-case .footer-shell .contact-form-backdrop { height: 460px; margin-top: 40px; }
+  .colab-case .footer-shell form { height: 412px !important; }
+}
+
+/* Match the project layout on the homepage: cards stay in a pair from 1199px,
+   then become a vertical sequence with a 72px gap. */
+@media (max-width: 1198px) {
+  .colab-next { height: auto; padding: 48px 49px; }
+  .colab-next-content { display: block; margin-top: 48px; }
+  .colab-next-cards { flex-direction: column; gap: 72px; width: 100%; }
+  .colab-next-card { flex: 0 1 auto; width: min(368px, 100%); }
+  .colab-next-card:first-child { align-self: flex-end; }
+  .colab-next-card:nth-child(2) { align-self: flex-start; }
+  .colab-next-image,
+  .colab-next-card > div:last-child { width: 100%; }
+  .colab-next-note { display: none; }
+}
+
+@media (max-width: 645px) {
+  .colab-case { padding-bottom: 40px; }
+  .colab-topbar { box-sizing: border-box; width: 100%; height: 64px; margin: 0; padding: 32px 20px 0; align-items: center; }
+  .colab-topbar .top-links { display: none; }
+  .colab-back__desktop { display: none; }
+  .colab-back__mobile { display: inline; }
+  .colab-back { font-size: 16px; }
+  .colab-menu-toggle { display: grid; place-items: center; width: 96px; height: 32px; padding: 0; border: 0; background: #fff; cursor: pointer; }
+  .colab-menu-toggle:disabled { cursor: default; }
+  .colab-menu-toggle__icon { display: flex; flex-direction: column; gap: 6px; width: 60px; }
+  .colab-menu-toggle__icon span { display: block; width: 100%; height: 2px; background: rgba(0,0,0,.7); }
+  .colab-menu-toggle__icon--opening { position: relative; display: block; height: 18px; }
+  .colab-menu-toggle__icon--opening span { position: absolute; left: 0; width: 60px; }
+  .colab-menu-toggle__icon--opening span:nth-child(1) { top: 0; transform-origin: right; animation: colab-menu-line-top-retract 240ms cubic-bezier(.22, 1, .36, 1) both; }
+  .colab-menu-toggle__icon--opening span:nth-child(2) { top: 8px; transform-origin: center; animation: colab-menu-line-center-retract 240ms cubic-bezier(.22, 1, .36, 1) both; }
+  .colab-menu-toggle__icon--opening span:nth-child(3) { top: 16px; transform-origin: left; animation: colab-menu-line-bottom-retract 240ms cubic-bezier(.22, 1, .36, 1) both; }
+  .colab-mobile-menu { position: fixed; z-index: 100; inset: 0; display: block; overflow: hidden; background: transparent; }
+  .colab-mobile-menu__panel { display: flex; flex-direction: column; box-sizing: border-box; width: 100%; height: 100%; padding: 32px 20px 40px; background: #A40000; animation: colab-menu-slide-down 320ms cubic-bezier(.22, 1, .36, 1) both; }
+  .colab-mobile-menu__header { display: flex; align-items: center; justify-content: space-between; height: 32px; }
+  .colab-mobile-menu__brand { display: inline-flex; align-items: center; gap: 8px; color: #fff; font-size: 16px; font-weight: 400; line-height: 25px; text-decoration: none; text-transform: uppercase; }
+  .colab-mobile-menu__brand img { display: block; width: 20px; height: 20px; }
+  .colab-mobile-menu__toggle { display: grid; place-items: center; width: 96px; height: 32px; padding: 0; border: 0; background: #fff; cursor: pointer; }
+  .colab-mobile-menu__toggle .colab-menu-toggle__icon--active { display: block; width: 56px; height: 2px; }
+  .colab-mobile-menu__toggle .colab-menu-toggle__icon--active span { background: #A40000; }
+  .colab-mobile-menu__content { margin-top: 88px; }
+  .colab-mobile-menu__content > p { width: 100%; margin: 0 0 48px; font-size: 16px; font-weight: 500; line-height: 25px; text-transform: uppercase; }
+  .colab-mobile-menu__content ol { display: flex; flex-direction: column; gap: 20px; margin: 0; padding: 0; list-style: none; }
+  .colab-mobile-menu__content a { display: flex; align-items: flex-start; gap: 12px; color: #fff; font-family: "Plus Jakarta Sans", sans-serif; font-size: 34px; font-weight: 400; letter-spacing: 0; line-height: 41px; text-decoration: none; text-transform: uppercase; }
+  .colab-mobile-menu__content sup { margin-top: 0; font-family: "Plus Jakarta Sans", sans-serif; font-size: 14px; font-weight: 400; letter-spacing: 0; line-height: 25px; opacity: .5; }
+  .colab-mobile-menu__socials { align-self: flex-end; box-sizing: border-box; width: 100%; height: 160px; margin-top: 80px; padding-left: 192px; }
+  .colab-mobile-menu__socials .top-links { display: flex; flex: 0 0 auto; flex-direction: column; align-items: flex-start; gap: 20px; font-size: 16px; font-weight: 400; line-height: 25px; }
+  .colab-mobile-menu__socials .top-links a { color: #fff; text-decoration: underline; text-underline-offset: 2px; }
+
+  @keyframes colab-menu-slide-down { from { transform: translateY(-100%); } to { transform: translateY(0); } }
+  @keyframes colab-menu-line-top-retract { from { transform: scaleX(1); } to { transform: scaleX(0); } }
+  @keyframes colab-menu-line-center-retract { from { transform: scaleX(1); } to { transform: scaleX(.933333); } }
+  @keyframes colab-menu-line-bottom-retract { from { transform: scaleX(1); } to { transform: scaleX(0); } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .colab-mobile-menu__panel,
+    .colab-menu-toggle__icon--opening span { animation: none; }
+  }
+
+  @media (max-width: 600px) {
+  .colab-hero { width: calc(100% - 40px); height: auto; padding: 88px 0 48px; }
+  .colab-hero h1 { font-size: 56px; line-height: 84px; letter-spacing: -2.24px; }
+  .colab-about { display: flex; flex-direction: column; gap: 48px; padding-right: 0; margin-top: 48px; }
+  .colab-about p:last-child { font-size: 16px; line-height: 25px; }
+  .colab-meta { width: 100%; margin-top: 48px; }
+  .colab-meta div { padding-left: 0; }
+
+  .colab-content { padding: 24px 0; overflow: hidden; }
+  .colab-logo { height: 220px; padding: 0 20px; overflow: hidden; }
+  .colab-logo-pattern { height: 452px; transform: translateY(-116px); }
+  .colab-logo-mark { top: 195.602px; width: 173px; height: 60px; transform: translateX(-50%); }
+
+  .colab-copy-section.colab-challenge,
+  .colab-copy-section.colab-solution { display: flex; flex-direction: column; gap: 48px; width: 100%; height: auto; padding: 48px 20px; }
+  .colab-challenge > div,
+  .colab-solution > div { gap: 40px; width: 100%; }
+
+  .colab-screens { height: 884px; }
+  .colab-screens-canvas { top: 0; left: 0; width: 440px; height: 884px; transform: none; }
+  .colab-screen-managed { top: 232px; left: 276px; width: 347px; height: 673px; }
+  .colab-screen-faq-bottom { display: none; }
+  .colab-screen-faq-top { top: -410px; left: 224px; width: 336px; height: 673px; }
+  .colab-screen-outsourcing { top: 114px; left: 2px; width: 323px; height: 673px; }
+  .colab-screen-outsourcing img { top: -87.99%; left: 0; width: 100%; height: 197.48%; }
+  .colab-screen-faq-top img { top: 0; left: -.05%; width: 100.09%; height: 99.98%; }
+  .colab-screen-managed img { top: -.01%; left: -.01%; width: 100.03%; height: 262.77%; }
+
+  .colab-features { display: flex; flex-direction: column; gap: 48px; height: auto; padding: 16px 20px 24px; }
+  .colab-feature-grid { flex: 0 0 auto; grid-template-columns: minmax(0, 1fr); grid-template-rows: repeat(4, auto); row-gap: 48px; width: 100%; height: auto; }
+
+  .colab-next { height: auto; padding: 48px 20px; overflow: visible; }
+  .colab-next-head { height: 168px; }
+  .colab-next h2 { font-size: 78px; line-height: 84px; letter-spacing: -3.12px; }
+  .colab-next-content { margin-top: 48px; }
+
+  .colab-case .footer-shell { width: calc(100vw - 40px); height: 710px; padding-right: 0; }
+  .colab-case .footer-shell .content-layer > section { box-sizing: border-box; height: 710px; padding-top: 40px; }
+  .colab-case .footer-shell h2 { margin-top: 32px; font-size: 32px; line-height: 48px; letter-spacing: -2.24px; }
+  .colab-case .footer-shell .contact-form-backdrop { margin-top: 32px; padding-block: 24px; }
+  .colab-case .footer-shell form > div:first-of-type > .group { display: none; }
+  }
+}
+
+@media (min-width: 600px) and (max-width: 645px) {
+  .colab-logo-mark {
+    top: calc(50% + .5px);
+    width: 222px;
+    height: 77px;
+    transform: translate(-50%, -50%);
+  }
+}
+
+@media (max-width: 599px) {
+  .colab-next-card:first-child { align-self: flex-start; }
+}
 
 .case-header, .case-hero, .case-body, .case-contact { width: min(1488px, calc(100% - 98px)); margin: auto; }
 .case-header { display:flex; justify-content:space-between; gap:24px; padding:32px 0 0; font-size:13px; }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { TopLinks } from "../components/TopLinks.jsx";
 import { HoverText } from "../components/PortfolioPrimitives.jsx";
 import { projectMedia } from "../content/projectMedia.js";
@@ -14,6 +14,7 @@ import featureScalable from "../assets/figma/24colab/feature-scalable.svg";
 import contentOutsourcing from "../assets/figma/24colab/screens-content-outsourcing.png";
 import faq from "../assets/figma/24colab/screens-faq.png";
 import managedServices from "../assets/figma/24colab/screens-managed-services.png";
+import mobileMenuBackIcon from "../assets/figma/24colab/menu-back.svg";
 import "./CasePage.css";
 
 const logoBackgroundComponent = "https://www.figma.com/api/mcp/asset/89ae5c2e-47da-4d83-829c-8c007708ac9e.svg";
@@ -26,13 +27,67 @@ const colabFeatures = [
   [[featureScalable], "Scalable design system", "A modular UI kit that allows the client to quickly build and launch new pages without breaking the layout."],
 ];
 
+const colabMobileMenuItems = [
+  ["Work", "/#works"],
+  ["Services", "/#about"],
+  ["Contact", "/#contact-form"],
+];
+
 function ColabCasePage({ footer }) {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobileMenuOpening, setIsMobileMenuOpening] = useState(false);
+  const menuOpenTimer = useRef();
+
+  const openMobileMenu = () => {
+    setIsMobileMenuOpening(true);
+    window.clearTimeout(menuOpenTimer.current);
+    menuOpenTimer.current = window.setTimeout(() => {
+      setIsMobileMenuOpen(true);
+      setIsMobileMenuOpening(false);
+    }, 240);
+  };
+
+  useEffect(() => () => window.clearTimeout(menuOpenTimer.current), []);
+
+  useEffect(() => {
+    if (!isMobileMenuOpen) return undefined;
+
+    const closeOnEscape = (event) => {
+      if (event.key === "Escape") setIsMobileMenuOpen(false);
+    };
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", closeOnEscape);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [isMobileMenuOpen]);
+
   return (
     <main className="case-page colab-case" aria-label="24 colab project case study">
       <header className="colab-topbar">
-        <a href="/" className="colab-back"><img src={projectBackIcon} alt="" /><span><HoverText>Project</HoverText></span></a>
+        <a href="/" className="colab-back"><img src={projectBackIcon} alt="" /><span className="colab-back__desktop"><HoverText>Project</HoverText></span><span className="colab-back__mobile"><HoverText>Anna Loban</HoverText></span></a>
         <TopLinks />
+        <button type="button" className="colab-menu-toggle" aria-expanded={isMobileMenuOpen || isMobileMenuOpening} aria-controls="colab-mobile-menu" aria-label="Open menu" disabled={isMobileMenuOpening} onClick={openMobileMenu}>
+          <span className={`colab-menu-toggle__icon${isMobileMenuOpening ? " colab-menu-toggle__icon--opening" : ""}`} aria-hidden="true"><span /><span /><span /></span>
+        </button>
       </header>
+
+      {isMobileMenuOpen && <div className="colab-mobile-menu" role="presentation" onClick={() => setIsMobileMenuOpen(false)}>
+        <nav id="colab-mobile-menu" className="colab-mobile-menu__panel" aria-label="Mobile menu" onClick={(event) => event.stopPropagation()}>
+          <div className="colab-mobile-menu__header">
+            <a href="/" className="colab-mobile-menu__brand"><img src={mobileMenuBackIcon} alt="" /><span>Anna Loban</span></a>
+            <button type="button" className="colab-mobile-menu__toggle" aria-label="Close menu" onClick={() => setIsMobileMenuOpen(false)}><span className="colab-menu-toggle__icon colab-menu-toggle__icon--active" aria-hidden="true"><span /></span></button>
+          </div>
+          <div className="colab-mobile-menu__content">
+            <p>Turn complex ideas into<br />clear digital systems.</p>
+            <ol>{colabMobileMenuItems.map(([label, href], index) => <li key={label}><a href={href} onClick={() => setIsMobileMenuOpen(false)}><span>{label}</span><sup>0{index + 1}</sup></a></li>)}</ol>
+          </div>
+          <div className="colab-mobile-menu__socials"><TopLinks /></div>
+        </nav>
+      </div>}
 
       <section className="colab-hero">
         <h1>24 colab</h1>

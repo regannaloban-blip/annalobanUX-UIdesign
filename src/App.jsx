@@ -341,7 +341,7 @@ function ConsentCheckbox({ checked, error, onBlur, onChange }) {
 
 function About({ desktopEffects }) {
   return (
-    <section className="about-section relative ml-auto w-full max-w-[1202px]">
+    <section id="about" className="about-section relative ml-auto w-full max-w-[1202px]">
       <div className="about-layout ml-auto flex w-full max-w-[1020px] items-start gap-4">
         <div className="about-icon relative h-[31px] shrink-0" data-gl-fluid-boost>
           <img data-gl-media data-gl-hero-media data-gl-fluid-boost src={quoteIcon} alt="" className="absolute top-[6px] h-[25px] w-[28px]" />
@@ -423,7 +423,7 @@ function ProjectCard({ work, className = "", desktopEffects }) {
 
 function Works({ desktopEffects }) {
   return (
-    <section className="mt-0 w-full">
+    <section id="works" className="mt-0 w-full">
       <div className="flex w-full flex-col gap-[72px] py-[40px] min-[1199px]:hidden">
         <div className="flex w-full justify-start min-[600px]:justify-end">
           <ProjectCard work={works[0]} desktopEffects={desktopEffects} />
@@ -453,13 +453,14 @@ function Works({ desktopEffects }) {
   );
 }
 
-function Footer() {
+function Footer({ caseMobile = false }) {
+  const initialConsent = caseMobile && typeof window !== "undefined" && window.matchMedia("(max-width: 600px)").matches;
   const [formValues, setFormValues] = useState({
     email: "",
     name: "",
     project: "",
     message: "",
-    consent: false,
+    consent: initialConsent,
   });
   const [formTouched, setFormTouched] = useState({});
   const [formSubmitted, setFormSubmitted] = useState(false);
@@ -858,7 +859,7 @@ export default function App() {
   }
 
   if (routeKind === "project") {
-    return <><SeoManager pathname={pathname} /><CasePage project={project} footer={<SectionShell shellClassName="footer-shell narrow-scale-shell"><Footer /></SectionShell>} /></>;
+    return <><SeoManager pathname={pathname} /><CasePage project={project} footer={<SectionShell shellClassName="footer-shell narrow-scale-shell"><Footer caseMobile={project.path === "/work/24colab-content-services-website"} /></SectionShell>} /></>;
   }
 
   if (routeKind === "not-found") {
