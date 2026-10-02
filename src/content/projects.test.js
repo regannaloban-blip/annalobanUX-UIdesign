@@ -34,3 +34,16 @@ test("a case project exposes the four hero metadata rows", () => {
   const project = getProjectByPath("/work/24colab-content-services-website");
   assert.deepEqual(Object.keys(project.meta), ["Project type", "Industry", "Scope of work", "Website goal"]);
 });
+
+test("every project supplies the same case template data", () => {
+  projects.forEach((project) => {
+    assert.ok(project.caseAssets, `${project.name} is missing case assets`);
+    assert.ok(project.caseAssets.screens, `${project.name} is missing case screens`);
+    assert.equal(project.features.length, 4, `${project.name} must have four feature cards`);
+    project.features.forEach((feature) => {
+      assert.ok(feature.title, `${project.name} feature is missing a title`);
+      assert.equal(typeof feature.description, "string", `${project.name} feature description must be a string`);
+      assert.ok(feature.icon, `${project.name} feature is missing an icon`);
+    });
+  });
+});

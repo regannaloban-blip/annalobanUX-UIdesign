@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Button, Display, HoverText, MonoText, briefHref, contactFormId } from "./components/PortfolioPrimitives.jsx";
+import { ProjectCard as SharedProjectCard } from "./components/ProjectCard.jsx";
 import { TopLinks } from "./components/TopLinks.jsx";
 import { Hero, HeroFirstScreen, ResponsiveViewportGuide, StableHeroCtaOverlay, StableHeroGridOverlay } from "./sections/Hero.jsx";
 import { ProductIntro } from "./sections/ProductDesignerIntro.jsx";
@@ -27,6 +28,7 @@ const works = [
   {
     kind: "website/",
     name: "24 colab",
+    caseHref: "/work/24colab-content-services-website",
     href: "https://24colab.com/",
     image: project1,
     imageAlt: "24 colab website project by Anna Loban",
@@ -34,6 +36,7 @@ const works = [
   {
     kind: "website/",
     name: "smart business intelligence",
+    caseHref: "/work/smart-business-intelligence-website",
     href: "https://smartbusinessintelligence.co.uk",
     image: project2,
     imageAlt: "Smart Business Intelligence website project by Anna Loban",
@@ -44,6 +47,7 @@ const works = [
   {
     kind: "landing/",
     name: "Skyliner",
+    caseHref: "/work/skyliner-commercial-property-website",
     href: "https://skyliner.rv.ua/",
     image: project3,
     imageAlt: "Skyliner brand identity project by Anna Loban",
@@ -51,6 +55,7 @@ const works = [
   {
     kind: "website/",
     name: "your dissertation",
+    caseHref: "/work/your-dissertation-order-flow",
     href: "https://yourdissertation.com",
     image: project4,
     imageAlt: "Your Dissertation website project by Anna Loban",
@@ -392,32 +397,17 @@ function WorksHeading() {
 
 function ProjectCard({ work, className = "", desktopEffects }) {
   return (
-    <article className={`flex w-[368px] max-w-full flex-col gap-3 ${className}`}>
-      <p className="font-jakarta text-[13px] font-normal uppercase leading-[25px] text-white/40">
-        {work.kind}
-      </p>
-      <div
-        data-gl-media
-        data-gl-hero-media
-        {...(work.mediaZoom ? { "data-gl-media-zoom": work.mediaZoom } : {})}
-        className="relative h-[480px] w-full overflow-hidden bg-white lg:h-[480px]"
-      >
-        <PortfolioImage src={work.image} alt={work.imageAlt} className={work.imageClass ?? ""} desktopEffects={desktopEffects} />
-        {work.maskBottomEdge ? <span aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-[6px] bg-[#062322]" /> : null}
-      </div>
-      <div
-        data-gl-background
-        data-gl-hero-background
-        className="flex w-full items-start justify-between gap-4 border-b border-white pb-3 font-jakarta text-base font-normal uppercase leading-[25px] text-white md:max-lg:pb-[11px]"
-      >
-        <span className="min-w-0 whitespace-nowrap">
-          {work.name}
-        </span>
-        <a href={work.href} target="_blank" rel="noreferrer" className="shrink-0 underline">
-          <HoverText>Live</HoverText>
-        </a>
-      </div>
-    </article>
+    <SharedProjectCard
+      theme="dark"
+      kind={work.kind}
+      name={work.name}
+      caseHref={work.caseHref}
+      liveUrl={work.href}
+      className={`flex w-[368px] max-w-full flex-col gap-3 ${className}`}
+      kindClassName="font-jakarta text-[13px] font-normal uppercase leading-[25px] text-white/40"
+      footerClassName="flex w-full items-start justify-between gap-4 border-b border-current pb-3 font-jakarta text-base font-normal uppercase leading-[25px] md:max-lg:pb-[11px]"
+      renderMedia={() => <div data-gl-media data-gl-hero-media {...(work.mediaZoom ? { "data-gl-media-zoom": work.mediaZoom } : {})} className="relative h-[480px] w-full overflow-hidden bg-white lg:h-[480px]"><PortfolioImage src={work.image} alt={work.imageAlt} className={work.imageClass ?? ""} desktopEffects={desktopEffects} />{work.maskBottomEdge ? <span aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-[6px] bg-[#062322]" /> : null}</div>}
+    />
   );
 }
 
