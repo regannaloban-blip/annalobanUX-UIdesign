@@ -405,7 +405,7 @@ function ProjectCard({ work, className = "", desktopEffects }) {
       liveUrl={work.href}
       className={`flex w-[368px] max-w-full flex-col gap-3 ${className}`}
       kindClassName="font-jakarta text-[13px] font-normal uppercase leading-[25px] text-white/40"
-      footerClassName="flex w-full items-start justify-between gap-4 border-b border-current pb-3 font-jakarta text-base font-normal uppercase leading-[25px] md:max-lg:pb-[11px]"
+      footerClassName="flex w-full items-start justify-between gap-4 pb-3 font-jakarta text-base font-normal uppercase leading-[25px] md:max-lg:pb-[11px]"
       renderMedia={() => <div data-gl-media data-gl-hero-media {...(work.mediaZoom ? { "data-gl-media-zoom": work.mediaZoom } : {})} className="relative h-[480px] w-full overflow-hidden bg-white lg:h-[480px]"><PortfolioImage src={work.image} alt={work.imageAlt} className={work.imageClass ?? ""} desktopEffects={desktopEffects} />{work.maskBottomEdge ? <span aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-[6px] bg-[#062322]" /> : null}</div>}
     />
   );

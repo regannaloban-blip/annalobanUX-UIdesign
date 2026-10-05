@@ -111,8 +111,7 @@
 .colab-next-image-dim::after { position: absolute; inset: 0; background: rgba(0,0,0,.3); content: ""; }
 .colab-next-case-link { display: block; width: 368px; color: inherit; text-decoration: none; }
 .project-card__case-hover { display: none; }
-.colab-next-footer { position: relative; display: flex; align-items: baseline; justify-content: space-between; gap: 16px; box-sizing: border-box; width: 368px; min-height: 37px; padding-bottom: 12px; font-size: 16px; font-weight: 400; line-height: 25px; }
-.colab-next-footer::after { position: absolute; right: 0; bottom: 2px; left: 0; height: 1px; background: var(--project-card-foreground); content: ""; }
+.colab-next-footer { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; box-sizing: border-box; width: 368px; min-height: 37px; padding-bottom: 12px; font-size: 16px; font-weight: 400; line-height: 25px; }
 .project-card__title { min-width: 0; color: inherit; text-decoration: none; }
 .project-card__live { flex: 0 0 auto; color: inherit; text-decoration-line: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; }
 
