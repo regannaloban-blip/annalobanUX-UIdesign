@@ -26,7 +26,9 @@ import skylinerFeatureB2bRedesign from "../assets/figma/skyliner/feature-b2b-red
 import yourDissertationLogo from "../assets/figma/your-dissertation/logo-block.png";
 import yourDissertationScreens from "../assets/figma/your-dissertation/screen-mosaic.png";
 import yourDissertationCalculator from "../assets/figma/your-dissertation/feature-calculator.svg";
-import yourDissertationFlow from "../assets/figma/your-dissertation/feature-flow.svg";
+import yourDissertationCheckoutFlow from "../assets/figma/your-dissertation/feature-checkout-flow.svg";
+import yourDissertationServiceArchitecture from "../assets/figma/your-dissertation/feature-service-architecture.svg";
+import yourDissertationTrustIdentity from "../assets/figma/your-dissertation/feature-trust-identity.svg";
 import "./CasePage.css";
 
 const caseAssets = {
@@ -53,7 +55,9 @@ const featureIcons = {
   "skyliner-system": skylinerFeatureComponentSystem,
   "skyliner-redesign": skylinerFeatureB2bRedesign,
   "yd-calculator": yourDissertationCalculator,
-  "yd-flow": yourDissertationFlow,
+  "yd-checkout": yourDissertationCheckoutFlow,
+  "yd-architecture": yourDissertationServiceArchitecture,
+  "yd-trust": yourDissertationTrustIdentity,
 };
 
 const colabMobileMenuItems = [
@@ -201,19 +205,25 @@ function CaseTemplateHeader() {
 
 function CaseTemplate({ project, footer }) {
   const nextProjectsRef = useProjectSlider();
-  const visual = project.caseAssets.visual ? caseAssets[project.caseAssets.visual] : null;
+  const visualKey = project.caseAssets.visual;
+  const visual = visualKey ? caseAssets[visualKey] : null;
   const screens = caseAssets[project.caseAssets.screens];
 
   return <>
     <main className="case-page colab-case" aria-label={`${project.name} project case study`}>
       <CaseTemplateHeader />
       <section className="colab-hero">
-        <h1>{project.name}</h1>
+        {project.heroTitle ? (
+          <div className="colab-hero-title colab-hero-title--split">
+            <h1>{project.heroTitle.primary}</h1>
+            <p>{project.heroTitle.secondary}</p>
+          </div>
+        ) : <h1>{project.name}</h1>}
         <div className="colab-about"><p className="colab-about-label">About the project</p><p>{project.overview}</p></div>
         <dl className="colab-meta">{Object.entries(project.meta).map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl>
       </section>
       <section className="colab-content">
-        {visual && <div className="colab-logo"><img className="case-template-logo" src={visual} alt="" /></div>}
+        {visual && <div className={`colab-logo colab-logo--${visualKey}`}><img className="case-template-logo" src={visual} alt="" /></div>}
         <section className="colab-copy-section colab-challenge"><p className="colab-section-label">The challenge</p><div><h2>{project.challenge}</h2>{project.challengeDetail && <p>{project.challengeDetail}</p>}</div></section>
         <section className="colab-screens case-template-screens" aria-label={`${project.name} website page previews`}><img src={screens} alt={`${project.name} website page previews`} loading="lazy" decoding="async" /></section>
         <section className="colab-copy-section colab-solution"><p className="colab-section-label">The solution</p><div><h2>{project.solution}</h2>{project.solutionDetail && <p>{project.solutionDetail}</p>}</div></section>

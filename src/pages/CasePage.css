@@ -39,6 +39,8 @@
 .colab-mobile-menu { display: none; }
 .colab-hero { height: 992px; padding: 173px 0 72px; }
 .colab-hero h1 { margin: 0; color: #fff; font-family: "Inter", sans-serif; font-size: 126px; font-style: normal; font-weight: 300 !important; font-variation-settings: "wght" 300; line-height: 136px; letter-spacing: -5.04px; font-synthesis: none; white-space: nowrap; }
+.colab-hero-title--split { display: flex; align-items: center; gap: 44px; height: 136px; }
+.colab-hero-title--split p { width: 704px; margin: 0; color: #fff; font-family: "Plus Jakarta Sans", sans-serif; font-size: 26px; font-weight: 400; font-variation-settings: "wght" 400; line-height: 41px; white-space: pre-line; }
 .colab-about { display: grid; grid-template-columns: minmax(0, 1fr) 704px; gap: 26px; padding-right: 40px; margin-top: 120px; }
 .colab-about > p:first-child,
 .colab-about > p:last-child { width: auto; min-width: 0; }
@@ -46,7 +48,7 @@
 .colab-label { margin: 0; font-size: 13px; font-weight: 400; line-height: 25px; }
 .colab-about .colab-about-label { display: flex; align-items: center; gap: 0; height: 22.398px; color: #fff; font-family: "Plus Jakarta Sans", sans-serif; font-size: 16px; font-weight: 500; font-variation-settings: "wght" 500; font-synthesis: none; line-height: 25px; opacity: .7; white-space: nowrap; }
 .colab-label { color: rgba(255, 255, 255, .4); }
-.colab-about p:last-child { font-family: "Plus Jakarta Sans", sans-serif; font-size: 26px; font-style: normal; font-weight: 400 !important; font-variation-settings: "wght" 400; line-height: 41px; }
+.colab-about p:last-child { font-family: "Plus Jakarta Sans", sans-serif; font-size: 26px; font-style: normal; font-weight: 300 !important; font-variation-settings: "wght" 300; line-height: 41px; }
 .colab-meta { display: flex; flex-direction: column; gap: 4px; width: calc(100% - 40px); margin: 120px 0 0; }
 .colab-meta div { display: flex; flex: 0 0 59px; box-sizing: border-box; justify-content: space-between; min-width: 0; height: 59px; padding: 17px 0 17px calc(100% - 704px); border-top: 1px solid rgba(255,255,255,.2); font-size: 16px; line-height: 25px; }
 .colab-meta dt { color: rgba(255,255,255,.5); font-size: 14px; }
@@ -146,7 +148,11 @@
 
 /* Keep the label and fixed 704px copy column apart by at least 64px. */
 @media (min-width: 601px) and (max-width: 1020px) {
+  .colab-logo,
+  .colab-logo-pattern { height: 356px; }
   .colab-logo-mark { transform: translate(-50%, -50%) scale(.77922); }
+  .colab-hero-title--split { align-items: center; flex-direction: row; flex-wrap: wrap; column-gap: 44px; row-gap: 24px; height: auto; }
+  .colab-hero-title--split p { width: auto; max-width: 704px; }
   .colab-about { display: flex; flex-direction: column; gap: 48px; padding-right: 0; margin-top: 48px; }
   .colab-meta { width: 100%; margin-top: 48px; }
   .colab-meta div { padding-left: 0; }
@@ -263,13 +269,20 @@
   @media (max-width: 600px) {
   .colab-hero { width: calc(100% - 40px); height: auto; padding: 88px 0 48px; }
   .colab-hero h1 { font-size: 56px; line-height: 84px; letter-spacing: -2.24px; }
+  .colab-hero-title--split { align-items: center; flex-direction: row; flex-wrap: wrap; column-gap: 22px; row-gap: 24px; height: auto; }
+  .colab-hero-title--split p { width: auto; max-width: 100%; font-size: 16px; line-height: 25px; }
   .colab-about { display: flex; flex-direction: column; gap: 48px; padding-right: 0; margin-top: 48px; }
-  .colab-about p:last-child { font-size: 16px; line-height: 25px; }
+  .colab-about p:last-child,
+  .colab-copy-section h2 { font-size: 22px; line-height: 33px; }
   .colab-meta { width: 100%; margin-top: 48px; }
   .colab-meta div { padding-left: 0; }
 
   .colab-content { padding: 24px 0; overflow: hidden; }
   .colab-logo { height: 220px; padding: 0 20px; overflow: hidden; }
+  .colab-logo--24colab-logo { --case-template-logo-mobile-scale: 1.44; }
+  .colab-logo--smart-business-logo { --case-template-logo-mobile-scale: 1.48; }
+  .colab-logo--your-dissertation-logo { --case-template-logo-mobile-scale: 1.62; }
+  .case-template-logo { transform: scale(var(--case-template-logo-mobile-scale, 1)); transform-origin: center; }
   .colab-logo-pattern { height: 452px; transform: translateY(-116px); }
   .colab-logo-strokes { top: 116.971px; width: 788px; height: 218.889px; transform: translateX(-50%); }
   .colab-logo-mark { top: 207.602px; width: 103.846px; height: 36px; transform: translateX(-50%); }
@@ -318,7 +331,6 @@
 /* Shared case copy: one regular Plus Jakarta weight on dark and light sections. */
 .case-page :is(
   .colab-about .colab-about-label,
-  .colab-about p:last-child,
   .colab-meta div,
   .colab-meta dt,
   .colab-meta dd,

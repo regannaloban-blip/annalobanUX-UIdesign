@@ -35,11 +35,17 @@ test("a case project exposes the four hero metadata rows", () => {
   assert.deepEqual(Object.keys(project.meta), ["Project type", "Industry", "Scope of work", "Website goal"]);
 });
 
+test("Smart Business keeps its approved two-part hero title", () => {
+  const project = getProjectByPath("/work/smart-business-intelligence-website");
+  assert.deepEqual(project.heroTitle, { primary: "SBI", secondary: "SMART BUSINESS\nINTELLIGENCE" });
+});
+
 test("every project supplies the same case template data", () => {
   projects.forEach((project) => {
     assert.ok(project.caseAssets, `${project.name} is missing case assets`);
     assert.ok(project.caseAssets.screens, `${project.name} is missing case screens`);
     assert.equal(project.features.length, 4, `${project.name} must have four feature cards`);
+    assert.equal(new Set(project.features.map((feature) => feature.icon)).size, 4, `${project.name} must map each feature to its own icon`);
     project.features.forEach((feature) => {
       assert.ok(feature.title, `${project.name} feature is missing a title`);
       assert.equal(typeof feature.description, "string", `${project.name} feature description must be a string`);
