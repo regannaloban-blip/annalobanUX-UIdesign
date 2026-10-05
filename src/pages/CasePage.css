@@ -38,7 +38,7 @@
 .colab-menu-toggle,
 .colab-mobile-menu { display: none; }
 .colab-hero { height: 992px; padding: 173px 0 72px; }
-.colab-hero h1 { margin: 0; color: #fff; font-family: "Inter", sans-serif; font-size: 126px; font-style: normal; font-weight: 300 !important; font-variation-settings: "wght" 300; line-height: 136px; letter-spacing: -5.04px; font-synthesis: none; white-space: nowrap; }
+.colab-hero h1 { margin: 0; color: #fff; font-family: "Inter", sans-serif; font-size: 126px; font-style: normal; font-weight: 250 !important; font-variation-settings: "wght" 250; line-height: 136px; letter-spacing: -5.04px; font-synthesis: none; white-space: nowrap; }
 .colab-hero-title--split { display: flex; align-items: center; gap: 44px; height: 136px; }
 .colab-hero-title--split p { width: 704px; margin: 0; color: #fff; font-family: "Plus Jakarta Sans", sans-serif; font-size: 26px; font-weight: 400; font-variation-settings: "wght" 400; line-height: 41px; white-space: pre-line; }
 .colab-about { display: grid; grid-template-columns: minmax(0, 1fr) 704px; gap: 26px; padding-right: 40px; margin-top: 120px; }
@@ -57,7 +57,7 @@
 .colab-content { padding: 48px 0 120px; background: #fff; color: #000; }
 .colab-logo { height: 452px; margin-top: 0; padding: 0 49px; }
 .colab-logo-pattern { position: relative; width: min(1488px, 100%); height: 452px; margin: 0 auto; overflow: hidden; background: #000; }
-.colab-logo-strokes { position: absolute; top: 50%; left: 50%; width: 1616.896px; height: 449.138px; max-width: none; opacity: .5; transform: translate(-50%, -50%); }
+.colab-logo-strokes { position: absolute; top: calc(50% + 12.5px); left: calc(50% + 76.5px); width: 1616.896px; height: 449.138px; max-width: none; opacity: .5; transform: translate(-50%, -50%); }
 .colab-logo-mark { position: absolute; top: calc(50% + .5px); left: 50%; width: 222px; height: 77px; transform: translate(-50%, -50%); }
 .colab-logo-mark img { position: absolute; display: block; max-width: none; }
 .colab-logo-vector { top: 25.65%; left: 12.22%; width: 14.45%; height: 47.91%; }
@@ -150,7 +150,6 @@
 @media (min-width: 601px) and (max-width: 1020px) {
   .colab-logo,
   .colab-logo-pattern { height: 356px; }
-  .colab-logo-mark { transform: translate(-50%, -50%) scale(.77922); }
   .colab-hero-title--split { align-items: center; flex-direction: row; flex-wrap: wrap; column-gap: 44px; row-gap: 24px; height: auto; }
   .colab-hero-title--split p { width: auto; max-width: 704px; }
   .colab-about { display: flex; flex-direction: column; gap: 48px; padding-right: 0; margin-top: 48px; }
@@ -279,13 +278,12 @@
 
   .colab-content { padding: 24px 0; overflow: hidden; }
   .colab-logo { height: 220px; padding: 0 20px; overflow: hidden; }
-  .colab-logo--24colab-logo { --case-template-logo-mobile-scale: 1.44; }
   .colab-logo--smart-business-logo { --case-template-logo-mobile-scale: 1.48; }
   .colab-logo--your-dissertation-logo { --case-template-logo-mobile-scale: 1.62; }
   .case-template-logo { transform: scale(var(--case-template-logo-mobile-scale, 1)); transform-origin: center; }
   .colab-logo-pattern { height: 452px; transform: translateY(-116px); }
-  .colab-logo-strokes { top: 116.971px; width: 788px; height: 218.889px; transform: translateX(-50%); }
-  .colab-logo-mark { top: 207.602px; width: 103.846px; height: 36px; transform: translateX(-50%); }
+  .colab-logo-strokes { top: 122.5px; left: calc(50% + 37.25px); width: 788px; height: 218.889px; transform: translateX(-50%); }
+  .colab-logo-mark { top: 198.6px; width: 156px; height: 54px; transform: translateX(-50%); }
 
   .colab-copy-section.colab-challenge,
   .colab-copy-section.colab-solution { display: flex; flex-direction: column; gap: 48px; width: 100%; height: auto; padding: 48px 20px; }

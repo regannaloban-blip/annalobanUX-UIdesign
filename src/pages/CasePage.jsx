@@ -7,6 +7,10 @@ import { projectMedia } from "../content/projectMedia.js";
 import { projects } from "../content/projects.js";
 import mobileMenuBackIcon from "../assets/figma/24colab/menu-back.svg";
 import colabLogo from "../assets/figma/24colab/logo-pattern.png";
+import colabLogoStrokes from "../assets/figma/24colab/logo-strokes.svg";
+import colabLogoVector from "../assets/figma/24colab/logo-vector.svg";
+import colabLogoVectorOne from "../assets/figma/24colab/logo-vector-1.svg";
+import colabLogoGroup from "../assets/figma/24colab/logo-group.svg";
 import colabScreens from "../assets/figma/24colab/screens.png";
 import featureCohesive from "../assets/figma/24colab/feature-cohesive.svg";
 import featureDual from "../assets/figma/24colab/feature-dual.svg";
@@ -203,6 +207,19 @@ function CaseTemplateHeader() {
   </>;
 }
 
+function ColabLogoBlock() {
+  return <div className="colab-logo">
+    <div className="colab-logo-pattern">
+      <img className="colab-logo-strokes" src={colabLogoStrokes} alt="" />
+      <span className="colab-logo-mark" aria-label="24 Colab">
+        <img className="colab-logo-vector" src={colabLogoVector} alt="" />
+        <img className="colab-logo-vector-one" src={colabLogoVectorOne} alt="" />
+        <img className="colab-logo-group" src={colabLogoGroup} alt="" />
+      </span>
+    </div>
+  </div>;
+}
+
 function CaseTemplate({ project, footer }) {
   const nextProjectsRef = useProjectSlider();
   const visualKey = project.caseAssets.visual;
@@ -223,7 +240,7 @@ function CaseTemplate({ project, footer }) {
         <dl className="colab-meta">{Object.entries(project.meta).map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl>
       </section>
       <section className="colab-content">
-        {visual && <div className={`colab-logo colab-logo--${visualKey}`}><img className="case-template-logo" src={visual} alt="" /></div>}
+        {visualKey === "24colab-logo" ? <ColabLogoBlock /> : visual && <div className={`colab-logo colab-logo--${visualKey}`}><img className="case-template-logo" src={visual} alt="" /></div>}
         <section className="colab-copy-section colab-challenge"><p className="colab-section-label">The challenge</p><div><h2>{project.challenge}</h2>{project.challengeDetail && <p>{project.challengeDetail}</p>}</div></section>
         <section className="colab-screens case-template-screens" aria-label={`${project.name} website page previews`}><img src={screens} alt={`${project.name} website page previews`} loading="lazy" decoding="async" /></section>
         <section className="colab-copy-section colab-solution"><p className="colab-section-label">The solution</p><div><h2>{project.solution}</h2>{project.solutionDetail && <p>{project.solutionDetail}</p>}</div></section>
