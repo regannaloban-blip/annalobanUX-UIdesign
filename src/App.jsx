@@ -7,6 +7,7 @@ import { ProductIntro } from "./sections/ProductDesignerIntro.jsx";
 import { Purpose } from "./sections/Purpose.jsx";
 import { PortfolioFluidBackground } from "./sections/HeroFluidBackground.jsx";
 import { FluidImageHover } from "./components/FluidImageHover.jsx";
+import { CaseVisitSite } from "./components/CaseVisitSite.jsx";
 import { SeoManager } from "./seo.jsx";
 import { loadGoogleAnalytics, readAnalyticsConsent, saveAnalyticsConsent, shouldLoadAnalytics } from "./analyticsConsent.js";
 import { CasePage } from "./pages/CasePage.jsx";
@@ -443,7 +444,7 @@ function Works({ desktopEffects }) {
   );
 }
 
-function Footer({ caseMobile = false }) {
+function Footer({ caseMobile = false, visitSite = null }) {
   const initialConsent = caseMobile && typeof window !== "undefined" && window.matchMedia("(max-width: 600px)").matches;
   const [formValues, setFormValues] = useState({
     email: "",
@@ -667,25 +668,28 @@ function Footer({ caseMobile = false }) {
               onChange={updateField}
             />
           </div>
-          <div className="relative">
-            <button
-              data-hover-text-trigger
-              className="flex h-12 w-full items-center justify-center border-b border-black bg-white px-10 font-jakarta text-base font-bold uppercase leading-[25px] text-black transition duration-200 lg:hover:bg-[#A40000] lg:hover:text-white/90 active:scale-[0.99] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white disabled:pointer-events-none disabled:cursor-not-allowed disabled:bg-white/70"
-              disabled={!formValues.consent || submitStatus === "sending"}
-              type="submit"
-            >
-              <span className="block whitespace-nowrap leading-[25px]">
-                <HoverText triggerOnParent>{submitStatus === "sending" ? "Sending..." : "Start a project"}</HoverText>
-              </span>
-            </button>
-            <p
-              aria-live="polite"
-              className={`pointer-events-none absolute left-0 top-full mt-1 w-full text-center font-jakarta text-[14px] font-normal normal-case leading-5 transition-opacity duration-300 ease-out ${
-                submitStatus === "success" ? "text-white opacity-100" : submitStatus === "error" ? "text-red-400 opacity-100" : "opacity-0"
-              }`}
-            >
-              {submitStatus === "error" ? "Could not send your message. Please try again." : "Message sent successfully"}
-            </p>
+          <div className={visitSite ? "case-form-actions" : ""}>
+            <div className="relative">
+              <button
+                data-hover-text-trigger
+                className="flex h-12 w-full items-center justify-center border-b border-black bg-white px-10 font-jakarta text-base font-bold uppercase leading-[25px] text-black transition duration-200 lg:hover:bg-[#A40000] lg:hover:text-white/90 active:scale-[0.99] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white disabled:pointer-events-none disabled:cursor-not-allowed disabled:bg-white/70"
+                disabled={!formValues.consent || submitStatus === "sending"}
+                type="submit"
+              >
+                <span className="block whitespace-nowrap leading-[25px]">
+                  <HoverText triggerOnParent>{submitStatus === "sending" ? "Sending..." : "Start a project"}</HoverText>
+                </span>
+              </button>
+              <p
+                aria-live="polite"
+                className={`pointer-events-none absolute left-0 top-full mt-1 w-full text-center font-jakarta text-[14px] font-normal normal-case leading-5 transition-opacity duration-300 ease-out ${
+                  submitStatus === "success" ? "text-white opacity-100" : submitStatus === "error" ? "text-red-400 opacity-100" : "opacity-0"
+                }`}
+              >
+                {submitStatus === "error" ? "Could not send your message. Please try again." : "Message sent successfully"}
+              </p>
+            </div>
+            {visitSite}
           </div>
         </form>
       </div>
@@ -849,7 +853,7 @@ export default function App() {
   }
 
   if (routeKind === "project") {
-    return <><SeoManager pathname={pathname} /><CasePage project={project} footer={<SectionShell shellClassName="footer-shell narrow-scale-shell"><Footer caseMobile={project.path === "/work/24colab-content-services-website"} /></SectionShell>} /></>;
+    return <><SeoManager pathname={pathname} /><CasePage project={project} footer={(liveUrl) => <SectionShell shellClassName="footer-shell narrow-scale-shell"><Footer caseMobile={project.path === "/work/24colab-content-services-website"} visitSite={<CaseVisitSite href={liveUrl} />} /></SectionShell>} /></>;
   }
 
   if (routeKind === "not-found") {

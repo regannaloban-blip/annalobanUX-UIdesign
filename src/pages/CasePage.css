@@ -1,17 +1,19 @@
+:root { --case-visit-site-height: 64px; }
+
 .case-page { background: #000; color: #fff; font-family: "Plus Jakarta Sans", sans-serif; text-transform: uppercase; }
 
-.case-visit-site { position: fixed; z-index: 90; bottom: 24px; left: 50%; display: grid; grid-template-columns: 56px 56px minmax(0, 1fr); gap: 8px; box-sizing: border-box; width: min(307px, calc(100vw - 40px)); height: 80px; padding: 12px; border-radius: 2px; color: #000; background: #94a3b8; font-family: "Plus Jakarta Sans", sans-serif; text-decoration: none; text-transform: uppercase; transform: translateX(-50%); }
+.case-visit-site { display: grid; grid-template-columns: 48px 48px minmax(0, 1fr); gap: 8px; box-sizing: border-box; width: min(283px, calc(100vw - 40px)); height: var(--case-visit-site-height); margin-inline: auto; padding: 8px; border-radius: 2px; color: #000; background: #94a3b8; font-family: "Plus Jakarta Sans", sans-serif; text-decoration: none; text-transform: uppercase; }
 .case-visit-site__home,
-.case-visit-site__preview { display: block; width: 56px; height: 56px; }
+.case-visit-site__preview { display: block; width: 48px; height: 48px; }
 .case-visit-site__home { overflow: hidden; border-radius: 2px; }
 .case-visit-site__preview { position: relative; }
-.case-visit-site__background { position: absolute; top: 50%; left: 50%; display: block; width: 112px; max-width: none; height: auto; transform: translate(-50%, -50%); }
+.case-visit-site__background { position: absolute; top: 50%; left: 50%; display: block; width: 96px; max-width: none; height: auto; transform: translate(-50%, -50%); }
 .case-visit-site__shade { position: absolute; inset: 0; background: rgba(0, 0, 0, .4); transition: background-color 180ms ease-out; }
 .case-visit-site__mark { position: absolute; top: 50%; left: 50%; display: block; transform: translate(-50%, -50%); }
-.case-visit-site__arrow { display: grid; place-items: center; width: 56px; height: 56px; padding: 0 0 6px; box-sizing: border-box; border: 0; border-bottom: 1px solid #000; border-radius: 2px; background: #fff; cursor: pointer; transition: background-color 180ms ease-out; }
+.case-visit-site__arrow { display: grid; place-items: center; width: 48px; height: 48px; padding: 0 0 6px; box-sizing: border-box; border: 0; border-bottom: 1px solid #000; border-radius: 2px; background: #fff; cursor: pointer; transition: background-color 180ms ease-out; }
 .case-visit-site__arrow img { display: block; transform: rotate(90deg); transition: filter 180ms ease-out; }
 .case-visit-site__arrow:disabled { cursor: not-allowed; opacity: .4; }
-.case-visit-site__live { display: grid; place-items: center; min-width: 0; height: 56px; padding: 2px 40px 6px; box-sizing: border-box; border-bottom: 1px solid #000; border-radius: 2px; background: #fff; color: #000; font-size: 16px; font-weight: 700; line-height: 25px; text-decoration: none; transition: border-color 180ms ease-out; white-space: nowrap; }
+.case-visit-site__live { display: grid; place-items: center; min-width: 0; height: 48px; padding: 2px 40px 6px; box-sizing: border-box; border-bottom: 1px solid #000; border-radius: 2px; background: #fff; color: #000; font-size: 16px; font-weight: 700; line-height: 25px; text-decoration: none; transition: border-color 180ms ease-out; white-space: nowrap; }
 .case-visit-site :is(.case-visit-site__home, .case-visit-site__arrow, .case-visit-site__live):focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
 
 @media (min-width: 1021px) and (hover: hover) and (pointer: fine) {
@@ -22,12 +24,11 @@
 }
 
 @media (max-width: 359px) {
-  .case-visit-site { bottom: 16px; }
   .case-visit-site__live { padding-inline: 16px; }
 }
 
 /* Desktop frame 546:4385. The image blocks are exports of their matching Figma nodes. */
-.colab-case { overflow: hidden; padding-bottom: 40px; }
+.colab-case { overflow: hidden; }
 .colab-topbar,
 .colab-hero { width: min(1488px, calc(100% - 98px)); margin-inline: auto; }
 .colab-topbar { display: flex; align-items: flex-start; justify-content: space-between; padding: 32px 40px 0 0; height: 58px; font-size: 13px; line-height: 25px; }
@@ -106,28 +107,14 @@
 .colab-next-cards { display: flex; gap: 64px; width: max-content; }
 .colab-next-card { display: flex; flex: 0 0 368px; flex-direction: column; gap: 12px; min-width: 0; }
 .colab-next-card > .project-card__kind { margin: 0; color: var(--project-card-muted); font-size: 13px; font-weight: 400; line-height: 25px; }
-.colab-next-image { position: relative; width: 368px; height: 480px; overflow: hidden; }
+.colab-next-image { position: relative; display: block; width: 368px; height: 480px; overflow: hidden; }
 .colab-next-image img { display: block; width: 100%; height: 100%; object-fit: cover; pointer-events: none; user-select: none; -webkit-user-drag: none; }
-.colab-next-image__background { position: absolute; inset: 0; }
-.colab-next-image__foreground { position: relative; z-index: 1; }
 .colab-next-image-dim::after { position: absolute; inset: 0; background: rgba(0,0,0,.3); content: ""; }
 .colab-next-case-link { display: block; width: 368px; color: inherit; text-decoration: none; }
-.project-card__case-hover { display: none; }
 .colab-next-footer { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; box-sizing: border-box; width: 368px; min-height: 37px; padding-bottom: 12px; font-size: 16px; font-weight: 400; line-height: 25px; }
 .project-card__title { min-width: 0; color: inherit; text-decoration: none; }
 .project-card__live { flex: 0 0 auto; color: inherit; text-decoration-line: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; }
 
-@media (min-width: 1021px) and (hover: hover) and (pointer: fine) {
-  .project-card__case-link { position: relative; overflow: hidden; }
-  .project-card__case-link .colab-next-image__foreground { transition: transform 520ms cubic-bezier(.22, 1, .36, 1); will-change: transform; }
-  .project-card__case-hover { position: absolute; z-index: 1; top: 50%; left: 50%; display: grid; place-items: center; opacity: 0; pointer-events: none; transform: translate(-50%, -50%) scale(0); transition: transform 360ms cubic-bezier(.22, 1, .36, 1), opacity 220ms ease-out; }
-  .project-card__case-hover > img:first-child { display: block; filter: brightness(0); }
-  .project-card__case-hover > img:last-child { position: absolute; display: block; }
-  .project-card__case-link:hover .colab-next-image__foreground,
-  .project-card__case-link:focus-visible .colab-next-image__foreground { transform: scale(.95); }
-  .project-card__case-link:hover .project-card__case-hover,
-  .project-card__case-link:focus-visible .project-card__case-hover { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-}
 .colab-next-note { width: 257px; margin: 0; font-size: 16px; font-weight: 400; line-height: 25px; }
 @media (min-width: 1400px) {
   .colab-next-cards { gap: 113px; }
@@ -138,12 +125,13 @@
   .colab-next-cards { display: flex; gap: 64px; width: max-content; }
 
 }
-.colab-case .footer-shell { width: min(1488px, calc(100vw - 98px)); height: 848px; padding-right: 40px; }
-.colab-case .footer-shell > section { box-sizing: border-box; height: 848px; padding-top: 72px; }
+.colab-case .footer-shell { width: min(1488px, calc(100vw - 98px)); height: auto; padding-right: 40px; }
+.colab-case .footer-shell > section { box-sizing: border-box; height: auto; padding-top: 72px; }
 .colab-case .footer-shell h2 { margin-top: 40px; font-size: 78px; line-height: 84px; letter-spacing: -5.46px; }
 .colab-case .colab-next h2,
 .colab-case .footer-shell h2 { font-family: "Inter", sans-serif; font-style: normal; font-weight: 300 !important; font-variation-settings: "wght" 300; font-synthesis: none; }
-.colab-case .footer-shell .contact-form-backdrop { margin-top: 40px; }
+.colab-case .footer-shell .contact-form-backdrop { height: auto !important; margin-top: 40px; padding-bottom: 0; }
+.case-form-actions { display: flex; flex-direction: column; gap: 16px; padding-bottom: 16px; }
 .colab-case .footer-shell .contact-image-frame { background: rgba(255,255,255,.3); }
 
 /* Keep the label and fixed 704px copy column apart by at least 64px. */
@@ -199,11 +187,11 @@
   .colab-feature-grid { flex: 0 0 auto; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(2, auto); align-items: start; column-gap: 48px; row-gap: 80px; width: 100%; height: auto; }
   .colab-feature-grid article { align-self: start; height: auto; }
 
-  .colab-case .footer-shell { width: calc(100vw - 98px); height: 778px; padding-right: 0; }
-  .colab-case .footer-shell .content-layer > section { box-sizing: border-box; height: 778px; padding-top: 44px; }
+  .colab-case .footer-shell { width: calc(100vw - 98px); height: auto; padding-right: 0; }
+  .colab-case .footer-shell .content-layer > section { box-sizing: border-box; height: auto; padding-top: 44px; }
   .colab-case .footer-shell h2 { margin-top: 40px; font-size: 56px; line-height: 74px; letter-spacing: -3.92px; }
-  .colab-case .footer-shell .contact-form-backdrop { height: 460px; margin-top: 40px; }
-  .colab-case .footer-shell form { height: 412px !important; }
+  .colab-case .footer-shell .contact-form-backdrop { height: auto; margin-top: 40px; padding-top: 0; }
+  .colab-case .footer-shell form { height: auto !important; }
 }
 
 @media (min-width: 873px) and (max-width: 1019px) {
@@ -223,7 +211,6 @@
 }
 
 @media (max-width: 645px) {
-  .colab-case { padding-bottom: 40px; }
   .colab-topbar { box-sizing: border-box; width: 100%; height: 64px; margin: 0; padding: 32px 20px 0; align-items: center; }
   .colab-topbar .top-links { display: none; }
   .colab-back__desktop { display: none; }
@@ -307,10 +294,10 @@
   .colab-next h2 { font-size: 78px; line-height: 84px; letter-spacing: -3.12px; }
   .colab-next-content { margin-top: 48px; }
 
-  .colab-case .footer-shell { width: calc(100vw - 40px); height: 710px; padding-right: 0; }
-  .colab-case .footer-shell .content-layer > section { box-sizing: border-box; height: 710px; padding-top: 40px; }
+  .colab-case .footer-shell { width: calc(100vw - 40px); height: auto; padding-right: 0; }
+  .colab-case .footer-shell .content-layer > section { box-sizing: border-box; height: auto; padding-top: 40px; }
   .colab-case .footer-shell h2 { margin-top: 32px; font-size: 32px; line-height: 48px; letter-spacing: -2.24px; }
-  .colab-case .footer-shell .contact-form-backdrop { margin-top: 32px; padding-block: 24px; }
+  .colab-case .footer-shell .contact-form-backdrop { margin-top: 32px; padding-top: 0; padding-bottom: 0; }
   .colab-case .footer-shell form > div:first-of-type > .group { display: none; }
   }
 }
@@ -343,6 +330,11 @@
   font-weight: 400 !important;
   font-variation-settings: "wght" 400;
   font-synthesis: none;
+}
+
+.case-page .colab-about .colab-about-label {
+  font-weight: 300 !important;
+  font-variation-settings: "wght" 300;
 }
 
 /* One case template: only the project data and assets vary between pages. */
