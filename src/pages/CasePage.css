@@ -47,7 +47,7 @@
 .colab-menu-toggle,
 .colab-mobile-menu { display: none; }
 .colab-hero { height: 992px; padding: 173px 0 72px; }
-.colab-hero h1 { margin: 0; color: #fff; font-family: "Inter", sans-serif; font-size: 126px; font-style: normal; font-weight: 250 !important; font-variation-settings: "wght" 250; line-height: 136px; letter-spacing: -5.04px; font-synthesis: none; white-space: nowrap; }
+.colab-hero h1 { margin: 0; color: #fff; font-family: "Inter", sans-serif; font-size: 126px; font-style: normal; font-weight: 250 !important; font-variation-settings: "wght" 250; line-height: 136px; letter-spacing: -5.04px; font-synthesis: none; }
 .colab-hero-title--split { display: flex; align-items: center; gap: 44px; height: 136px; }
 .colab-hero-title--split p { width: 704px; margin: 0; color: #fff; font-family: "Plus Jakarta Sans", sans-serif; font-size: 26px; font-weight: 400; font-variation-settings: "wght" 400; line-height: 41px; white-space: pre-line; }
 .colab-about { display: grid; grid-template-columns: minmax(0, 1fr) 704px; gap: 26px; padding-right: 40px; margin-top: 120px; }
@@ -262,7 +262,7 @@
 
   @media (max-width: 600px) {
   .colab-hero { width: calc(100% - 40px); height: auto; padding: 88px 0 48px; }
-  .colab-hero h1 { font-size: 56px; line-height: 84px; letter-spacing: -2.24px; }
+  .colab-hero h1 { font-size: 56px; line-height: 72px; letter-spacing: -2.24px; }
   .colab-hero-title--split { align-items: center; flex-direction: row; flex-wrap: wrap; column-gap: 22px; row-gap: 24px; height: auto; }
   .colab-hero-title--split p { width: auto; max-width: 100%; font-size: 16px; line-height: 25px; }
   .colab-about { display: flex; flex-direction: column; gap: 48px; padding-right: 0; margin-top: 48px; }
@@ -321,6 +321,10 @@
   .colab-next-note { display: none; }
 }
 
+@media (max-width: 439px) {
+  .colab-next h2 { font-size: 70px; }
+}
+
 /* Shared case copy: one regular Plus Jakarta weight on dark and light sections. */
 .case-page :is(
   .colab-about .colab-about-label,
@@ -355,12 +359,25 @@
 
 .colab-screens.case-template-screens {
   height: auto;
+  overflow: hidden;
+  background: rgba(114,129,141,.2);
 }
 
 .case-template-screens > img {
   display: block;
-  width: 100%;
+  width: min(1488px, calc(100% - 98px));
   height: auto;
+  max-width: 100%;
+  margin-inline: auto;
+  image-rendering: -webkit-optimize-contrast;
+}
+
+@media (max-width: 600px) {
+  .case-template-screens > img {
+    width: 503px;
+    max-width: none;
+    margin-left: 0;
+  }
 }
 
 .case-template-feature-icon {

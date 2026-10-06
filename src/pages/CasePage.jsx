@@ -12,24 +12,24 @@ import colabLogoStrokes from "../assets/figma/24colab/logo-strokes.svg";
 import colabLogoVector from "../assets/figma/24colab/logo-vector.svg";
 import colabLogoVectorOne from "../assets/figma/24colab/logo-vector-1.svg";
 import colabLogoGroup from "../assets/figma/24colab/logo-group.svg";
-import colabScreens from "../assets/figma/24colab/screens.png";
+import colabScreens from "../assets/figma/project-screens/24colab.webp";
 import featureCohesive from "../assets/figma/24colab/feature-cohesive.svg";
 import featureDual from "../assets/figma/24colab/feature-dual.svg";
 import featureTransparent from "../assets/figma/24colab/feature-transparent.svg";
 import featureScalable from "../assets/figma/24colab/feature-scalable.svg";
 import smartBusinessLogo from "../assets/figma/smart-business-intelligence/logo-block.png";
-import smartBusinessScreens from "../assets/figma/smart-business-intelligence/screen-mosaic.png";
+import smartBusinessScreens from "../assets/figma/project-screens/smart-business-intelligence.webp";
 import smartBusinessFeatureConversionFunnel from "../assets/figma/smart-business-intelligence/feature-conversion-funnel.svg";
 import smartBusinessFeatureServiceMapping from "../assets/figma/smart-business-intelligence/feature-service-mapping.svg";
 import smartBusinessFeatureComponentArchitecture from "../assets/figma/smart-business-intelligence/feature-component-architecture.svg";
 import smartBusinessFeatureDataVisualSystem from "../assets/figma/smart-business-intelligence/feature-data-visual-system.svg";
-import skylinerScreens from "../assets/figma/skyliner/screen-mosaic.png";
+import skylinerScreens from "../assets/figma/project-screens/skyliner.webp";
 import skylinerFeatureLeasingFunnel from "../assets/figma/skyliner/feature-leasing-funnel.svg";
 import skylinerFeatureSpaceNavigation from "../assets/figma/skyliner/feature-space-navigation.svg";
 import skylinerFeatureComponentSystem from "../assets/figma/skyliner/feature-component-system.svg";
 import skylinerFeatureB2bRedesign from "../assets/figma/skyliner/feature-b2b-redesign.svg";
 import yourDissertationLogo from "../assets/figma/your-dissertation/logo-block.png";
-import yourDissertationScreens from "../assets/figma/your-dissertation/screen-mosaic.png";
+import yourDissertationScreens from "../assets/figma/project-screens/your-dissertation.webp";
 import yourDissertationCalculator from "../assets/figma/your-dissertation/feature-calculator.svg";
 import yourDissertationCheckoutFlow from "../assets/figma/your-dissertation/feature-checkout-flow.svg";
 import yourDissertationServiceArchitecture from "../assets/figma/your-dissertation/feature-service-architecture.svg";
@@ -44,6 +44,13 @@ const caseAssets = {
   "skyliner-screens": skylinerScreens,
   "your-dissertation-logo": yourDissertationLogo,
   "your-dissertation-screens": yourDissertationScreens,
+};
+
+const caseScreenDimensions = {
+  "24colab-screens": { width: 2378, height: 1194 },
+  "smart-business-screens": { width: 3018, height: 1866 },
+  "skyliner-screens": { width: 2378, height: 1194 },
+  "your-dissertation-screens": { width: 2378, height: 1194 },
 };
 
 const featureIcons = {
@@ -224,7 +231,9 @@ function CaseTemplate({ project, footer }) {
   const nextProjectsRef = useProjectSlider();
   const visualKey = project.caseAssets.visual;
   const visual = visualKey ? caseAssets[visualKey] : null;
-  const screens = caseAssets[project.caseAssets.screens];
+  const screenKey = project.caseAssets.screens;
+  const screens = caseAssets[screenKey];
+  const screenDimensions = caseScreenDimensions[screenKey];
 
   return <>
     <main className="case-page colab-case" aria-label={`${project.name} project case study`}>
@@ -242,7 +251,7 @@ function CaseTemplate({ project, footer }) {
       <section className="colab-content">
         {visualKey === "24colab-logo" ? <ColabLogoBlock /> : visual && <div className={`colab-logo colab-logo--${visualKey}`}><img className="case-template-logo" src={visual} alt="" /></div>}
         <section className="colab-copy-section colab-challenge"><p className="colab-section-label">The challenge</p><div><h2>{project.challenge}</h2>{project.challengeDetail && <p>{project.challengeDetail}</p>}</div></section>
-        <section className="colab-screens case-template-screens" aria-label={`${project.name} website page previews`}><img src={screens} alt={`${project.name} website page previews`} loading="lazy" decoding="async" /></section>
+        <section className="colab-screens case-template-screens" aria-label={`${project.name} website page previews`}><img src={screens} width={screenDimensions.width} height={screenDimensions.height} alt={`${project.name} website page previews`} loading="lazy" decoding="async" /></section>
         <section className="colab-copy-section colab-solution"><p className="colab-section-label">The solution</p><div><h2>{project.solution}</h2>{project.solutionDetail && <p>{project.solutionDetail}</p>}</div></section>
         <section className="colab-features"><p className="colab-section-label">Key features</p><div className="colab-feature-grid">{project.features.map((feature) => <article key={feature.title}><span className="case-template-feature-icon"><img src={featureIcons[feature.icon]} alt="" /></span><div><h3>{feature.title}</h3>{feature.description && <p>{feature.description}</p>}</div></article>)}</div></section>
         <section className="colab-next"><div className="colab-next-head"><h2>Next projects</h2></div><div ref={nextProjectsRef} className="colab-next-content"><div className="colab-next-cards">{getNextProjects(project.path).map((next) => <NextProjectCard key={next.path} next={next} />)}</div></div></section>
