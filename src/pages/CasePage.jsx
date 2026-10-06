@@ -1,12 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import { TopLinks } from "../components/TopLinks.jsx";
-import { HoverText } from "../components/PortfolioPrimitives.jsx";
+import { HoverText, navigateToHomeSection } from "../components/PortfolioPrimitives.jsx";
 import { ProjectCard } from "../components/ProjectCard.jsx";
 import { FluidImageHover } from "../components/FluidImageHover.jsx";
 import { CaseVisitSite } from "../components/CaseVisitSite.jsx";
 import { projectMedia } from "../content/projectMedia.js";
 import { projects } from "../content/projects.js";
 import mobileMenuBackIcon from "../assets/figma/24colab/menu-back.svg";
+import telegramHeaderIcon from "../assets/figma/telegram-header.svg";
 import colabLogo from "../assets/figma/24colab/logo-pattern.png";
 import colabLogoStrokes from "../assets/figma/24colab/logo-strokes.svg";
 import colabLogoVector from "../assets/figma/24colab/logo-vector.svg";
@@ -73,9 +74,10 @@ const featureIcons = {
 };
 
 const colabMobileMenuItems = [
-  ["Work", "/#works"],
-  ["Services", "/#about"],
-  ["Contact", "/#contact-form"],
+  ["About", "#about"],
+  ["Solutions", "#solutions"],
+  ["Projects", "#works"],
+  ["Contact", "#contact-form"],
 ];
 
 const projectKinds = {
@@ -196,7 +198,7 @@ function CaseTemplateHeader() {
   return <>
     <header className="colab-topbar">
       <a href="/" className="colab-back"><img src={mobileMenuBackIcon} alt="" /><span className="colab-back__desktop"><HoverText>Home</HoverText></span><span className="colab-back__mobile"><HoverText>Home</HoverText></span></a>
-      <nav className="colab-case-nav" aria-label="Case page navigation"><a href="/#works"><HoverText>Work</HoverText></a><a href="/#about"><HoverText>Services</HoverText></a><a href="/#contact-form"><HoverText>Contact</HoverText></a></nav>
+      <nav className="colab-case-nav" aria-label="Case page navigation">{colabMobileMenuItems.map(([label, hash]) => <a key={label} href={`/${hash}`} onClick={(event) => navigateToHomeSection(event, hash)}><HoverText>{label}</HoverText></a>)}<a href="https://t.me/anna_loban" target="_blank" rel="noreferrer" aria-label="Telegram" className="colab-case-nav__telegram"><img src={telegramHeaderIcon} alt="" /></a></nav>
       <button type="button" className="colab-menu-toggle" aria-expanded={isMobileMenuOpen || isMobileMenuOpening} aria-controls="colab-mobile-menu" aria-label="Open menu" disabled={isMobileMenuOpening} onClick={openMobileMenu}>
         <span className={`colab-menu-toggle__icon${isMobileMenuOpening ? " colab-menu-toggle__icon--opening" : ""}`} aria-hidden="true"><span /><span /><span /></span>
       </button>
@@ -207,8 +209,8 @@ function CaseTemplateHeader() {
           <a href="/" className="colab-mobile-menu__brand"><img src={mobileMenuBackIcon} alt="" /><span>Anna Loban</span></a>
           <button type="button" className="colab-mobile-menu__toggle" aria-label="Close menu" onClick={() => setIsMobileMenuOpen(false)}><span className="colab-menu-toggle__icon colab-menu-toggle__icon--active" aria-hidden="true"><span /></span></button>
         </div>
-        <div className="colab-mobile-menu__content"><p>Turn complex ideas into<br />clear digital systems.</p><ol>{colabMobileMenuItems.map(([label, href], index) => <li key={label}><a href={href} onClick={() => setIsMobileMenuOpen(false)}><span>{label}</span><sup>0{index + 1}</sup></a></li>)}</ol></div>
-        <div className="colab-mobile-menu__socials"><TopLinks /></div>
+        <div className="colab-mobile-menu__content"><p>Connect everything once,<br />Then automate forever.</p><ol>{colabMobileMenuItems.map(([label, hash], index) => <li key={label}><a href={`/${hash}`} onClick={(event) => { setIsMobileMenuOpen(false); navigateToHomeSection(event, hash); }}><span>{label}</span><sup>0{index + 1}</sup></a></li>)}</ol></div>
+        <div className="colab-mobile-menu__socials"><TopLinks mobileMenu /></div>
       </nav>
     </div>}
   </>;

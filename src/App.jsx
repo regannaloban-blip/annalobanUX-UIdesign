@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { Button, Display, HoverText, MonoText, briefHref, contactFormId } from "./components/PortfolioPrimitives.jsx";
+import { Button, Display, HoverText, MonoText, briefHref, contactFormId, homeScrollTargetKey, scrollToElement } from "./components/PortfolioPrimitives.jsx";
 import { ProjectCard as SharedProjectCard } from "./components/ProjectCard.jsx";
-import { TopLinks } from "./components/TopLinks.jsx";
+import { HomeNavigation } from "./components/HomeNavigation.jsx";
 import { Hero, HeroFirstScreen, ResponsiveViewportGuide, StableHeroCtaOverlay, StableHeroGridOverlay } from "./sections/Hero.jsx";
 import { ProductIntro } from "./sections/ProductDesignerIntro.jsx";
 import { Purpose } from "./sections/Purpose.jsx";
@@ -797,6 +797,17 @@ export default function App() {
     if (shouldLoadAnalytics(analyticsConsent)) loadGoogleAnalytics();
   }, [analyticsConsent]);
 
+  useEffect(() => {
+    if (routeKind !== "home") return undefined;
+
+    const hash = window.sessionStorage.getItem(homeScrollTargetKey);
+    if (!hash) return undefined;
+
+    window.sessionStorage.removeItem(homeScrollTargetKey);
+    const frame = window.requestAnimationFrame(() => scrollToElement(document.querySelector(hash)));
+    return () => window.cancelAnimationFrame(frame);
+  }, [routeKind]);
+
   const setConsent = (choice) => {
     saveAnalyticsConsent(choice);
     setAnalyticsConsent(choice);
@@ -805,7 +816,7 @@ export default function App() {
     () => (
       <>
         <SectionShell className="z-50">
-          <TopLinks />
+          <HomeNavigation />
         </SectionShell>
         <SectionShell
           decor={
@@ -863,7 +874,7 @@ export default function App() {
       <SmoothScroll enabled={desktopEffects} reduced={reduced} />
       <CanvasLayer enabled={false && desktopEffects && !reduced && !fluidDisabled} />
       <PortfolioFluidBackground desktop={desktopEffects} enabled={(desktopEffects || userActivatedEffects) && !fluidDisabled} reduced={reduced} />
-      <main className="relative z-[910] flex min-h-screen flex-col gap-0 overflow-x-hidden pb-5 pt-[49px] lg:gap-0 lg:pb-[40px] lg:pt-[32px]" aria-label="Anna Loban portfolio">
+      <main className="relative z-[910] flex min-h-screen flex-col gap-0 overflow-x-hidden pb-5 pt-4 lg:gap-0 lg:pb-[40px] lg:pt-[32px]" aria-label="Anna Loban portfolio">
         <StableHeroGridOverlay />
         <StableHeroCtaOverlay />
         <div className="relative z-10 flex flex-col gap-0">

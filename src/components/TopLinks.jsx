@@ -9,10 +9,19 @@ const topLinks = [
   { id: "mail", label: "mail", href: briefHref, external: false },
 ];
 
-export function TopLinks() {
+const mobileMenuLinks = [
+  topLinks[2],
+  topLinks[3],
+  topLinks[0],
+  topLinks[1],
+];
+
+export function TopLinks({ mobileMenu = false }) {
+  const links = mobileMenu ? mobileMenuLinks : topLinks;
+
   return (
     <nav className="top-links relative z-40 flex w-full flex-wrap items-start justify-between gap-x-6 gap-y-2 font-jakarta text-base uppercase leading-[25px] text-white lg:justify-end lg:gap-[40px]">
-      {topLinks.map((link) => (
+      {links.map((link) => (
         <a
           data-gl-text
           data-gl-hero-text

@@ -97,7 +97,7 @@ function PurposeTitle() {
 
 export function Purpose() {
   return (
-    <section className="purpose-section flex w-full flex-col py-[40px] min-[1199px]:py-[72px]">
+    <section id="solutions" className="purpose-section flex w-full flex-col py-[40px] min-[1199px]:py-[72px]">
       <PurposeTitle />
 
       <div className="purpose-columns mt-16 flex w-full flex-col gap-[72px] min-[875px]:mt-0 min-[875px]:flex-row min-[875px]:items-start min-[875px]:justify-between min-[875px]:gap-20">

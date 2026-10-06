@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 const contactEmail = "hello.anna.loban@proton.me";
 export const briefHref = `mailto:${contactEmail}?subject=Website%20or%20visual%20system%20brief`;
 export const contactFormId = "contact-form";
+export const homeScrollTargetKey = "anna-home-scroll-target";
 
 const scrambleGlyphs = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*?<>/\\\\";
 
@@ -87,14 +88,10 @@ export function HoverText({ children, triggerOnParent = false }) {
   );
 }
 
-function scrollToContactForm(event) {
-  const form = document.getElementById(contactFormId);
+export function scrollToElement(element, { center = false } = {}) {
+  if (!element) return;
 
-  if (!form) return;
-
-  event.preventDefault();
-
-  const targetY = form.getBoundingClientRect().top + window.scrollY - (window.innerHeight - form.offsetHeight) / 2;
+  const targetY = element.getBoundingClientRect().top + window.scrollY - (center ? (window.innerHeight - element.offsetHeight) / 2 : 0);
   const startY = window.scrollY;
   const distance = targetY - startY;
 
@@ -115,6 +112,28 @@ function scrollToContactForm(event) {
   };
 
   window.requestAnimationFrame(animate);
+}
+
+export function navigateToHomeSection(event, hash) {
+  event.preventDefault();
+
+  const target = document.querySelector(hash);
+  if (target) {
+    window.history.pushState(null, "", hash);
+    scrollToElement(target);
+    return;
+  }
+
+  window.sessionStorage.setItem(homeScrollTargetKey, hash);
+  window.location.assign("/");
+}
+
+function scrollToContactForm(event) {
+  const form = document.getElementById(contactFormId);
+  if (!form) return;
+
+  event.preventDefault();
+  scrollToElement(form, { center: true });
 }
 
 export function Button({ className = "", webglHero = false, noFluid = false }) {

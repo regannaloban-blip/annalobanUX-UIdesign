@@ -44,6 +44,12 @@
 .colab-back__mobile { display: none; }
 .colab-case-nav { display: flex; align-items: center; gap: 40px; margin-top: 1px; color: #fff; font-size: 16px; font-weight: 400; line-height: 25px; text-transform: uppercase; }
 .colab-case-nav a { color: inherit; text-decoration: none; }
+.colab-case-nav__telegram { display: inline-flex; flex: 0 0 auto; }
+.colab-case-nav__telegram img { display: block; width: 28px; height: 28px; backface-visibility: hidden; transform: rotateY(0deg); transform-origin: center; transition: transform 560ms cubic-bezier(.2, .7, .2, 1); }
+@media (hover: hover) {
+  .colab-case-nav__telegram:hover img,
+  .colab-case-nav__telegram:focus-visible img { transform: rotateY(360deg); }
+}
 .colab-menu-toggle,
 .colab-mobile-menu { display: none; }
 .colab-hero { height: 992px; padding: 173px 0 72px; }
@@ -234,7 +240,7 @@
   .colab-menu-toggle__icon--opening span:nth-child(2) { top: 8px; transform-origin: center; animation: colab-menu-line-center-retract 240ms cubic-bezier(.22, 1, .36, 1) both; }
   .colab-menu-toggle__icon--opening span:nth-child(3) { top: 16px; transform-origin: left; animation: colab-menu-line-bottom-retract 240ms cubic-bezier(.22, 1, .36, 1) both; }
   .colab-mobile-menu { position: fixed; z-index: 100; inset: 0; display: block; overflow: hidden; background: transparent; }
-  .colab-mobile-menu__panel { display: flex; flex-direction: column; box-sizing: border-box; width: 100%; height: 100%; padding: 32px 20px 40px; background: #A40000; animation: colab-menu-slide-down 320ms cubic-bezier(.22, 1, .36, 1) both; }
+  .colab-mobile-menu__panel { position: relative; display: flex; flex-direction: column; box-sizing: border-box; width: 100%; height: 100%; padding: 16px 20px 40px; background: #A40000; animation: colab-menu-slide-down 320ms cubic-bezier(.22, 1, .36, 1) both; }
   .colab-mobile-menu__header { display: flex; align-items: center; justify-content: space-between; height: 32px; }
   .colab-mobile-menu__brand { display: inline-flex; align-items: center; gap: 8px; color: #fff; font-size: 16px; font-weight: 400; line-height: 25px; text-decoration: none; text-transform: uppercase; }
   .colab-mobile-menu__brand img { display: block; width: 20px; height: 20px; }
@@ -242,13 +248,17 @@
   .colab-mobile-menu__toggle .colab-menu-toggle__icon--active { display: block; width: 56px; height: 2px; }
   .colab-mobile-menu__toggle .colab-menu-toggle__icon--active span { background: #A40000; }
   .colab-mobile-menu__content { margin-top: 88px; }
-  .colab-mobile-menu__content > p { width: 100%; margin: 0 0 48px; font-size: 16px; font-weight: 500; line-height: 25px; text-transform: uppercase; }
+  .colab-mobile-menu__content > p { width: 100%; margin: 0 0 48px; font-size: 16px; font-weight: 400; line-height: 25px; text-transform: uppercase; }
   .colab-mobile-menu__content ol { display: flex; flex-direction: column; gap: 20px; margin: 0; padding: 0; list-style: none; }
-  .colab-mobile-menu__content a { display: flex; align-items: flex-start; gap: 12px; color: #fff; font-family: "Plus Jakarta Sans", sans-serif; font-size: 34px; font-weight: 400; letter-spacing: 0; line-height: 41px; text-decoration: none; text-transform: uppercase; }
-  .colab-mobile-menu__content sup { margin-top: 0; font-family: "Plus Jakarta Sans", sans-serif; font-size: 14px; font-weight: 400; letter-spacing: 0; line-height: 25px; opacity: .5; }
-  .colab-mobile-menu__socials { align-self: flex-end; box-sizing: border-box; width: 100%; height: 160px; margin-top: 80px; padding-left: 192px; }
+  .colab-mobile-menu__content a { display: flex; align-items: flex-start; gap: 12px; color: #fff; font-family: "Plus Jakarta Sans", sans-serif; font-size: 34px; font-weight: 300; letter-spacing: 0; line-height: 41px; text-decoration: none; text-transform: uppercase; }
+  .colab-mobile-menu__content sup { margin-top: 0; font-family: "Plus Jakarta Sans", sans-serif; font-size: 14px; font-weight: 300; letter-spacing: 0; line-height: 25px; opacity: .5; }
+  .colab-mobile-menu__socials { margin-top: 48px; padding-left: 192px; }
   .colab-mobile-menu__socials .top-links { display: flex; flex: 0 0 auto; flex-direction: column; align-items: flex-start; gap: 20px; font-size: 16px; font-weight: 400; line-height: 25px; }
   .colab-mobile-menu__socials .top-links a { color: #fff; text-decoration: underline; text-underline-offset: 2px; }
+
+  @media (max-width: 389px) {
+    .colab-mobile-menu__socials .top-links [data-nav-link="linkedin"] { display: block; }
+  }
 
   @keyframes colab-menu-slide-down { from { transform: translateY(-100%); } to { transform: translateY(0); } }
   @keyframes colab-menu-line-top-retract { from { transform: scaleX(1); } to { transform: scaleX(0); } }
