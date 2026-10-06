@@ -126,7 +126,7 @@
 
 }
 .colab-case .footer-shell { width: min(1488px, calc(100vw - 98px)); height: auto; padding-right: 40px; }
-.colab-case .footer-shell > section { box-sizing: border-box; height: auto; padding-top: 72px; }
+.colab-case .footer-shell .content-layer > section { box-sizing: border-box; height: auto !important; padding-top: 72px; }
 .colab-case .footer-shell h2 { margin-top: 40px; font-size: 78px; line-height: 84px; letter-spacing: -5.46px; }
 .colab-case .colab-next h2,
 .colab-case .footer-shell h2 { font-family: "Inter", sans-serif; font-style: normal; font-weight: 300 !important; font-variation-settings: "wght" 300; font-synthesis: none; }
