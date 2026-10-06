@@ -1,8 +1,8 @@
-:root { --case-visit-site-height: 64px; }
+:root { --case-visit-site-bottom: 16px; --case-visit-site-height: 64px; --case-visit-site-clearance: 16px; --case-visit-site-reserve: calc(var(--case-visit-site-bottom) + var(--case-visit-site-height) + var(--case-visit-site-clearance)); }
 
 .case-page { background: #000; color: #fff; font-family: "Plus Jakarta Sans", sans-serif; text-transform: uppercase; }
 
-.case-visit-site { display: grid; grid-template-columns: 48px 48px minmax(0, 1fr); gap: 8px; box-sizing: border-box; width: min(283px, calc(100vw - 40px)); height: var(--case-visit-site-height); margin-inline: auto; padding: 8px; border-radius: 2px; color: #000; background: #94a3b8; font-family: "Plus Jakarta Sans", sans-serif; text-decoration: none; text-transform: uppercase; }
+.case-visit-site { position: fixed; z-index: 90; bottom: var(--case-visit-site-bottom); left: 50%; display: grid; grid-template-columns: 48px 48px minmax(0, 1fr); gap: 8px; box-sizing: border-box; width: min(283px, calc(100vw - 40px)); height: var(--case-visit-site-height); padding: 8px; border-radius: 2px; color: #000; background: #94a3b8; font-family: "Plus Jakarta Sans", sans-serif; text-decoration: none; text-transform: uppercase; transform: translateX(-50%); }
 .case-visit-site__home,
 .case-visit-site__preview { display: block; width: 48px; height: 48px; }
 .case-visit-site__home { overflow: hidden; border-radius: 2px; }
@@ -28,7 +28,7 @@
 }
 
 /* Desktop frame 546:4385. The image blocks are exports of their matching Figma nodes. */
-.colab-case { overflow: hidden; }
+.colab-case { overflow: hidden; padding-bottom: var(--case-visit-site-reserve); }
 .colab-topbar,
 .colab-hero { width: min(1488px, calc(100% - 98px)); margin-inline: auto; }
 .colab-topbar { display: flex; align-items: flex-start; justify-content: space-between; padding: 32px 40px 0 0; height: 58px; font-size: 13px; line-height: 25px; }

@@ -3,6 +3,7 @@ import { TopLinks } from "../components/TopLinks.jsx";
 import { HoverText } from "../components/PortfolioPrimitives.jsx";
 import { ProjectCard } from "../components/ProjectCard.jsx";
 import { FluidImageHover } from "../components/FluidImageHover.jsx";
+import { CaseVisitSite } from "../components/CaseVisitSite.jsx";
 import { projectMedia } from "../content/projectMedia.js";
 import { projects } from "../content/projects.js";
 import mobileMenuBackIcon from "../assets/figma/24colab/menu-back.svg";
@@ -246,8 +247,9 @@ function CaseTemplate({ project, footer }) {
         <section className="colab-features"><p className="colab-section-label">Key features</p><div className="colab-feature-grid">{project.features.map((feature) => <article key={feature.title}><span className="case-template-feature-icon"><img src={featureIcons[feature.icon]} alt="" /></span><div><h3>{feature.title}</h3>{feature.description && <p>{feature.description}</p>}</div></article>)}</div></section>
         <section className="colab-next"><div className="colab-next-head"><h2>Next projects</h2></div><div ref={nextProjectsRef} className="colab-next-content"><div className="colab-next-cards">{getNextProjects(project.path).map((next) => <NextProjectCard key={next.path} next={next} />)}</div></div></section>
       </section>
-      {footer(project.liveUrl)}
+      {footer}
     </main>
+    <CaseVisitSite href={project.liveUrl} />
   </>;
 }
 
