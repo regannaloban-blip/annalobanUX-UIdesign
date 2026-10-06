@@ -77,7 +77,7 @@ export function FluidImageHover({ src, alt, className = "", desktopOnly = false 
     const canvas = canvasRef.current;
     const image = imageRef.current;
     const container = canvas?.parentElement;
-    const canHover = window.matchMedia(desktopOnly ? "(min-width: 1021px) and (hover: hover) and (pointer: fine)" : "(hover: hover) and (pointer: fine)").matches;
+    const canHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
     if (!canvas || !image || !container || !canHover) return undefined;
 
     const gl = canvas.getContext("webgl", { alpha: false, antialias: true });

@@ -188,8 +188,8 @@ function CaseTemplateHeader() {
 
   return <>
     <header className="colab-topbar">
-      <a href="/" className="colab-back"><img src={mobileMenuBackIcon} alt="" /><span className="colab-back__desktop"><HoverText>Project</HoverText></span><span className="colab-back__mobile"><HoverText>Anna Loban</HoverText></span></a>
-      <TopLinks />
+      <a href="/" className="colab-back"><img src={mobileMenuBackIcon} alt="" /><span className="colab-back__desktop"><HoverText>Home</HoverText></span><span className="colab-back__mobile"><HoverText>Home</HoverText></span></a>
+      <nav className="colab-case-nav" aria-label="Case page navigation"><a href="/#works"><HoverText>Work</HoverText></a><a href="/#about"><HoverText>Services</HoverText></a><a href="/#contact-form"><HoverText>Contact</HoverText></a></nav>
       <button type="button" className="colab-menu-toggle" aria-expanded={isMobileMenuOpen || isMobileMenuOpening} aria-controls="colab-mobile-menu" aria-label="Open menu" disabled={isMobileMenuOpening} onClick={openMobileMenu}>
         <span className={`colab-menu-toggle__icon${isMobileMenuOpening ? " colab-menu-toggle__icon--opening" : ""}`} aria-hidden="true"><span /><span /><span /></span>
       </button>
