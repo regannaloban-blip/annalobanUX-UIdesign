@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { HoverText } from "./PortfolioPrimitives.jsx";
-import visitSiteBackground from "../assets/figma/visit-site/favicon.png";
+import visitSiteBackground from "../assets/figma/visit-site/visit-site-background.webp";
 import visitSiteMark from "../assets/figma/visit-site/anna-mark.svg";
 
 export function CaseVisitSite({ href }) {

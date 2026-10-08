@@ -444,13 +444,12 @@ function Works({ desktopEffects }) {
 }
 
 function Footer({ caseMobile = false }) {
-  const initialConsent = caseMobile && typeof window !== "undefined" && window.matchMedia("(max-width: 600px)").matches;
   const [formValues, setFormValues] = useState({
     email: "",
     name: "",
     project: "",
     message: "",
-    consent: initialConsent,
+    consent: false,
   });
   const [formTouched, setFormTouched] = useState({});
   const [formSubmitted, setFormSubmitted] = useState(false);
@@ -582,18 +581,18 @@ function Footer({ caseMobile = false }) {
 
   return (
     <section className="relative mt-0 flex w-full flex-col pt-[40px] lg:mt-0 lg:h-[874px] lg:pt-[72px]">
-      <div className="flex w-full flex-col items-start gap-4 md:flex-row md:justify-between md:gap-0">
+      <div className="flex w-full flex-col items-start gap-4 min-[400px]:flex-row min-[400px]:justify-between min-[400px]:gap-0">
         <p className="shrink-0 whitespace-nowrap font-jakarta text-[13px] font-normal uppercase leading-[25px] text-white/40">
           Start a project
         </p>
-        <p className="w-auto font-jakarta text-base font-normal uppercase leading-[25px] text-left text-white md:w-[288px] md:text-right lg:w-[180px]">
+        <p className="w-auto font-jakarta text-base font-normal uppercase leading-[25px] text-left text-white min-[400px]:w-[288px] min-[400px]:text-right lg:w-[180px]">
           Open for a few
           <br />
           selected projects
         </p>
       </div>
 
-      <h2 ref={contactHeadingRef} data-gl-flow-text data-gl-fluid-boost className="relative z-10 mt-[32px] font-display text-[32px] font-light uppercase leading-[48px] tracking-[-2.24px] text-white md:text-[54px] md:leading-[62px] md:tracking-[-0.5px] md:max-lg:!mt-[40px] md:max-lg:!text-[56px] md:max-lg:!leading-[74px] md:max-lg:!tracking-[-3.92px] lg:mt-[40px] lg:text-[96px] lg:leading-[106px] lg:tracking-[-6.72px]">
+      <h2 ref={contactHeadingRef} data-gl-flow-text data-gl-fluid-boost className="relative z-10 mt-[32px] font-display text-[32px] font-light uppercase leading-[48px] tracking-[-2.24px] text-white max-[399px]:!text-[28px] max-[399px]:!leading-[44px] max-[399px]:!tracking-[-1.96px] md:text-[54px] md:leading-[62px] md:tracking-[-0.5px] md:max-lg:!mt-[40px] md:max-lg:!text-[56px] md:max-lg:!leading-[74px] md:max-lg:!tracking-[-3.92px] lg:mt-[40px] lg:text-[96px] lg:leading-[106px] lg:tracking-[-6.72px]">
         <span ref={contactHeadingFirstLineRef}>Let`s create something</span>
         <br />
         <span className="text-white/60">amazing</span>{" "}
@@ -629,7 +628,7 @@ function Footer({ caseMobile = false }) {
                 type="email"
                 value={formValues.email}
               />
-              <div className="grid min-w-0 w-full grid-cols-1 gap-6 md:grid-cols-1 md:gap-6 md:max-lg:!grid-cols-2 md:max-lg:!gap-3 lg:grid-cols-2 lg:gap-3">
+              <div className="grid min-w-0 w-full grid-cols-1 gap-6 min-[400px]:grid-cols-2 min-[400px]:gap-3 lg:grid-cols-2 lg:gap-3">
                 <FooterField
                   error={getFieldError("name")}
                   label="Full name*"

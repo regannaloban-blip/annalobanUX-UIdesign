@@ -305,6 +305,11 @@ img {
     width: 360px;
     zoom: var(--narrow-scale);
   }
+
+  .section-shell.footer-shell.narrow-scale-shell {
+    width: calc(100vw - 40px);
+    zoom: normal;
+  }
 }
 
 @media (min-width: 768px) {

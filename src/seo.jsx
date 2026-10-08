@@ -6,7 +6,7 @@ export { getSeoForPath } from "./seoRoutes.js";
 export const siteUrl = "https://annaloban.vercel.app";
 export const siteName = "Anna Loban";
 export const contactEmail = "hello.anna.loban@proton.me";
-export const defaultOgImage = "";
+export const defaultOgImage = "/og.webp";
 
 const profileLinks = [
   "https://www.linkedin.com/in/annloban/",

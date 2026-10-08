@@ -80,9 +80,19 @@
   }
 
   .home-mobile-menu__socials .top-links a {
+    position: relative;
     color: #fff;
-    text-decoration: underline;
-    text-underline-offset: 2px;
+    text-decoration: none;
+  }
+
+  .home-mobile-menu__socials .top-links a::after {
+    position: absolute;
+    right: 0;
+    bottom: 1px;
+    left: 0;
+    height: 1px;
+    background: currentColor;
+    content: "";
   }
 
   @media (max-width: 389px) {

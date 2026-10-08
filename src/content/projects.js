@@ -15,9 +15,11 @@ export const projects = [
     image: "24colab",
     imageAlt: "24 colab website interface",
     liveUrl: "https://24colab.com/",
-    overview: "24COLAB: RESEARCH, CONTENT WRITING, AND EDITING FOR ENTERPRISES. OFFERS DEDICATED TEAMS FOR ORDERS OR DEDICATED TEAM SUBSCRIPTIONS.",
-    challenge: "THE WEBSITE NEEDED TO CLEARLY COMMUNICATE 24COLAB’S VALUE PROPOSITION AND DIFFERENTIATE ITS TWO SERVICE MODELS: ONE-OFF PROJECT ORDERS AND ONGOING SUPPORT BY A DEDICATED TEAM.",
+    overview: "24COLAB: RESEARCH, CONTENT WRITING, AND EDITING FOR ENTERPRISES. ONE-OFF ORDERS OR DEDICATED TEAM SUBSCRIPTIONS.",
+    challenge: "THE WEBSITE NEEDED TO CLEARLY COMMUNICATE 24COLAB’S VALUE PROPOSITION AND DIFFERENTIATE ITS TWO SERVICE MODELS: ONE-OFF PROJECT ORDERS AND ONGOING SUPPORT VIA A DEDICATED TEAM.",
+    challengeDetail: "We needed to build an intuitive UX/UI layout that showcases how the platform matches specialized talent, manages workflows, and ensures quality control.",
     solution: "THE SITE STRUCTURE GUIDES VISITORS FROM A CLEAR SERVICE OVERVIEW TO CHOOSING THE RIGHT ENGAGEMENT MODEL—WHETHER PLACING A SINGLE ORDER OR OUTSOURCING REGULAR CONTENT PRODUCTION.",
+    solutionDetail: "Visualizing talent selection, quality control, and order tracking showcases operational reliability, replacing generic promises with concrete design-driven proof.",
     caseAssets: { visual: "24colab-logo", screens: "24colab-screens" },
     features: [
       { icon: "cohesive", title: "Cohesive visual system", description: "Curated illustrations and custom icons create a clean, cohesive, and professional brand identity across all pages." },

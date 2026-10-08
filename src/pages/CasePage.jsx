@@ -8,17 +8,18 @@ import { projectMedia } from "../content/projectMedia.js";
 import { projects } from "../content/projects.js";
 import mobileMenuBackIcon from "../assets/figma/24colab/menu-back.svg";
 import telegramHeaderIcon from "../assets/figma/telegram-header.svg";
-import colabLogo from "../assets/figma/24colab/logo-pattern.png";
 import colabLogoStrokes from "../assets/figma/24colab/logo-strokes.svg";
-import colabLogoVector from "../assets/figma/24colab/logo-vector.svg";
-import colabLogoVectorOne from "../assets/figma/24colab/logo-vector-1.svg";
-import colabLogoGroup from "../assets/figma/24colab/logo-group.svg";
+import colabLogoMobile from "../assets/figma/24colab/variants/logo-mobile.svg";
+import colabLogoTablet from "../assets/figma/24colab/variants/logo-tablet.svg";
+import colabLogoDesktop from "../assets/figma/24colab/variants/logo-desktop.svg";
 import colabScreens from "../assets/figma/project-screens/24colab.webp";
 import featureCohesive from "../assets/figma/24colab/feature-cohesive.svg";
 import featureDual from "../assets/figma/24colab/feature-dual.svg";
 import featureTransparent from "../assets/figma/24colab/feature-transparent.svg";
 import featureScalable from "../assets/figma/24colab/feature-scalable.svg";
-import smartBusinessLogo from "../assets/figma/smart-business-intelligence/logo-block.png";
+import smartBusinessLogoMobile from "../assets/figma/smart-business-intelligence/variants/logo-mobile.svg";
+import smartBusinessLogoTablet from "../assets/figma/smart-business-intelligence/variants/logo-tablet.svg";
+import smartBusinessLogoDesktop from "../assets/figma/smart-business-intelligence/variants/logo-desktop.svg";
 import smartBusinessScreens from "../assets/figma/project-screens/smart-business-intelligence.webp";
 import smartBusinessFeatureConversionFunnel from "../assets/figma/smart-business-intelligence/feature-conversion-funnel.svg";
 import smartBusinessFeatureServiceMapping from "../assets/figma/smart-business-intelligence/feature-service-mapping.svg";
@@ -29,7 +30,9 @@ import skylinerFeatureLeasingFunnel from "../assets/figma/skyliner/feature-leasi
 import skylinerFeatureSpaceNavigation from "../assets/figma/skyliner/feature-space-navigation.svg";
 import skylinerFeatureComponentSystem from "../assets/figma/skyliner/feature-component-system.svg";
 import skylinerFeatureB2bRedesign from "../assets/figma/skyliner/feature-b2b-redesign.svg";
-import yourDissertationLogo from "../assets/figma/your-dissertation/logo-block.png";
+import yourDissertationLogoMobile from "../assets/figma/your-dissertation/variants/logo-mobile.svg";
+import yourDissertationLogoTablet from "../assets/figma/your-dissertation/variants/logo-tablet.svg";
+import yourDissertationLogoDesktop from "../assets/figma/your-dissertation/variants/logo-desktop.svg";
 import yourDissertationScreens from "../assets/figma/project-screens/your-dissertation.webp";
 import yourDissertationCalculator from "../assets/figma/your-dissertation/feature-calculator.svg";
 import yourDissertationCheckoutFlow from "../assets/figma/your-dissertation/feature-checkout-flow.svg";
@@ -38,12 +41,12 @@ import yourDissertationTrustIdentity from "../assets/figma/your-dissertation/fea
 import "./CasePage.css";
 
 const caseAssets = {
-  "24colab-logo": colabLogo,
+  "24colab-logo": { mobile: colabLogoMobile, tablet: colabLogoTablet, desktop: colabLogoDesktop },
   "24colab-screens": colabScreens,
-  "smart-business-logo": smartBusinessLogo,
+  "smart-business-logo": { mobile: smartBusinessLogoMobile, tablet: smartBusinessLogoTablet, desktop: smartBusinessLogoDesktop },
   "smart-business-screens": smartBusinessScreens,
   "skyliner-screens": skylinerScreens,
-  "your-dissertation-logo": yourDissertationLogo,
+  "your-dissertation-logo": { mobile: yourDissertationLogoMobile, tablet: yourDissertationLogoTablet, desktop: yourDissertationLogoDesktop },
   "your-dissertation-screens": yourDissertationScreens,
 };
 
@@ -216,14 +219,20 @@ function CaseTemplateHeader() {
   </>;
 }
 
+function ResponsiveLogo({ variants }) {
+  return <picture className="case-template-logo-picture">
+    <source media="(min-width: 1040px)" srcSet={variants.desktop} />
+    <source media="(min-width: 601px)" srcSet={variants.tablet} />
+    <img className="case-template-logo" src={variants.mobile} alt="" />
+  </picture>;
+}
+
 function ColabLogoBlock() {
   return <div className="colab-logo">
     <div className="colab-logo-pattern">
       <img className="colab-logo-strokes" src={colabLogoStrokes} alt="" />
       <span className="colab-logo-mark" aria-label="24 Colab">
-        <img className="colab-logo-vector" src={colabLogoVector} alt="" />
-        <img className="colab-logo-vector-one" src={colabLogoVectorOne} alt="" />
-        <img className="colab-logo-group" src={colabLogoGroup} alt="" />
+        <ResponsiveLogo variants={caseAssets["24colab-logo"]} />
       </span>
     </div>
   </div>;
@@ -246,12 +255,14 @@ function CaseTemplate({ project, footer }) {
             <h1>{project.heroTitle.primary}</h1>
             <p>{project.heroTitle.secondary}</p>
           </div>
+        ) : project.path === "/work/your-dissertation-order-flow" ? (
+          <h1 className="colab-hero-title--your-dissertation"><span>Your</span><span>Dissertation</span></h1>
         ) : <h1>{project.name}</h1>}
         <div className="colab-about"><p className="colab-about-label">About the project</p><p>{project.overview}</p></div>
         <dl className="colab-meta">{Object.entries(project.meta).map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl>
       </section>
       <section className="colab-content">
-        {visualKey === "24colab-logo" ? <ColabLogoBlock /> : visual && <div className={`colab-logo colab-logo--${visualKey}`}><img className="case-template-logo" src={visual} alt="" /></div>}
+        {visualKey === "24colab-logo" ? <ColabLogoBlock /> : visual && <div className={`colab-logo colab-logo--${visualKey}`}><div className="case-template-logo-frame"><ResponsiveLogo variants={visual} /></div></div>}
         <section className="colab-copy-section colab-challenge"><p className="colab-section-label">The challenge</p><div><h2>{project.challenge}</h2>{project.challengeDetail && <p>{project.challengeDetail}</p>}</div></section>
         <section className="colab-screens case-template-screens" aria-label={`${project.name} website page previews`}><img src={screens} width={screenDimensions.width} height={screenDimensions.height} alt={`${project.name} website page previews`} loading="lazy" decoding="async" /></section>
         <section className="colab-copy-section colab-solution"><p className="colab-section-label">The solution</p><div><h2>{project.solution}</h2>{project.solutionDetail && <p>{project.solutionDetail}</p>}</div></section>
