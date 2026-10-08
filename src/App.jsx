@@ -582,11 +582,11 @@ function Footer({ caseMobile = false }) {
 
   return (
     <section className="relative mt-0 flex w-full flex-col pt-[40px] lg:mt-0 lg:h-[874px] lg:pt-[72px]">
-      <div className="flex w-full items-start justify-between">
+      <div className="flex w-full flex-col items-start gap-4 md:flex-row md:justify-between md:gap-0">
         <p className="shrink-0 whitespace-nowrap font-jakarta text-[13px] font-normal uppercase leading-[25px] text-white/40">
           Start a project
         </p>
-        <p className="w-[288px] font-jakarta text-base font-normal uppercase leading-[25px] text-right text-white lg:w-[180px]">
+        <p className="w-auto font-jakarta text-base font-normal uppercase leading-[25px] text-left text-white md:w-[288px] md:text-right lg:w-[180px]">
           Open for a few
           <br />
           selected projects
@@ -629,7 +629,7 @@ function Footer({ caseMobile = false }) {
                 type="email"
                 value={formValues.email}
               />
-              <div className="grid min-w-0 w-full grid-cols-2 gap-3 md:grid-cols-1 md:gap-6 md:max-lg:!grid-cols-2 md:max-lg:!gap-3 lg:grid-cols-2 lg:gap-3">
+              <div className="grid min-w-0 w-full grid-cols-1 gap-6 md:grid-cols-1 md:gap-6 md:max-lg:!grid-cols-2 md:max-lg:!gap-3 lg:grid-cols-2 lg:gap-3">
                 <FooterField
                   error={getFieldError("name")}
                   label="Full name*"
