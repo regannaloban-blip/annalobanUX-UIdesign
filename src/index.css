@@ -305,6 +305,11 @@ img {
     width: 360px;
     zoom: var(--narrow-scale);
   }
+
+  .section-shell.footer-shell.narrow-scale-shell {
+    width: calc(100vw - 40px);
+    zoom: normal;
+  }
 }
 
 @media (min-width: 768px) {
@@ -514,6 +519,21 @@ img {
     opacity: 0;
     transform: translateX(38%) rotate(-10deg);
   }
+}
+
+/* One divider for every project card, independent of page and breakpoint. */
+.project-card__footer {
+  position: relative;
+}
+
+.project-card__footer::after {
+  position: absolute;
+  right: 0;
+  bottom: 2px;
+  left: 0;
+  height: 1px;
+  background: currentColor;
+  content: "";
 }
 
 @media (prefers-reduced-motion: reduce) {

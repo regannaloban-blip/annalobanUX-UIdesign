@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { Button, Display, HoverText, MonoText, briefHref, contactFormId } from "./components/PortfolioPrimitives.jsx";
-import { TopLinks } from "./components/TopLinks.jsx";
+import { Button, Display, HoverText, MonoText, briefHref, contactFormId, homeScrollTargetKey, scrollToElement } from "./components/PortfolioPrimitives.jsx";
+import { ProjectCard as SharedProjectCard } from "./components/ProjectCard.jsx";
+import { HomeNavigation } from "./components/HomeNavigation.jsx";
 import { Hero, HeroFirstScreen, ResponsiveViewportGuide, StableHeroCtaOverlay, StableHeroGridOverlay } from "./sections/Hero.jsx";
 import { ProductIntro } from "./sections/ProductDesignerIntro.jsx";
 import { Purpose } from "./sections/Purpose.jsx";
@@ -8,6 +9,9 @@ import { PortfolioFluidBackground } from "./sections/HeroFluidBackground.jsx";
 import { FluidImageHover } from "./components/FluidImageHover.jsx";
 import { SeoManager } from "./seo.jsx";
 import { loadGoogleAnalytics, readAnalyticsConsent, saveAnalyticsConsent, shouldLoadAnalytics } from "./analyticsConsent.js";
+import { CasePage } from "./pages/CasePage.jsx";
+import { NotFoundPage } from "./pages/NotFoundPage.jsx";
+import { getProjectByPath, getRouteKind } from "./content/projects.js";
 
 import aboutPortrait from "../assets/Photo/img anna.webp";
 import project1 from "../Case/Compressed/24 colab.webp";
@@ -24,6 +28,7 @@ const works = [
   {
     kind: "website/",
     name: "24 colab",
+    caseHref: "/work/24colab-content-services-website",
     href: "https://24colab.com/",
     image: project1,
     imageAlt: "24 colab website project by Anna Loban",
@@ -31,6 +36,7 @@ const works = [
   {
     kind: "website/",
     name: "smart business intelligence",
+    caseHref: "/work/smart-business-intelligence-website",
     href: "https://smartbusinessintelligence.co.uk",
     image: project2,
     imageAlt: "Smart Business Intelligence website project by Anna Loban",
@@ -41,6 +47,7 @@ const works = [
   {
     kind: "landing/",
     name: "Skyliner",
+    caseHref: "/work/skyliner-commercial-property-website",
     href: "https://skyliner.rv.ua/",
     image: project3,
     imageAlt: "Skyliner brand identity project by Anna Loban",
@@ -48,6 +55,7 @@ const works = [
   {
     kind: "website/",
     name: "your dissertation",
+    caseHref: "/work/your-dissertation-order-flow",
     href: "https://yourdissertation.com",
     image: project4,
     imageAlt: "Your Dissertation website project by Anna Loban",
@@ -338,7 +346,7 @@ function ConsentCheckbox({ checked, error, onBlur, onChange }) {
 
 function About({ desktopEffects }) {
   return (
-    <section className="about-section relative ml-auto w-full max-w-[1202px]">
+    <section id="about" className="about-section relative ml-auto w-full max-w-[1202px]">
       <div className="about-layout ml-auto flex w-full max-w-[1020px] items-start gap-4">
         <div className="about-icon relative h-[31px] shrink-0" data-gl-fluid-boost>
           <img data-gl-media data-gl-hero-media data-gl-fluid-boost src={quoteIcon} alt="" className="absolute top-[6px] h-[25px] w-[28px]" />
@@ -389,38 +397,23 @@ function WorksHeading() {
 
 function ProjectCard({ work, className = "", desktopEffects }) {
   return (
-    <article className={`flex w-[368px] max-w-full flex-col gap-3 ${className}`}>
-      <p className="font-jakarta text-[13px] font-normal uppercase leading-[25px] text-white/40">
-        {work.kind}
-      </p>
-      <div
-        data-gl-media
-        data-gl-hero-media
-        {...(work.mediaZoom ? { "data-gl-media-zoom": work.mediaZoom } : {})}
-        className="relative h-[480px] w-full overflow-hidden bg-white lg:h-[480px]"
-      >
-        <PortfolioImage src={work.image} alt={work.imageAlt} className={work.imageClass ?? ""} desktopEffects={desktopEffects} />
-        {work.maskBottomEdge ? <span aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-[6px] bg-[#062322]" /> : null}
-      </div>
-      <div
-        data-gl-background
-        data-gl-hero-background
-        className="flex w-full items-start justify-between gap-4 border-b border-white pb-3 font-jakarta text-base font-normal uppercase leading-[25px] text-white md:max-lg:pb-[11px]"
-      >
-        <span className="min-w-0 whitespace-nowrap">
-          {work.name}
-        </span>
-        <a href={work.href} target="_blank" rel="noreferrer" className="shrink-0 underline">
-          <HoverText>Live</HoverText>
-        </a>
-      </div>
-    </article>
+    <SharedProjectCard
+      theme="dark"
+      kind={work.kind}
+      name={work.name}
+      caseHref={work.caseHref}
+      liveUrl={work.href}
+      className={`flex w-[368px] max-w-full flex-col gap-3 ${className}`}
+      kindClassName="font-jakarta text-[13px] font-normal uppercase leading-[25px] text-white/40"
+      footerClassName="flex w-full items-start justify-between gap-4 pb-3 font-jakarta text-base font-normal uppercase leading-[25px] md:max-lg:pb-[11px]"
+      renderMedia={() => <div data-gl-media data-gl-hero-media {...(work.mediaZoom ? { "data-gl-media-zoom": work.mediaZoom } : {})} className="relative h-[480px] w-full overflow-hidden bg-white lg:h-[480px]"><PortfolioImage src={work.image} alt={work.imageAlt} className={work.imageClass ?? ""} desktopEffects={desktopEffects} />{work.maskBottomEdge ? <span aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-[6px] bg-[#062322]" /> : null}</div>}
+    />
   );
 }
 
 function Works({ desktopEffects }) {
   return (
-    <section className="mt-0 w-full">
+    <section id="works" className="mt-0 w-full">
       <div className="flex w-full flex-col gap-[72px] py-[40px] min-[1199px]:hidden">
         <div className="flex w-full justify-start min-[600px]:justify-end">
           <ProjectCard work={works[0]} desktopEffects={desktopEffects} />
@@ -450,7 +443,7 @@ function Works({ desktopEffects }) {
   );
 }
 
-function Footer() {
+function Footer({ caseMobile = false }) {
   const [formValues, setFormValues] = useState({
     email: "",
     name: "",
@@ -588,18 +581,18 @@ function Footer() {
 
   return (
     <section className="relative mt-0 flex w-full flex-col pt-[40px] lg:mt-0 lg:h-[874px] lg:pt-[72px]">
-      <div className="flex w-full items-start justify-between">
+      <div className="flex w-full flex-col items-start gap-4 min-[400px]:flex-row min-[400px]:justify-between min-[400px]:gap-0">
         <p className="shrink-0 whitespace-nowrap font-jakarta text-[13px] font-normal uppercase leading-[25px] text-white/40">
           Start a project
         </p>
-        <p className="w-[288px] font-jakarta text-base font-normal uppercase leading-[25px] text-right text-white lg:w-[180px]">
+        <p className="w-auto font-jakarta text-base font-normal uppercase leading-[25px] text-left text-white min-[400px]:w-[288px] min-[400px]:text-right lg:w-[180px]">
           Open for a few
           <br />
           selected projects
         </p>
       </div>
 
-      <h2 ref={contactHeadingRef} data-gl-flow-text data-gl-fluid-boost className="relative z-10 mt-[32px] font-display text-[32px] font-light uppercase leading-[48px] tracking-[-2.24px] text-white md:text-[54px] md:leading-[62px] md:tracking-[-0.5px] md:max-lg:!mt-[40px] md:max-lg:!text-[56px] md:max-lg:!leading-[74px] md:max-lg:!tracking-[-3.92px] lg:mt-[40px] lg:text-[96px] lg:leading-[106px] lg:tracking-[-6.72px]">
+      <h2 ref={contactHeadingRef} data-gl-flow-text data-gl-fluid-boost className="relative z-10 mt-[32px] font-display text-[32px] font-light uppercase leading-[48px] tracking-[-2.24px] text-white max-[399px]:!text-[28px] max-[399px]:!leading-[44px] max-[399px]:!tracking-[-1.96px] md:text-[54px] md:leading-[62px] md:tracking-[-0.5px] md:max-lg:!mt-[40px] md:max-lg:!text-[56px] md:max-lg:!leading-[74px] md:max-lg:!tracking-[-3.92px] lg:mt-[40px] lg:text-[96px] lg:leading-[106px] lg:tracking-[-6.72px]">
         <span ref={contactHeadingFirstLineRef}>Let`s create something</span>
         <br />
         <span className="text-white/60">amazing</span>{" "}
@@ -635,7 +628,7 @@ function Footer() {
                 type="email"
                 value={formValues.email}
               />
-              <div className="grid min-w-0 w-full grid-cols-2 gap-3 md:grid-cols-1 md:gap-6 md:max-lg:!grid-cols-2 md:max-lg:!gap-3 lg:grid-cols-2 lg:gap-3">
+              <div className="grid min-w-0 w-full grid-cols-1 gap-6 min-[400px]:grid-cols-2 min-[400px]:gap-3 lg:grid-cols-2 lg:gap-3">
                 <FooterField
                   error={getFieldError("name")}
                   label="Full name*"
@@ -795,12 +788,24 @@ export default function App() {
   const userActivatedEffects = useUserActivatedEffects();
   const fluidDisabled = import.meta.env.DEV && import.meta.env.VITE_DISABLE_FLUID === "true";
   const pathname = typeof window !== "undefined" ? window.location.pathname : "/";
-  const isPrivacyPage = pathname === "/privacy";
+  const routeKind = getRouteKind(pathname);
+  const project = getProjectByPath(pathname);
   const [analyticsConsent, setAnalyticsConsent] = useState(() => (typeof window === "undefined" ? null : readAnalyticsConsent()));
 
   useEffect(() => {
     if (shouldLoadAnalytics(analyticsConsent)) loadGoogleAnalytics();
   }, [analyticsConsent]);
+
+  useEffect(() => {
+    if (routeKind !== "home") return undefined;
+
+    const hash = window.sessionStorage.getItem(homeScrollTargetKey);
+    if (!hash) return undefined;
+
+    window.sessionStorage.removeItem(homeScrollTargetKey);
+    const frame = window.requestAnimationFrame(() => scrollToElement(document.querySelector(hash)));
+    return () => window.cancelAnimationFrame(frame);
+  }, [routeKind]);
 
   const setConsent = (choice) => {
     saveAnalyticsConsent(choice);
@@ -810,7 +815,7 @@ export default function App() {
     () => (
       <>
         <SectionShell className="z-50">
-          <TopLinks />
+          <HomeNavigation />
         </SectionShell>
         <SectionShell
           decor={
@@ -844,11 +849,29 @@ export default function App() {
     [desktopEffects],
   );
 
-  if (isPrivacyPage) {
+  if (routeKind === "privacy") {
     return (
       <>
         <SeoManager pathname={pathname} />
         <PrivacyPolicy />
+      </>
+    );
+  }
+
+  if (routeKind === "project") {
+    return <><SeoManager pathname={pathname} /><CasePage project={project} footer={<SectionShell shellClassName="footer-shell narrow-scale-shell"><Footer caseMobile={project.path === "/work/24colab-content-services-website"} /></SectionShell>} /></>;
+  }
+
+  if (routeKind === "not-found") {
+    return (
+      <>
+        <SeoManager pathname={pathname} />
+        <EntryVeil />
+        <SmoothScroll enabled={desktopEffects} reduced={reduced} />
+        <PortfolioFluidBackground desktop={desktopEffects} enabled={(desktopEffects || userActivatedEffects) && !fluidDisabled} reduced={reduced} />
+        <main className="relative z-[910] min-h-screen overflow-x-hidden" aria-label="Page not found">
+          <NotFoundPage />
+        </main>
       </>
     );
   }
@@ -860,7 +883,7 @@ export default function App() {
       <SmoothScroll enabled={desktopEffects} reduced={reduced} />
       <CanvasLayer enabled={false && desktopEffects && !reduced && !fluidDisabled} />
       <PortfolioFluidBackground desktop={desktopEffects} enabled={(desktopEffects || userActivatedEffects) && !fluidDisabled} reduced={reduced} />
-      <main className="relative z-[910] flex min-h-screen flex-col gap-0 overflow-x-hidden pb-5 pt-[49px] lg:gap-0 lg:pb-[40px] lg:pt-[32px]" aria-label="Anna Loban portfolio">
+      <main className="relative z-[910] flex min-h-screen flex-col gap-0 overflow-x-hidden pb-5 pt-4 lg:gap-0 lg:pb-[40px] lg:pt-[32px]" aria-label="Anna Loban portfolio">
         <StableHeroGridOverlay />
         <StableHeroCtaOverlay />
         <div className="relative z-10 flex flex-col gap-0">

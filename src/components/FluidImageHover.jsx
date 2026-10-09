@@ -68,7 +68,7 @@ function createShader(gl, type, source) {
   return shader;
 }
 
-export function FluidImageHover({ src, alt, className = "" }) {
+export function FluidImageHover({ src, alt, className = "", desktopOnly = false }) {
   const canvasRef = useRef(null);
   const imageRef = useRef(null);
   const [ready, setReady] = useState(false);
@@ -137,6 +137,7 @@ export function FluidImageHover({ src, alt, className = "" }) {
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
       textureUploaded = true;
       setReady(true);
+      startRender();
     };
 
     const startRender = () => {
@@ -159,7 +160,7 @@ export function FluidImageHover({ src, alt, className = "" }) {
       const vy = Math.max(-0.08, Math.min(0.08, y - pointer.previousY));
       pointer.previousX = x;
       pointer.previousY = y;
-      if (!pointer.active) return;
+      pointer.active = true;
       stamps.copyWithin(4, 0, (MAX_STAMPS - 1) * 4);
       lives.copyWithin(1, 0, MAX_STAMPS - 1);
       stamps.set([x, y, vx, vy], 0);
@@ -232,7 +233,7 @@ export function FluidImageHover({ src, alt, className = "" }) {
       gl.deleteBuffer(buffer);
       gl.deleteProgram(program);
     };
-  }, [src]);
+  }, [desktopOnly, src]);
 
   return (
     <>

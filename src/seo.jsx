@@ -1,9 +1,12 @@
 import { useEffect } from "react";
+import { getSeoForPath } from "./seoRoutes.js";
+
+export { getSeoForPath } from "./seoRoutes.js";
 
 export const siteUrl = "https://annaloban.vercel.app";
 export const siteName = "Anna Loban";
 export const contactEmail = "hello.anna.loban@proton.me";
-export const defaultOgImage = "";
+export const defaultOgImage = "/og.webp";
 
 const profileLinks = [
   "https://www.linkedin.com/in/annloban/",
@@ -22,7 +25,7 @@ const serviceKeywords = [
   "production-ready websites",
 ];
 
-export const seoRoutes = {
+const seoRoutes = {
   "/": {
     path: "/",
     title: "Anna Loban | UX/UI Designer & Landing Page Designer",
@@ -66,16 +69,6 @@ export const plannedSeoRoutes = {
     topic: "EdTech design",
   },
 };
-
-function normalizePath(pathname) {
-  if (!pathname || pathname === "/") return "/";
-  return pathname.replace(/\/+$/, "") || "/";
-}
-
-export function getSeoForPath(pathname) {
-  const path = normalizePath(pathname);
-  return seoRoutes[path] ?? seoRoutes["/"];
-}
 
 function absoluteUrl(path = "/") {
   return `${siteUrl}${path === "/" ? "/" : path}`;
