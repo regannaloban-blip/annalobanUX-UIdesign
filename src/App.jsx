@@ -863,7 +863,17 @@ export default function App() {
   }
 
   if (routeKind === "not-found") {
-    return <><SeoManager pathname={pathname} /><NotFoundPage /></>;
+    return (
+      <>
+        <SeoManager pathname={pathname} />
+        <EntryVeil />
+        <SmoothScroll enabled={desktopEffects} reduced={reduced} />
+        <PortfolioFluidBackground desktop={desktopEffects} enabled={(desktopEffects || userActivatedEffects) && !fluidDisabled} reduced={reduced} />
+        <main className="relative z-[910] min-h-screen overflow-x-hidden" aria-label="Page not found">
+          <NotFoundPage />
+        </main>
+      </>
+    );
   }
 
   return (
