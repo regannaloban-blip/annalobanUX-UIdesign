@@ -274,17 +274,11 @@ export function PortfolioFluidBackground({ desktop, enabled, reduced }) {
       lastTouchPoint = null;
     };
 
-    const stopNativeTouchFluid = (event) => {
-      event.stopImmediatePropagation();
-    };
-
     resize();
     window.addEventListener("resize", resize);
     window.addEventListener("scroll", updateScrollState, { passive: true });
     window.addEventListener("mousemove", forwardPointer, { passive: true });
     window.addEventListener("mousedown", startPointer, { passive: true });
-    pointer.addEventListener("touchstart", stopNativeTouchFluid, { capture: true });
-    pointer.addEventListener("touchmove", stopNativeTouchFluid, { capture: true });
     window.addEventListener("touchstart", pulseTapPointer, { passive: true });
     window.addEventListener("touchmove", moveTouchPointer, { passive: true });
     window.addEventListener("touchend", resetTouchPointer, { passive: true });
@@ -298,8 +292,6 @@ export function PortfolioFluidBackground({ desktop, enabled, reduced }) {
       window.removeEventListener("scroll", updateScrollState);
       window.removeEventListener("mousemove", forwardPointer);
       window.removeEventListener("mousedown", startPointer);
-      pointer.removeEventListener("touchstart", stopNativeTouchFluid, { capture: true });
-      pointer.removeEventListener("touchmove", stopNativeTouchFluid, { capture: true });
       window.removeEventListener("touchstart", pulseTapPointer);
       window.removeEventListener("touchmove", moveTouchPointer);
       window.removeEventListener("touchend", resetTouchPointer);
