@@ -113,12 +113,14 @@
 .project-card--dark { --project-card-foreground: #fff; --project-card-muted: rgba(255,255,255,.4); color: var(--project-card-foreground); }
 .colab-next-head { min-height: 84px; }
 .colab-next h2 { margin: 0; font-family: Inter, sans-serif; font-size: 78px; font-weight: 300; line-height: 84px; letter-spacing: -3.12px; }
-.colab-next-content { display: block; margin-top: 64px; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none; scroll-behavior: smooth; scroll-snap-type: x mandatory; touch-action: pan-y; cursor: grab; }
+.colab-next-content { display: block; margin-top: 64px; overflow-x: auto; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch; scrollbar-width: none; scroll-behavior: smooth; scroll-snap-type: x mandatory; touch-action: pan-x pan-y; cursor: grab; }
 .colab-next-content::-webkit-scrollbar { display: none; }
 .colab-next-content.is-dragging { cursor: grabbing; user-select: none; }
 .colab-next-cards { display: flex; gap: 64px; width: max-content; }
 .colab-next-card { display: flex; flex: 0 0 368px; flex-direction: column; gap: 12px; min-width: 0; }
-.colab-next-card > .project-card__kind { margin: 0; color: var(--project-card-muted); font-size: 13px; font-weight: 400; line-height: 25px; }
+.colab-next-card .project-card__kind { margin: 0; color: var(--project-card-muted); font-size: 13px; font-weight: 400; line-height: 25px; }
+.project-card__meta { display: flex; align-items: center; justify-content: space-between; min-height: 25px; }
+.project-card__swipe-hint { display: none; }
 .colab-next-image { position: relative; display: block; width: 368px; height: 480px; overflow: hidden; }
 .colab-next-image img { display: block; width: 100%; height: 100%; object-fit: cover; pointer-events: none; user-select: none; -webkit-user-drag: none; }
 .colab-next-image-dim::after { position: absolute; inset: 0; background: rgba(0,0,0,.3); content: ""; }
@@ -137,6 +139,12 @@
   .colab-next-cards { display: flex; gap: 64px; width: max-content; }
 
 }
+
+/* On touch layouts, leave the card image free for horizontal scrolling. */
+@media (max-width: 1020px) {
+  .colab-next-case-link { cursor: default; pointer-events: none; }
+}
+
 .colab-case .footer-shell { width: min(1488px, calc(100vw - 98px)); height: auto; padding-right: 40px; }
 .colab-case .footer-shell .content-layer > section { box-sizing: border-box; height: auto !important; padding-top: 72px; }
 .colab-case .colab-next h2 { font-family: "Inter", sans-serif; font-style: normal; font-weight: 300 !important; font-variation-settings: "wght" 300; font-synthesis: none; }
@@ -363,6 +371,16 @@
   .colab-next-image,
   .colab-next-footer { width: 368px; }
   .colab-next-note { display: none; }
+  .project-card__swipe-hint { display: block; color: var(--project-card-muted); font-size: 13px; font-weight: 400; line-height: 25px; animation: colab-swipe-hint-pulse 1400ms ease-in-out infinite; }
+}
+
+@keyframes colab-swipe-hint-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .3; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-card__swipe-hint { animation: none; opacity: 1; }
 }
 
 @media (min-width: 360px) and (max-width: 600px) {

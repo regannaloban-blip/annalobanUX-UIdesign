@@ -628,7 +628,7 @@ function Footer({ caseMobile = false }) {
                 type="email"
                 value={formValues.email}
               />
-              <div className="grid min-w-0 w-full grid-cols-1 gap-6 min-[400px]:grid-cols-2 min-[400px]:gap-3 lg:grid-cols-2 lg:gap-3">
+              <div className="grid min-w-0 w-full grid-cols-1 gap-6 min-[440px]:grid-cols-2 min-[440px]:gap-3 lg:grid-cols-2 lg:gap-3">
                 <FooterField
                   error={getFieldError("name")}
                   label="Full name*"
