@@ -363,14 +363,22 @@
 }
 
 @media (max-width: 600px) {
+  .colab-next { --colab-next-card-width: 368px; }
   .colab-next { height: auto; padding: 48px 0 48px 20px; overflow: visible; }
   .colab-next-head { min-height: 84px; }
   .colab-next-content { margin-top: 48px; }
-  .colab-next-cards { flex-direction: row; gap: 32px; width: max-content; }
-  .colab-next-card { flex: 0 0 368px; width: 368px; scroll-snap-align: start; }
+  .colab-next-cards { flex-direction: row; gap: 32px; width: max-content; padding-right: 20px; }
+  .colab-next-card { flex: 0 0 var(--colab-next-card-width); width: var(--colab-next-card-width); scroll-snap-align: start; }
   .colab-next-image,
-  .colab-next-footer { width: 368px; }
+  .colab-next-footer { width: var(--colab-next-card-width); }
   .colab-next-note { display: none; }
+}
+
+@media (max-width: 439px) {
+  .colab-next { --colab-next-card-width: min(352px, calc(100vw - 40px)); }
+}
+
+@media (max-width: 404px) {
   .project-card__swipe-hint { display: block; color: var(--project-card-muted); font-size: 13px; font-weight: 400; line-height: 25px; animation: colab-swipe-hint-pulse 1400ms ease-in-out infinite; }
 }
 
