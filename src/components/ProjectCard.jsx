@@ -13,12 +13,18 @@ export function ProjectCard({
   footerClassName = "",
   theme = "dark",
   slide = false,
+  mobileSwipeHint = false,
 }) {
   const media = renderMedia();
 
   return (
     <article {...(slide ? { "data-project-slide": true } : {})} className={`project-card project-card--${theme} ${className}`}>
-      <p className={`project-card__kind ${kindClassName}`}>{kind}</p>
+      {mobileSwipeHint ? (
+        <div className="project-card__meta">
+          <p className={`project-card__kind ${kindClassName}`}>{kind}</p>
+          <span className="project-card__swipe-hint" aria-hidden="true">Swipe me</span>
+        </div>
+      ) : <p className={`project-card__kind ${kindClassName}`}>{kind}</p>}
       {caseHref ? <a className={mediaClassName} data-hover-text-trigger href={caseHref}>{media}</a> : media}
       <div className={`project-card__footer ${footerClassName}`}>
         {caseHref ? <a className="project-card__title" data-hover-text-trigger href={caseHref}><HoverText triggerOnParent>{name}</HoverText></a> : <span className="project-card__title">{name}</span>}

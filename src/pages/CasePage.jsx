@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { TopLinks } from "../components/TopLinks.jsx";
 import { HoverText, navigateToHomeSection } from "../components/PortfolioPrimitives.jsx";
 import { ProjectCard } from "../components/ProjectCard.jsx";
@@ -90,16 +90,19 @@ const projectKinds = {
   "your-dissertation": "Website/",
 };
 
+const swipeHintStorageKey = "portfolio-next-projects-swipe-hint-seen";
+
 function getNextProjects(currentPath) {
   const currentIndex = projects.findIndex((project) => project.path === currentPath);
   if (currentIndex < 0) return projects;
   return [...projects.slice(currentIndex + 1), ...projects.slice(0, currentIndex + 1)];
 }
 
-function NextProjectCard({ next }) {
+function NextProjectCard({ next, showSwipeHint }) {
   return (
     <ProjectCard
       slide
+      mobileSwipeHint={showSwipeHint}
       theme="light"
       kind={projectKinds[next.image]}
       name={next.name}
@@ -113,7 +116,7 @@ function NextProjectCard({ next }) {
   );
 }
 
-function useProjectSlider() {
+function useProjectSlider(onSwipe) {
   const sliderRef = useRef(null);
 
   useEffect(() => {
@@ -125,49 +128,73 @@ function useProjectSlider() {
     let startX = 0;
     let startScrollLeft = 0;
     let resizeFrame = 0;
+    let suppressClickUntil = 0;
+    let didDrag = false;
+    let hasSwiped = false;
     const isCarousel = () => carousel.scrollWidth > carousel.clientWidth;
+    const markSwipe = () => {
+      if (hasSwiped || !window.matchMedia("(max-width: 600px)").matches) return;
+      hasSwiped = true;
+      onSwipe();
+    };
     const clampScroll = (value) => Math.min(carousel.scrollWidth - carousel.clientWidth, Math.max(0, value));
     const finishDrag = (event) => {
       if (event.pointerId !== pointerId) return;
       if (carousel.hasPointerCapture(pointerId)) carousel.releasePointerCapture(pointerId);
+      if (didDrag) suppressClickUntil = performance.now() + 350;
       pointerId = null;
       carousel.classList.remove("is-dragging");
     };
     const startDrag = (event) => {
       if (!isCarousel() || !event.isPrimary || (event.pointerType === "mouse" && event.button !== 0)) return;
-      if (event.target.closest("a, button, input, textarea, select")) return;
+      if (event.target.closest("button, input, textarea, select")) return;
       pointerId = event.pointerId;
       startX = event.clientX;
       startScrollLeft = carousel.scrollLeft;
+      didDrag = false;
       carousel.setPointerCapture(pointerId);
     };
     const drag = (event) => {
       if (event.pointerId !== pointerId) return;
       const distance = event.clientX - startX;
       if (Math.abs(distance) <= 4) return;
+      didDrag = true;
+      markSwipe();
       carousel.classList.add("is-dragging");
       event.preventDefault();
       carousel.scrollLeft = clampScroll(startScrollLeft - distance);
     };
+    const preventFollowAfterDrag = (event) => {
+      if (performance.now() > suppressClickUntil) return;
+      event.preventDefault();
+      event.stopPropagation();
+    };
     const resetAfterResize = () => {
       window.cancelAnimationFrame(resizeFrame);
       resizeFrame = window.requestAnimationFrame(() => { carousel.scrollLeft = 0; });
+    };
+    const handleScroll = () => {
+      if (carousel.scrollLeft > 4) markSwipe();
     };
 
     carousel.addEventListener("pointerdown", startDrag);
     carousel.addEventListener("pointermove", drag);
     carousel.addEventListener("pointerup", finishDrag);
     carousel.addEventListener("pointercancel", finishDrag);
+    carousel.addEventListener("click", preventFollowAfterDrag, true);
+    carousel.addEventListener("scroll", handleScroll, { passive: true });
     window.addEventListener("resize", resetAfterResize);
     return () => {
       carousel.removeEventListener("pointerdown", startDrag);
       carousel.removeEventListener("pointermove", drag);
       carousel.removeEventListener("pointerup", finishDrag);
       carousel.removeEventListener("pointercancel", finishDrag);
+      carousel.removeEventListener("click", preventFollowAfterDrag, true);
+      carousel.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", resetAfterResize);
       window.cancelAnimationFrame(resizeFrame);
     };
-  }, []);
+  }, [onSwipe]);
 
   return sliderRef;
 }
@@ -239,7 +266,22 @@ function ColabLogoBlock() {
 }
 
 function CaseTemplate({ project, footer }) {
-  const nextProjectsRef = useProjectSlider();
+  const [hasSeenSwipeHint, setHasSeenSwipeHint] = useState(() => {
+    try {
+      return window.localStorage.getItem(swipeHintStorageKey) === "true";
+    } catch {
+      return false;
+    }
+  });
+  const markSwipeHintSeen = useCallback(() => {
+    setHasSeenSwipeHint(true);
+    try {
+      window.localStorage.setItem(swipeHintStorageKey, "true");
+    } catch {
+      // The hint still disappears for this visit when storage is unavailable.
+    }
+  }, []);
+  const nextProjectsRef = useProjectSlider(markSwipeHintSeen);
   const visualKey = project.caseAssets.visual;
   const visual = visualKey ? caseAssets[visualKey] : null;
   const screenKey = project.caseAssets.screens;
@@ -267,7 +309,7 @@ function CaseTemplate({ project, footer }) {
         <section className="colab-screens case-template-screens" aria-label={`${project.name} website page previews`}><img src={screens} width={screenDimensions.width} height={screenDimensions.height} alt={`${project.name} website page previews`} loading="lazy" decoding="async" /></section>
         <section className="colab-copy-section colab-solution"><p className="colab-section-label">The solution</p><div><h2>{project.solution}</h2>{project.solutionDetail && <p>{project.solutionDetail}</p>}</div></section>
         <section className="colab-features"><p className="colab-section-label">Key features</p><div className="colab-feature-grid">{project.features.map((feature) => <article key={feature.title}><span className="case-template-feature-icon"><img src={featureIcons[feature.icon]} alt="" /></span><div><h3>{feature.title}</h3>{feature.description && <p>{feature.description}</p>}</div></article>)}</div></section>
-        <section className="colab-next"><div className="colab-next-head"><h2>Next projects</h2></div><div ref={nextProjectsRef} className="colab-next-content"><div className="colab-next-cards">{getNextProjects(project.path).map((next) => <NextProjectCard key={next.path} next={next} />)}</div></div></section>
+        <section className="colab-next"><div className="colab-next-head"><h2>Next projects</h2></div><div ref={nextProjectsRef} className="colab-next-content"><div className="colab-next-cards">{getNextProjects(project.path).map((next, index) => <NextProjectCard key={next.path} next={next} showSwipeHint={index === 0 && !hasSeenSwipeHint} />)}</div></div></section>
       </section>
       {footer}
     </main>
