@@ -7,10 +7,10 @@ import telegramHeaderIcon from "../assets/figma/telegram-header.svg";
 import "./HomeNavigation.css";
 
 const menuItems = [
-  ["About", "#about"],
-  ["Solutions", "#solutions"],
-  ["Projects", "#works"],
-  ["Contact", "#contact-form"],
+  ["ABOUT", "#about"],
+  ["SOLUTIONS", "#solutions"],
+  ["PROJECTS", "#works"],
+  ["CONTACT", "#contact-form"],
 ];
 
 export function HomeNavigation() {
