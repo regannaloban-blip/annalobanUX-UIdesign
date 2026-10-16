@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { HoverText, navigateToHomeSection } from "./PortfolioPrimitives.jsx";
+import { HoverText, navigateToHomeSection, NavigationButton } from "./PortfolioPrimitives.jsx";
 import { TopLinks } from "./TopLinks.jsx";
 import annaLogo from "../assets/figma/anna-logo.svg";
 import telegramHeaderIcon from "../assets/figma/telegram-header.svg";
 import "./HomeNavigation.css";
 
 const menuItems = [
-  ["About", "#about"],
-  ["Solutions", "#solutions"],
-  ["Projects", "#works"],
-  ["Contact", "#contact-form"],
+  ["ABOUT", "#about"],
+  ["SOLUTIONS", "#solutions"],
+  ["PROJECTS", "#works"],
+  ["CONTACT", "#contact-form"],
 ];
 
 export function HomeNavigation() {
@@ -44,18 +44,18 @@ export function HomeNavigation() {
   return (
     <>
       <header className="flex h-8 w-full items-center justify-between font-jakarta text-base font-normal uppercase leading-[25px] text-white min-[601px]:h-[25px]">
-        <a href="/" className="inline-flex h-[25px] w-7 shrink-0 items-center" aria-label="Anna Loban home">
+        <NavigationButton href="/" className="inline-flex h-[25px] w-7 shrink-0 items-center" aria-label="Anna Loban home">
           <img src={annaLogo} width="28" height="25" alt="" />
-        </a>
+        </NavigationButton>
         <nav className="hidden items-center gap-10 min-[601px]:flex" aria-label="Primary navigation">
           {menuItems.map(([label, href]) => (
-            <a key={label} href={href} className="text-white no-underline" onClick={(event) => navigateToHomeSection(event, href)}>
+            <NavigationButton key={label} href={href} className="text-white no-underline" onClick={(event) => navigateToHomeSection(event, href)}>
               <HoverText>{label}</HoverText>
-            </a>
+            </NavigationButton>
           ))}
-          <a href="https://t.me/anna_loban" target="_blank" rel="noreferrer" aria-label="Telegram" className="header-telegram inline-flex shrink-0">
+          <NavigationButton href="https://t.me/anna_loban" newTab aria-label="Telegram" className="header-telegram inline-flex shrink-0">
             <img src={telegramHeaderIcon} alt="" className="block h-7 w-7" />
-          </a>
+          </NavigationButton>
         </nav>
         <button
           type="button"
@@ -76,9 +76,9 @@ export function HomeNavigation() {
       {isOpen && createPortal(
         <nav id="home-mobile-menu" className="fixed inset-0 z-[1100] flex flex-col bg-[#A40000] px-5 pb-10 pt-4" aria-label="Mobile navigation">
           <div className="flex h-8 items-center justify-between">
-            <a href="/" className="inline-flex h-[25px] w-7 items-center" aria-label="Anna Loban home" onClick={() => setIsOpen(false)}>
+            <NavigationButton href="/" className="inline-flex h-[25px] w-7 items-center" aria-label="Anna Loban home" onClick={() => setIsOpen(false)}>
               <img src={annaLogo} width="28" height="25" alt="" />
-            </a>
+            </NavigationButton>
             <button type="button" className="grid h-8 w-24 place-items-center bg-white text-[#A40000]" aria-label="Close menu" onClick={() => setIsOpen(false)}>
               <span className="block h-[2px] w-[60px] bg-current" aria-hidden="true" />
             </button>
@@ -88,9 +88,9 @@ export function HomeNavigation() {
             <ol className="home-mobile-menu__items flex list-none flex-col gap-5 p-0">
               {menuItems.map(([label, href], index) => (
                 <li key={label}>
-                  <a href={href} className="flex items-start gap-3 text-[34px] font-[300] leading-[41px] text-white no-underline" onClick={(event) => { setIsOpen(false); navigateToHomeSection(event, href); }}>
+                  <NavigationButton href={href} className="flex items-start gap-3 text-[34px] font-[300] leading-[41px] text-white no-underline" onClick={(event) => { setIsOpen(false); navigateToHomeSection(event, href); }}>
                     <span>{label}</span><sup className="text-sm font-[300] leading-[25px] text-white/50">0{index + 1}</sup>
-                  </a>
+                  </NavigationButton>
                 </li>
               ))}
             </ol>

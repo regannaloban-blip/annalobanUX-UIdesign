@@ -1,5 +1,5 @@
 import React from "react";
-import { HoverText } from "../components/PortfolioPrimitives.jsx";
+import { HoverText, NavigationButton } from "../components/PortfolioPrimitives.jsx";
 
 export function NotFoundPage() {
   return (
@@ -8,7 +8,7 @@ export function NotFoundPage() {
         <p className="text-base leading-[25px]">404</p>
         <h1 className="font-display text-[38px] font-light leading-[60px] tracking-[-1.52px]">Page not found</h1>
         <p className="text-base leading-[25px]">The page you are looking for doesn’t exist, may have been moved, or is no longer available.</p>
-        <a
+        <NavigationButton
           data-hover-text-trigger
           className="group relative mt-4 inline-flex h-12 items-center justify-center border-b border-black bg-white px-10 pb-[6px] pt-[2px] text-black active:scale-[0.99]"
           href="/"
@@ -17,7 +17,7 @@ export function NotFoundPage() {
           <span className="relative z-10 block whitespace-nowrap font-jakarta text-base font-bold uppercase leading-[25px]">
             <HoverText triggerOnParent>back to home</HoverText>
           </span>
-        </a>
+        </NavigationButton>
       </div>
     </section>
   );
