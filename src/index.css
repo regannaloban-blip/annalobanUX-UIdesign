@@ -534,6 +534,11 @@ img {
 }
 
 /* One divider for every project card, independent of page and breakpoint. */
+.project-card,
+.project-card button {
+  text-transform: uppercase;
+}
+
 .project-card__footer {
   position: relative;
 }
