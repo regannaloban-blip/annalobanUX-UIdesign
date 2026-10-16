@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { Button, Display, HoverText, MonoText, briefHref, contactFormId, homeScrollTargetKey, scrollToElement } from "./components/PortfolioPrimitives.jsx";
+import { Button, Display, HoverText, MonoText, NavigationButton, contactFormId, homeScrollTargetKey, scrollToElement } from "./components/PortfolioPrimitives.jsx";
 import { ProjectCard as SharedProjectCard } from "./components/ProjectCard.jsx";
 import { HomeNavigation } from "./components/HomeNavigation.jsx";
 import { Hero, HeroFirstScreen, ResponsiveViewportGuide, StableHeroCtaOverlay, StableHeroGridOverlay } from "./sections/Hero.jsx";
@@ -35,7 +35,7 @@ const works = [
   },
   {
     kind: "website/",
-    name: "smart business intelligence",
+    name: "Smart Business Intelligence",
     caseHref: "/work/smart-business-intelligence-website",
     href: "https://smartbusinessintelligence.co.uk",
     image: project2,
@@ -54,7 +54,7 @@ const works = [
   },
   {
     kind: "website/",
-    name: "your dissertation",
+    name: "Your Dissertation",
     caseHref: "/work/your-dissertation-order-flow",
     href: "https://yourdissertation.com",
     image: project4,
@@ -115,7 +115,7 @@ function AnalyticsConsentBanner({ onChoice }) {
     <section className="fixed inset-x-4 bottom-4 z-[1100] mx-auto max-w-[540px] border border-white bg-black p-5 font-jakarta text-white shadow-2xl md:inset-x-auto md:right-6" aria-label="Analytics cookie preferences">
       <p className="text-[13px] font-medium uppercase leading-5 text-white/50">Cookie preferences</p>
       <p className="mt-3 text-sm leading-6 text-white/80">
-        We use analytics cookies to understand how visitors use this website. See the <a className="underline underline-offset-4 transition-colors hover:text-white" href="/privacy">Privacy Policy</a>.
+        We use analytics cookies to understand how visitors use this website. See the <NavigationButton className="underline underline-offset-4 transition-colors hover:text-white" href="/privacy">Privacy Policy</NavigationButton>.
       </p>
       <div className="mt-5 flex flex-wrap gap-3">
         <button type="button" className="border border-white bg-white px-4 py-2 text-sm font-medium uppercase text-black transition-colors hover:bg-transparent hover:text-white" onClick={() => onChoice("granted")}>Accept</button>
@@ -327,9 +327,9 @@ function ConsentCheckbox({ checked, error, onBlur, onChange }) {
       </span>
       <span className="min-w-0 text-white/60">
         I agree to my data being used to respond to this request.{" "}
-        <a className="underline decoration-white/60 underline-offset-4 transition-colors hover:text-white" href="/privacy">
+        <NavigationButton className="underline decoration-white/60 underline-offset-4 transition-colors hover:text-white" href="/privacy">
           <HoverText>Privacy Policy</HoverText>
-        </a>
+        </NavigationButton>
       </span>
       <span
         aria-live="polite"
@@ -406,6 +406,7 @@ function ProjectCard({ work, className = "", desktopEffects }) {
       className={`flex w-[368px] max-w-full flex-col gap-3 ${className}`}
       kindClassName="font-jakarta text-[13px] font-normal uppercase leading-[25px] text-white/40"
       footerClassName="flex w-full items-start justify-between gap-4 pb-3 font-jakarta text-base font-normal uppercase leading-[25px] md:max-lg:pb-[11px]"
+      hoverEffects={desktopEffects}
       renderMedia={() => <div data-gl-media data-gl-hero-media {...(work.mediaZoom ? { "data-gl-media-zoom": work.mediaZoom } : {})} className="relative h-[480px] w-full overflow-hidden bg-white lg:h-[480px]"><PortfolioImage src={work.image} alt={work.imageAlt} className={work.imageClass ?? ""} desktopEffects={desktopEffects} />{work.maskBottomEdge ? <span aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-[6px] bg-[#062322]" /> : null}</div>}
     />
   );
@@ -696,13 +697,13 @@ function PrivacyPolicy() {
   return (
     <main className="relative z-[910] min-h-screen bg-black px-6 py-10 font-jakarta normal-case text-white md:px-10 lg:px-[72px]">
       <div className="mx-auto flex w-full max-w-[980px] flex-col gap-10">
-        <a className="group inline-flex w-fit items-center gap-2 text-base font-normal uppercase leading-6 text-white/60 transition-colors hover:text-white" href="/">
+        <NavigationButton className="group inline-flex w-fit items-center gap-2 text-base font-normal uppercase leading-6 text-white/60 transition-colors hover:text-white" href="/">
           <svg className="h-auto w-5 shrink-0 transition-colors" viewBox="0 0 28 20" fill="none" aria-hidden="true">
             <path d="M10.5 3L3.5 10L10.5 17" stroke="currentColor" strokeWidth="2" strokeLinecap="square" strokeLinejoin="miter" />
             <path d="M4 10H27" stroke="currentColor" strokeWidth="2" strokeLinecap="square" />
           </svg>
           <span className="underline underline-offset-4"><HoverText>Back</HoverText></span>
-        </a>
+        </NavigationButton>
         <header className="flex flex-col gap-4">
           <p className="text-[13px] font-normal uppercase leading-[25px] text-white/40">Privacy Policy</p>
           <h1 className="font-display text-[48px] font-light uppercase leading-[54px] tracking-[-2px] md:text-[84px] md:leading-[92px] md:tracking-[-5.88px]">
@@ -719,9 +720,9 @@ function PrivacyPolicy() {
             <p>Anna Loban is the controller of the personal data submitted through this website.</p>
             <p>
               Contact email:{" "}
-              <a className="text-white/75 transition-colors hover:text-white" href="mailto:hello.anna.loban@proton.me">
+              <NavigationButton className="text-white/75 transition-colors hover:text-white" href="mailto:hello.anna.loban@proton.me">
                 <HoverText>hello.anna.loban@proton.me</HoverText>
-              </a>
+              </NavigationButton>
             </p>
           </div>
         </section>
@@ -787,10 +788,16 @@ export default function App() {
   const desktopEffects = useDesktopEffects();
   const userActivatedEffects = useUserActivatedEffects();
   const fluidDisabled = import.meta.env.DEV && import.meta.env.VITE_DISABLE_FLUID === "true";
-  const pathname = typeof window !== "undefined" ? window.location.pathname : "/";
+  const [pathname, setPathname] = useState(() => (typeof window !== "undefined" ? window.location.pathname : "/"));
   const routeKind = getRouteKind(pathname);
   const project = getProjectByPath(pathname);
   const [analyticsConsent, setAnalyticsConsent] = useState(() => (typeof window === "undefined" ? null : readAnalyticsConsent()));
+
+  useEffect(() => {
+    const syncPathname = () => setPathname(window.location.pathname);
+    window.addEventListener("popstate", syncPathname);
+    return () => window.removeEventListener("popstate", syncPathname);
+  }, []);
 
   useEffect(() => {
     if (shouldLoadAnalytics(analyticsConsent)) loadGoogleAnalytics();

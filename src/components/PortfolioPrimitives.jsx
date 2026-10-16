@@ -114,6 +114,12 @@ export function scrollToElement(element, { center = false } = {}) {
   window.requestAnimationFrame(animate);
 }
 
+export function navigateInternally(href) {
+  window.history.pushState(null, "", href);
+  window.dispatchEvent(new PopStateEvent("popstate"));
+  window.scrollTo(0, 0);
+}
+
 export function navigateToHomeSection(event, hash) {
   event.preventDefault();
 
@@ -125,7 +131,28 @@ export function navigateToHomeSection(event, hash) {
   }
 
   window.sessionStorage.setItem(homeScrollTargetKey, hash);
-  window.location.assign("/");
+  navigateInternally("/");
+}
+
+export function NavigationButton({ href, newTab = false, className = "", onClick, children, ...props }) {
+  const handleClick = (event) => {
+    onClick?.(event);
+    if (event.defaultPrevented) return;
+
+    if (newTab) {
+      window.open(href, "_blank", "noopener,noreferrer");
+      return;
+    }
+
+    if (href.startsWith("/") && !href.startsWith("//")) {
+      navigateInternally(href);
+      return;
+    }
+
+    window.location.assign(href);
+  };
+
+  return <button type="button" {...props} className={`link-button ${className}`} onClick={handleClick}>{children}</button>;
 }
 
 function scrollToContactForm(event) {
@@ -138,10 +165,10 @@ function scrollToContactForm(event) {
 
 export function Button({ className = "", webglHero = false, noFluid = false }) {
   return (
-    <a
+    <button
+      type="button"
       {...(webglHero ? { "data-gl-hero-background": true } : {})}
       data-hover-text-trigger
-      href={briefHref}
       onClick={scrollToContactForm}
       className={`group relative inline-flex h-12 w-fit items-center justify-center border-b border-black bg-white px-10 text-black active:scale-[0.99] ${className}`}
     >
@@ -152,7 +179,7 @@ export function Button({ className = "", webglHero = false, noFluid = false }) {
       >
         <HoverText triggerOnParent>start a project</HoverText>
       </span>
-    </a>
+    </button>
   );
 }
 

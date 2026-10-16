@@ -68,7 +68,7 @@ function createShader(gl, type, source) {
   return shader;
 }
 
-export function FluidImageHover({ src, alt, className = "", desktopOnly = false }) {
+export function FluidImageHover({ src, alt, className = "", desktopOnly = false, enabled = true }) {
   const canvasRef = useRef(null);
   const imageRef = useRef(null);
   const [ready, setReady] = useState(false);
@@ -77,7 +77,7 @@ export function FluidImageHover({ src, alt, className = "", desktopOnly = false 
     const canvas = canvasRef.current;
     const image = imageRef.current;
     const container = canvas?.parentElement;
-    const canHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    const canHover = enabled && window.matchMedia(`${desktopOnly ? "(min-width: 1021px) and " : ""}(hover: hover) and (pointer: fine)`).matches;
     if (!canvas || !image || !container || !canHover) return undefined;
 
     const gl = canvas.getContext("webgl", { alpha: false, antialias: true });
@@ -233,12 +233,12 @@ export function FluidImageHover({ src, alt, className = "", desktopOnly = false 
       gl.deleteBuffer(buffer);
       gl.deleteProgram(program);
     };
-  }, [desktopOnly, src]);
+  }, [desktopOnly, enabled, src]);
 
   return (
     <>
       <img ref={imageRef} src={src} alt={alt} className={`h-full w-full object-cover ${className}`} loading="lazy" decoding="async" />
-      <canvas ref={canvasRef} aria-hidden="true" className={`fluid-image-hover-canvas ${ready ? "is-ready" : ""} ${className}`} />
+      {enabled && <canvas ref={canvasRef} aria-hidden="true" className={`fluid-image-hover-canvas ${ready ? "is-ready" : ""} ${className}`} />}
     </>
   );
 }

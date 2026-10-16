@@ -1,5 +1,5 @@
 import React from "react";
-import { HoverText } from "./PortfolioPrimitives.jsx";
+import { HoverText, NavigationButton } from "./PortfolioPrimitives.jsx";
 
 export function ProjectCard({
   kind,
@@ -14,8 +14,10 @@ export function ProjectCard({
   theme = "dark",
   slide = false,
   mobileSwipeHint = false,
+  hoverEffects = true,
 }) {
   const media = renderMedia();
+  const hoverTrigger = hoverEffects ? { "data-hover-text-trigger": true } : {};
 
   return (
     <article {...(slide ? { "data-project-slide": true } : {})} className={`project-card project-card--${theme} ${className}`}>
@@ -25,10 +27,10 @@ export function ProjectCard({
           <span className="project-card__swipe-hint" aria-hidden="true">Swipe me</span>
         </div>
       ) : <p className={`project-card__kind ${kindClassName}`}>{kind}</p>}
-      {caseHref ? <a className={mediaClassName} data-hover-text-trigger href={caseHref}>{media}</a> : media}
+      {caseHref ? <NavigationButton className={mediaClassName} {...hoverTrigger} href={caseHref}>{media}</NavigationButton> : media}
       <div className={`project-card__footer ${footerClassName}`}>
-        {caseHref ? <a className="project-card__title" data-hover-text-trigger href={caseHref}><HoverText triggerOnParent>{name}</HoverText></a> : <span className="project-card__title">{name}</span>}
-        <a href={liveUrl} target="_blank" rel="noreferrer" className="project-card__live"><HoverText>Live</HoverText></a>
+        {caseHref ? <NavigationButton className="project-card__title" {...hoverTrigger} href={caseHref}>{hoverEffects ? <HoverText triggerOnParent>{name}</HoverText> : name}</NavigationButton> : <span className="project-card__title">{name}</span>}
+        <NavigationButton href={liveUrl} newTab className="project-card__live">{hoverEffects ? <HoverText>Live</HoverText> : "Live"}</NavigationButton>
       </div>
     </article>
   );

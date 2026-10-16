@@ -59,6 +59,18 @@
   box-sizing: border-box;
 }
 
+.link-button {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  line-height: inherit;
+  text-align: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
 html {
   background: #000;
   color-scheme: dark;

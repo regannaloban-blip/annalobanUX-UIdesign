@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { TopLinks } from "../components/TopLinks.jsx";
-import { HoverText, navigateToHomeSection } from "../components/PortfolioPrimitives.jsx";
+import { HoverText, navigateToHomeSection, NavigationButton } from "../components/PortfolioPrimitives.jsx";
 import { ProjectCard } from "../components/ProjectCard.jsx";
 import { FluidImageHover } from "../components/FluidImageHover.jsx";
 import { CaseVisitSite } from "../components/CaseVisitSite.jsx";
@@ -77,10 +77,10 @@ const featureIcons = {
 };
 
 const colabMobileMenuItems = [
-  ["About", "#about"],
-  ["Solutions", "#solutions"],
-  ["Projects", "#works"],
-  ["Contact", "#contact-form"],
+  ["ABOUT", "#about"],
+  ["SOLUTIONS", "#solutions"],
+  ["PROJECTS", "#works"],
+  ["CONTACT", "#contact-form"],
 ];
 
 const projectKinds = {
@@ -98,11 +98,12 @@ function getNextProjects(currentPath) {
   return [...projects.slice(currentIndex + 1), ...projects.slice(0, currentIndex + 1)];
 }
 
-function NextProjectCard({ next, showSwipeHint }) {
+function NextProjectCard({ next, showSwipeHint, hoverEffects }) {
   return (
     <ProjectCard
       slide
       mobileSwipeHint={showSwipeHint}
+      hoverEffects={hoverEffects}
       theme="light"
       kind={projectKinds[next.image]}
       name={next.name}
@@ -111,7 +112,7 @@ function NextProjectCard({ next, showSwipeHint }) {
       className="colab-next-card"
       mediaClassName="colab-next-case-link"
       footerClassName="colab-next-footer"
-      renderMedia={() => <span className="colab-next-image"><FluidImageHover src={projectMedia[next.image]} alt={next.imageAlt} desktopOnly /></span>}
+      renderMedia={() => <span className="colab-next-image"><FluidImageHover src={projectMedia[next.image]} alt={next.imageAlt} desktopOnly enabled={hoverEffects} /></span>}
     />
   );
 }
@@ -128,46 +129,80 @@ function useProjectSlider(onSwipe) {
     let startX = 0;
     let startScrollLeft = 0;
     let resizeFrame = 0;
-    let suppressClickUntil = 0;
+    let dragFrame = 0;
+    let targetScrollLeft = 0;
+    let releaseWhenSettled = false;
+    let suppressNextClick = false;
     let didDrag = false;
     let hasSwiped = false;
     const isCarousel = () => carousel.scrollWidth > carousel.clientWidth;
+    const isDesktopCarousel = () => window.matchMedia("(min-width: 1021px) and (hover: hover) and (pointer: fine)").matches;
     const markSwipe = () => {
       if (hasSwiped || !window.matchMedia("(max-width: 600px)").matches) return;
       hasSwiped = true;
       onSwipe();
     };
     const clampScroll = (value) => Math.min(carousel.scrollWidth - carousel.clientWidth, Math.max(0, value));
-    const finishDrag = (event) => {
-      if (event.pointerId !== pointerId) return;
-      if (carousel.hasPointerCapture(pointerId)) carousel.releasePointerCapture(pointerId);
-      if (didDrag) suppressClickUntil = performance.now() + 350;
-      pointerId = null;
+    const finishDesktopScroll = () => {
       carousel.classList.remove("is-dragging");
+      releaseWhenSettled = false;
+    };
+    const renderDesktopScroll = () => {
+      const distance = targetScrollLeft - carousel.scrollLeft;
+      if (Math.abs(distance) < 0.5) {
+        carousel.scrollLeft = targetScrollLeft;
+        dragFrame = 0;
+        if (releaseWhenSettled) finishDesktopScroll();
+        return;
+      }
+
+      carousel.scrollLeft += distance * 0.26;
+      dragFrame = window.requestAnimationFrame(renderDesktopScroll);
+    };
+    const setDesktopScrollTarget = (value) => {
+      targetScrollLeft = clampScroll(value);
+      if (!dragFrame) dragFrame = window.requestAnimationFrame(renderDesktopScroll);
+    };
+    const finishDrag = (event) => {
+      if (pointerId === null || (event.pointerId != null && event.pointerId !== pointerId)) return;
+      if (carousel.hasPointerCapture(pointerId)) carousel.releasePointerCapture(pointerId);
+      if (didDrag) {
+        suppressNextClick = true;
+        window.setTimeout(() => { suppressNextClick = false; }, 0);
+      }
+      pointerId = null;
+      if (isDesktopCarousel() && dragFrame) releaseWhenSettled = true;
+      else carousel.classList.remove("is-dragging");
     };
     const startDrag = (event) => {
       if (!isCarousel() || !event.isPrimary || (event.pointerType === "mouse" && event.button !== 0)) return;
-      if (event.target.closest("button, input, textarea, select")) return;
+      // A short press follows the card link; movement is handled as drag below.
+      if (event.target.closest("input, textarea, select")) return;
       pointerId = event.pointerId;
       startX = event.clientX;
       startScrollLeft = carousel.scrollLeft;
+      targetScrollLeft = carousel.scrollLeft;
       didDrag = false;
-      carousel.setPointerCapture(pointerId);
     };
     const drag = (event) => {
       if (event.pointerId !== pointerId) return;
       const distance = event.clientX - startX;
       if (Math.abs(distance) <= 4) return;
-      didDrag = true;
+      if (!didDrag) {
+        didDrag = true;
+        carousel.setPointerCapture(pointerId);
+        carousel.classList.add("is-dragging");
+      }
       markSwipe();
-      carousel.classList.add("is-dragging");
       event.preventDefault();
-      carousel.scrollLeft = clampScroll(startScrollLeft - distance);
+      if (isDesktopCarousel()) setDesktopScrollTarget(startScrollLeft - distance);
+      else carousel.scrollLeft = clampScroll(startScrollLeft - distance);
     };
     const preventFollowAfterDrag = (event) => {
-      if (performance.now() > suppressClickUntil) return;
+      if (!suppressNextClick) return;
       event.preventDefault();
       event.stopPropagation();
+      suppressNextClick = false;
     };
     const resetAfterResize = () => {
       window.cancelAnimationFrame(resizeFrame);
@@ -181,22 +216,41 @@ function useProjectSlider(onSwipe) {
     carousel.addEventListener("pointermove", drag);
     carousel.addEventListener("pointerup", finishDrag);
     carousel.addEventListener("pointercancel", finishDrag);
+    carousel.addEventListener("lostpointercapture", finishDrag);
     carousel.addEventListener("click", preventFollowAfterDrag, true);
     carousel.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("mouseup", finishDrag);
     window.addEventListener("resize", resetAfterResize);
     return () => {
       carousel.removeEventListener("pointerdown", startDrag);
       carousel.removeEventListener("pointermove", drag);
       carousel.removeEventListener("pointerup", finishDrag);
       carousel.removeEventListener("pointercancel", finishDrag);
+      carousel.removeEventListener("lostpointercapture", finishDrag);
       carousel.removeEventListener("click", preventFollowAfterDrag, true);
       carousel.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("mouseup", finishDrag);
       window.removeEventListener("resize", resetAfterResize);
       window.cancelAnimationFrame(resizeFrame);
+      window.cancelAnimationFrame(dragFrame);
     };
   }, [onSwipe]);
 
   return sliderRef;
+}
+
+function useDesktopCardHover() {
+  const [enabled, setEnabled] = useState(false);
+
+  useEffect(() => {
+    const query = window.matchMedia("(min-width: 1021px) and (hover: hover) and (pointer: fine)");
+    const update = () => setEnabled(query.matches);
+    update();
+    query.addEventListener("change", update);
+    return () => query.removeEventListener("change", update);
+  }, []);
+
+  return enabled;
 }
 
 function CaseTemplateHeader() {
@@ -227,8 +281,8 @@ function CaseTemplateHeader() {
 
   return <>
     <header className="colab-topbar">
-      <a href="/" className="colab-back"><img src={mobileMenuBackIcon} alt="" /><span className="colab-back__desktop"><HoverText>Home</HoverText></span><span className="colab-back__mobile"><HoverText>Home</HoverText></span></a>
-      <nav className="colab-case-nav" aria-label="Case page navigation">{colabMobileMenuItems.map(([label, hash]) => <a key={label} href={`/${hash}`} onClick={(event) => navigateToHomeSection(event, hash)}><HoverText>{label}</HoverText></a>)}<a href="https://t.me/anna_loban" target="_blank" rel="noreferrer" aria-label="Telegram" className="colab-case-nav__telegram"><img src={telegramHeaderIcon} alt="" /></a></nav>
+      <NavigationButton href="/" className="colab-back"><img src={mobileMenuBackIcon} alt="" /><span className="colab-back__desktop"><HoverText>HOME</HoverText></span><span className="colab-back__mobile"><HoverText>HOME</HoverText></span></NavigationButton>
+      <nav className="colab-case-nav" aria-label="Case page navigation">{colabMobileMenuItems.map(([label, hash]) => <NavigationButton key={label} href={`/${hash}`} onClick={(event) => navigateToHomeSection(event, hash)}><HoverText>{label}</HoverText></NavigationButton>)}<NavigationButton href="https://t.me/anna_loban" newTab aria-label="Telegram" className="colab-case-nav__telegram"><img src={telegramHeaderIcon} alt="" /></NavigationButton></nav>
       <button type="button" className="colab-menu-toggle" aria-expanded={isMobileMenuOpen || isMobileMenuOpening} aria-controls="colab-mobile-menu" aria-label="Open menu" disabled={isMobileMenuOpening} onClick={openMobileMenu}>
         <span className={`colab-menu-toggle__icon${isMobileMenuOpening ? " colab-menu-toggle__icon--opening" : ""}`} aria-hidden="true"><span /><span /><span /></span>
       </button>
@@ -236,10 +290,10 @@ function CaseTemplateHeader() {
     {isMobileMenuOpen && <div className="colab-mobile-menu" role="presentation" onClick={() => setIsMobileMenuOpen(false)}>
       <nav id="colab-mobile-menu" className="colab-mobile-menu__panel" aria-label="Mobile menu" onClick={(event) => event.stopPropagation()}>
         <div className="colab-mobile-menu__header">
-          <a href="/" className="colab-mobile-menu__brand"><img src={mobileMenuBackIcon} alt="" /><span>Anna Loban</span></a>
+          <NavigationButton href="/" className="colab-mobile-menu__brand"><img src={mobileMenuBackIcon} alt="" /><span>Anna Loban</span></NavigationButton>
           <button type="button" className="colab-mobile-menu__toggle" aria-label="Close menu" onClick={() => setIsMobileMenuOpen(false)}><span className="colab-menu-toggle__icon colab-menu-toggle__icon--active" aria-hidden="true"><span /></span></button>
         </div>
-        <div className="colab-mobile-menu__content"><p>Connect everything once,<br />Then automate forever.</p><ol>{colabMobileMenuItems.map(([label, hash], index) => <li key={label}><a href={`/${hash}`} onClick={(event) => { setIsMobileMenuOpen(false); navigateToHomeSection(event, hash); }}><span>{label}</span><sup>0{index + 1}</sup></a></li>)}</ol></div>
+        <div className="colab-mobile-menu__content"><p>Connect everything once,<br />Then automate forever.</p><ol>{colabMobileMenuItems.map(([label, hash], index) => <li key={label}><NavigationButton href={`/${hash}`} onClick={(event) => { setIsMobileMenuOpen(false); navigateToHomeSection(event, hash); }}><span>{label}</span><sup>0{index + 1}</sup></NavigationButton></li>)}</ol></div>
         <div className="colab-mobile-menu__socials"><TopLinks mobileMenu /></div>
       </nav>
     </div>}
@@ -273,6 +327,7 @@ function CaseTemplate({ project, footer }) {
       return false;
     }
   });
+  const desktopCardHover = useDesktopCardHover();
   const markSwipeHintSeen = useCallback(() => {
     setHasSeenSwipeHint(true);
     try {
@@ -309,7 +364,7 @@ function CaseTemplate({ project, footer }) {
         <section className="colab-screens case-template-screens" aria-label={`${project.name} website page previews`}><img src={screens} width={screenDimensions.width} height={screenDimensions.height} alt={`${project.name} website page previews`} loading="lazy" decoding="async" /></section>
         <section className="colab-copy-section colab-solution"><p className="colab-section-label">The solution</p><div><h2>{project.solution}</h2>{project.solutionDetail && <p>{project.solutionDetail}</p>}</div></section>
         <section className="colab-features"><p className="colab-section-label">Key features</p><div className="colab-feature-grid">{project.features.map((feature) => <article key={feature.title}><span className="case-template-feature-icon"><img src={featureIcons[feature.icon]} alt="" /></span><div><h3>{feature.title}</h3>{feature.description && <p>{feature.description}</p>}</div></article>)}</div></section>
-        <section className="colab-next"><div className="colab-next-head"><h2>Next projects</h2></div><div ref={nextProjectsRef} className="colab-next-content"><div className="colab-next-cards">{getNextProjects(project.path).map((next, index) => <NextProjectCard key={next.path} next={next} showSwipeHint={index === 0 && !hasSeenSwipeHint} />)}</div></div></section>
+        <section className="colab-next"><div className="colab-next-head"><h2>Next projects</h2></div><div ref={nextProjectsRef} className="colab-next-content"><div className="colab-next-cards">{getNextProjects(project.path).map((next, index) => <NextProjectCard key={next.path} next={next} showSwipeHint={index === 0 && !hasSeenSwipeHint} hoverEffects={desktopCardHover} />)}</div></div></section>
       </section>
       {footer}
     </main>
